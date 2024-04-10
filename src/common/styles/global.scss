@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    *, ::before, ::after {
+        box-sizing: border-box;
+        border-style: solid;
+    }
+}
+
+// Fonts only for personal uses. 
+@font-face { font-family: vcr-mono; src: url(../../fonts/vcr_osd_mono.ttf); }
+
+// Initalizer for custom default sizing.
+html, body, body > header { height: 100%; margin: 0; padding: 0; }
+body { 
+    overflow: hidden; 
+    background-color: black; 
+    scroll-behavior: smooth; 
+    touch-action: none;
+}
