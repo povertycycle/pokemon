@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    basePath: "/pokemon",
-    output: 'export'
+    output: 'export',
+    images: {
+        unoptimized: true
+    }
 }
 
 module.exports = nextConfig

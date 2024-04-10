@@ -1,11 +1,11 @@
 import { useState } from "react";
 import "remixicon/fonts/remixicon.css";
 import VisitPage from "./VisitPage";
-import { PageState } from "./types";
-import PageSelector from "./home/PageSelector";
-import GameDatabase from "./game/GameDatabase";
 import { PageContext } from "./contexts";
+import GameDatabase from "./game/GameDatabase";
+import PageSelector from "./home/PageSelector";
 import TCGDatabase from "./tcg/TCGDatabase";
+import { PageState } from "./types";
 
 const MainPage: React.FC = () => {
     const [section, setSection] = useState<PageState>(PageState.Main);

@@ -1,7 +1,7 @@
-import { PageState } from "../types";
-import { Dispatch, SetStateAction } from "react";
-import styles from "./animation.module.scss";
 import Image from "next/image";
+import { Dispatch, SetStateAction } from "react";
+import { PageState } from "../types";
+import styles from "./animation.module.scss";
 
 type PageSelectorProps = {
     section: PageState,
@@ -29,7 +29,7 @@ const PageSelector: React.FC<PageSelectorProps> = ({ section, setSection }) => {
         <div className={`w-full h-full absolute flex flex-col z-[0]`}>
             <div className={`${styles.animateDown} ${section !== PageState.Main ? "translate-y-[-100%]" : "translate-y-[0%]"} ${c}`}>
                 <div className={iC} onClick={toDatabase} />
-                <Image priority className={i} src={"/img/mmgs.jpg"} width={1920} height={1080} alt="" />
+                <Image priority className={i} src={"img/mmgs.jpg"} width={1920} height={1080} alt="" />
                 <span className={t}>DATABASE</span>
                 <div className={`${p} bottom-0 peer-hover:bottom-full transition-[bottom] bg-base-red pt-[32px]`}>
                     <div className={`${b} bottom-0 border-b-[16px]`} />
@@ -38,7 +38,7 @@ const PageSelector: React.FC<PageSelectorProps> = ({ section, setSection }) => {
             </div>
             <div className={`${styles.animateUp} ${section !== PageState.Main ? "translate-y-[100%]" : "translate-y-[0%]"} ${c}`}>
                 <div className={iC} onClick={toTCG} />
-                <Image priority className={i} src={"/img/mmcs.jpg"} width={1920} height={1080} alt="" />
+                <Image priority className={i} src={"img/mmcs.jpg"} width={1920} height={1080} alt="" />
                 <span className={t}>TCG</span>
                 <div className={`${p} top-0 peer-hover:top-full transition-[top] bg-base-white items-end pb-[32px]`}>
                     <div className={`${b} top-0 border-t-[16px]`} />

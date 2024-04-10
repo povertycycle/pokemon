@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import ReturnButton from "../Return";
-import { initDB } from "./db";
+import styles from "../animation.module.scss";
 import DatabaseDisplay from "./DatabaseDisplay";
+import { initDB } from "./db";
 
 const GameDatabase: React.FC = () => {
     const [dbReady, setDBReady] = useState<boolean>(false);
@@ -32,7 +33,7 @@ const GameDatabase: React.FC = () => {
 
     return (
         dbReady &&
-        <div className="w-full h-full bg-black">
+        <div className={`${styles.fadeIn} w-full h-full bg-base-white`}>
             <ReturnButton />
             <DatabaseDisplay />
         </div>
