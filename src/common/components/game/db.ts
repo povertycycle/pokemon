@@ -1,11 +1,12 @@
-const POKEMON_DB = "pokemon-game-local-db";
+export const POKEMON_DB = "pokemon-game-local-db";
 
 let request: IDBOpenDBRequest;
 let db: IDBDatabase;
-let version = 1;
+const version = 1.1;
 
 export enum Stores {
     Pokemon = 'pokemon',
+    Validator = "validator",
 }
 
 export const initDB = (): Promise<boolean> => {
@@ -18,11 +19,14 @@ export const initDB = (): Promise<boolean> => {
             if (!db.objectStoreNames.contains(Stores.Pokemon)) {
                 db.createObjectStore(Stores.Pokemon)
             }
+
+            if (!db.objectStoreNames.contains(Stores.Validator)) {
+                db.createObjectStore(Stores.Validator);
+            }
         }
 
         request.onsuccess = () => {
             db = request.result;
-            version = db.version;
             res(true);
         }
 

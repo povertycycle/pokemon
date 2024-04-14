@@ -1,5 +1,5 @@
 import { DatabaseContext } from "./contexts";
-import Navigator, { Tab } from "./navigation/Navigator";
+import Navigator, { Tab } from "./Navigator";
 import { useState } from "react";
 import PokemonDatabase from "./pokemon/PokemonDatabase";
 import EvolutionDatabase from "./evolution/EvolutionDatabase";

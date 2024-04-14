@@ -1,0 +1,1 @@
+export const API_HOME = "https://pokeapi.co/";
