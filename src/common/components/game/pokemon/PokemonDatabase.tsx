@@ -5,9 +5,9 @@ import Unavailable from "../Unavailable";
 import { POKEMON_DB, Stores } from "../db";
 import Display from "./Display";
 import { Pokemon } from "../interface";
+import { BASE_API_URL_POKEMON } from "../constants";
 
 const VALIDATOR_KEY = "PkOq3NuqNXXxgpZZofHHlOc6JcDNKLne";
-const BASE_API_URL = "https://pokeapi.co/api/v2/pokemon";
 
 const PokemonDatabase: React.FC = () => {
     const [error, setError] = useState<boolean>(false);
@@ -31,12 +31,12 @@ const PokemonDatabase: React.FC = () => {
                 validator.onsuccess = () => {
                     const validatorCount = validator.result;
                     if (dbCount !== validatorCount) {
-                        fetch(BASE_API_URL).then(response => {
+                        fetch(BASE_API_URL_POKEMON).then(response => {
                             errorHandler(!response.ok);
                             return response.json();
                         }).then(response => {
                             db.transaction(Stores.Validator, 'readwrite').objectStore(Stores.Validator).put(response.count, VALIDATOR_KEY);
-                            return fetch(`${BASE_API_URL}?offset=0&limit=${response.count}`);
+                            return fetch(`${BASE_API_URL_POKEMON}?offset=0&limit=${response.count}`);
                         }).then(response => {
                             errorHandler(!response.ok);
                             return response.json();
@@ -86,7 +86,7 @@ const PokemonDatabase: React.FC = () => {
         <div className="absolute z-[0] w-full h-full overflow-hidden flex items-center justify-center">
             {
                 error ?
-                    <Unavailable url={BASE_API_URL} /> :
+                    <Unavailable url={BASE_API_URL_POKEMON} /> :
                     (
                         !pokemons ?
                             <Loading /> :

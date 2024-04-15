@@ -9,3 +9,12 @@ export function isDark(color: string) {
 
     return luma < 156;
 }
+
+export function getColorBetween(color1: string, color2: string,) {
+    const parseHexColor = (color: any) => parseInt(color, 16);
+    const color1RGB = [parseHexColor(color1.slice(1, 3)), parseHexColor(color1.slice(3, 5)), parseHexColor(color1.slice(5))];
+    const color2RGB = [parseHexColor(color2.slice(1, 3)), parseHexColor(color2.slice(3, 5)), parseHexColor(color2.slice(5))];
+    const interpolatedRGB = color1RGB.map((channel, i) => Math.round(channel + (color2RGB[i] - channel) * 0.5));
+    const interpolatedColor = '#' + interpolatedRGB.map(channel => channel.toString(16).padStart(2, '0')).join('');
+    return interpolatedColor;
+}

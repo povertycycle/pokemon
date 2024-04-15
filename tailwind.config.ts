@@ -16,6 +16,7 @@ const config: Config = {
                 'base-red': '#ee1515',
                 'base-red-dark': '#a10e0e',
                 'base-white': '#f0f0f0',
+                'base-white-soft': '#d9d9d9',
                 'base-white-dark': '#a3a3a3'
             },
             fontFamily: {

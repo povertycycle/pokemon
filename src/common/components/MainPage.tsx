@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "remixicon/fonts/remixicon.css";
+import AskCache from "./AskCache";
 import VisitPage from "./VisitPage";
 import { PageContext } from "./contexts";
 import GameDatabase from "./game/GameDatabase";
@@ -30,6 +31,7 @@ const MainPage: React.FC = () => {
                 </div>
                 <PageSelector section={section} setSection={setSection} />
                 <VisitPage inside={section !== PageState.Main} />
+                <AskCache />
             </PageContext.Provider>
         </div>
     )
