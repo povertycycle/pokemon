@@ -1,0 +1,34 @@
+.tableMoves {
+    empty-cells: show;
+    table-layout: fixed;
+    border-collapse: separate;
+
+    th:first-of-type {
+        border-top-left-radius: 6px;
+    }
+    th:last-of-type {
+        border-top-right-radius: 6px;
+    }
+    tr:last-of-type td:first-of-type {
+        border-bottom-left-radius: 6px;
+    }
+    tr:last-of-type td:last-of-type {
+        border-bottom-right-radius: 6px;
+    }
+
+    tr {
+        width: 100%;
+        display: flex;
+        gap: 4px;
+    }
+
+    th {
+        text-align: center;
+    }
+
+    th, td {
+        padding: 8px;
+        font-weight: 400;
+        display: block;
+    }
+}

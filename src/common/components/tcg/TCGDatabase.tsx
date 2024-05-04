@@ -1,7 +1,7 @@
 import styles from "../animation.module.scss";
 import { useContext } from "react";
-import { PageContext } from "../contexts";
-import { PageState } from "../types";
+import { PageContext } from "../context";
+import { PageState } from "../constants";
 
 const TCGDatabase: React.FC = () => {
     const { setSection } = useContext(PageContext);

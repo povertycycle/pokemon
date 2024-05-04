@@ -1,0 +1,32 @@
+import { useEffect, useState } from "react";
+import { getAllPokemons } from "../../database/pokemonDB";
+import Empty from "../../utils/Empty";
+import Loading from "../../utils/Loading";
+import Display from "./Display";
+import { Pokemon } from "./interface";
+
+const PokemonDatabase: React.FC = () => {
+    const [pokemons, setPokemons] = useState<Pokemon[] | null | undefined>();
+
+    useEffect(() => {
+        getAllPokemons().then(res => {
+            setPokemons(res);
+        });
+    }, [])
+
+    return (
+        <div className="absolute z-[0] w-full h-full overflow-hidden flex items-center justify-center">
+            {
+                pokemons === undefined ?
+                    <Loading /> :
+                    (
+                        pokemons === null || pokemons.length === 0 ?
+                            <Empty /> :
+                            <Display pokemons={pokemons} />
+                    )
+            }
+        </div>
+    )
+}
+
+export default PokemonDatabase;

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
-import { PageState } from "../types";
 import styles from "./animation.module.scss";
+import { PageState } from "../constants";
 
 type PageSelectorProps = {
     section: PageState,

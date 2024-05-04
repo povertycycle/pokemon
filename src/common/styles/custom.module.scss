@@ -4,14 +4,31 @@
         width: 12px;
     }
 
-    &::-webkit-scrollbar-track {
-        background: #d3ded3;
+    &::-webkit-scrollbar-thumb {
+        cursor: pointer;
         border-radius: 6px;
+        background: #a10e0e;
+        background-clip: content-box;
+        border: 4px solid transparent;
+    }
+}
+
+.overflowWhite {
+    &::-webkit-scrollbar {
+        overflow: hidden;
+        width: 12px;
     }
 
     &::-webkit-scrollbar-thumb {
         cursor: pointer;
         border-radius: 6px;
-        background: #a10e0e;
+        background: #f0f0f080;
+        background-clip: content-box;
+        border: 4px solid transparent;
     }
+}
+
+.hiddenScroll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }

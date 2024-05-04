@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { PageContext } from "./contexts";
-import { PageState } from "./types";
+import { PageContext } from "./context";
+import { PageState } from "./constants";
 
-const ReturnButton: React.FC = () => {
+const Return: React.FC = () => {
     const { setSection } = useContext(PageContext);
 
     const returnToMenu = () => {
@@ -10,13 +10,11 @@ const ReturnButton: React.FC = () => {
     }
 
     return (
-        <div className="z-[2] absolute top-0 right-0 p-4 text-[1.25rem]">
-            <div className="group/x cursor-pointer p-2 hover:w-[272px] w-[36px] h-[36px] transition-width duration-500 bg-base-white rounded-[4px] flex items-center justify-between relative overflow-hidden" onClick={returnToMenu}>
-                <div className="flex items-center justify-center relative h-full bg-base-white aspect-square z-[1]"><i className="ri-shut-down-line" /></div>
-                <div className="flex items-center justify-end group-hover/x:w-full w-0 h-full duration-500 whitespace-nowrap overflow-hidden transition-width">Return to Main menu</div>
-            </div>
+        <div className="z-[2] mr-4 mt-[12px] absolute top-0 right-0 group/x cursor-pointer p-2 hover:w-[226px] w-[32px] h-[32px] shadow-[2px_2px_4px_black] transition-width duration-500 bg-base-white rounded-[4px] flex items-center justify-between overflow-hidden" onClick={returnToMenu}>
+            <div className="flex items-center justify-center relative h-full bg-base-white aspect-square z-[1]"><i className="ri-shut-down-line" /></div>
+            <div className="flex items-center justify-end group-hover/x:w-full w-0 h-full duration-500 whitespace-nowrap overflow-hidden transition-width">Return to Main menu</div>
         </div>
     )
 }
 
-export default ReturnButton;
+export default Return;

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, createContext } from "react";
-import { Tab } from "./Navigator";
+import { Tab } from "./contents/Navigator";
 
 type DatabaseContextProps = {
     tab: Tab | null,
