@@ -44,9 +44,9 @@ const MoveDisplay: React.FC<{ versions: string[], details: MoveDetailsType, poke
     }, [pokemon])
 
     return (
-        <div className={`h-0 grow w-full flex flex-col overflow-hidden`}>
+        <div className={`w-full h-screen shrink-0 flex flex-col overflow-hidden`}>
             <Navigation />
-            <div className={`w-full overflow-y-scroll h-0 grow flex flex-col ${styles.overflowWhite}`}>
+            <div className={`w-full overflow-y-scroll h-full flex flex-col ${styles.overflowWhite}`}>
                 {
                     sorted?.map((entry: [string, LevelMethodVersion[]], i: number) => (
                         <MoveDetails key={i} move={entry[0]} levelMethodVersions={entry[1]} />

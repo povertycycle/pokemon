@@ -20,7 +20,6 @@ function fetchMoveData(move: string): Promise<MoveData> {
                 }
                 return acc;
             }, [])
-            console.log(res.meta)
             const moveData = {
                 accuracy: res.accuracy,
                 damage_class: res.damage_class.name,

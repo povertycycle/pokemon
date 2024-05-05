@@ -82,6 +82,7 @@ export async function updatePokemonDatabase(pokemon: PokeAPIResponse): Promise<b
                         cries: pokeRes.cries.latest,
                         height: pokeRes.height,
                         held_items: pokeRes.held_items.map((i: any) => (i.item.name)),
+                        main_sprite: pokeRes.sprites.other["official-artwork"]?.front_default ?? pokeRes.sprites.front_default,
                         moves: pokeRes.moves.map((m: any) => {
                             if (!initMoves[m.move.name]) {
                                 initMoves[m.move.name] = { pokemons: { [pokeRes.name]: []} }

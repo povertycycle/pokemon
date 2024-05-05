@@ -47,8 +47,6 @@ const Bio: React.FC = () => {
 
     return (
         <div className="w-full flex">
-
-
             <Sprites />
 
 

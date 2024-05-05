@@ -15,6 +15,7 @@ export type Pokemon = {
     cries: string,
     height: number,
     held_items: string[],
+    main_sprite: string,
     moves: string[],
     species: string,
     stats: Stats[],

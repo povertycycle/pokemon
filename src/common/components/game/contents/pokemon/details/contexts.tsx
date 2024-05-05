@@ -8,5 +8,5 @@ type DetailsContextProps = {
 
 export const DetailsContext = createContext<DetailsContextProps>({
     details: null,
-    setDetails: () => { }
+    setDetails: () => { },
 })
