@@ -18,9 +18,9 @@ const Name: React.FC<NameProps> = ({ name, species, index, palette }) => {
             color: isDark(base) ? "#f0f0f0" : "#000000"
         }}>
             <div className="w-full h-full flex flex-col gap-1 items-center justify-center">
-                <div className="w-full flex justify-between gap-1 text-[1.25rem] leading-6 tracking-[4px]">
-                    <div className="px-2 py-1 shrink-0" style={{ background: base }}>#{index ? index : "???"}</div>
-                    <div className="px-8 py-1 grow" style={{ background: base }}>
+                <div className={`w-full flex justify-between gap-1 text-[1.25rem] leading-6 tracking-[4px]`}>
+                    <div className={`px-2 py-1 shrink-0 ${identifiers.length === 0 ? "rounded-bl-[4px]" : ""}`} style={{ background: base }}>#{index ? index : "???"}</div>
+                    <div className={`px-8 py-1 grow ${identifiers.length === 0 ? "rounded-br-[4px]" : ""}`} style={{ background: base }}>
                         <Typewriter text={`${species ? species.split("-").map(text => (text.charAt(0).toUpperCase() + text.slice(1))).join(" ") : "??????????"}`} duration={500} />
                     </div>
                 </div>

@@ -23,31 +23,43 @@ export function getColorBetween(color1: string, color2: string,) {
     return interpolatedColor;
 }
 
-export function hexToHSB(hex: string) {
-    console.log(`%c ${hex}`, `A: ${hex}`)
-    hex = hex.replace(/^#/, '');
-    hex = hex.length === 3 ? hex.replace(/(.)/g, '$1$1') : hex;
+const constructColor = (hexString: string) => {
+    const hex = hexString.replace(/#/g, '');
+    const r = parseInt(hex.substring(0, 2), 16) / 255;
+    const g = parseInt(hex.substring(2, 4), 16) / 255;
+    const b = parseInt(hex.substring(4, 6), 16) / 255;
+    const max = Math.max.apply(Math, [r, g, b]);
+    const min = Math.min.apply(Math, [r, g, b]);
+    let chr = max - min;
+    let hue = 0;
+    let val = max;
+    let sat = 0;
 
-    var red = parseInt(hex.slice(0, 2), 16) / 255,
-        green = parseInt(hex.slice(2, 4), 16) / 255,
-        blue = parseInt(hex.slice(4, 6), 16) / 255;
-
-    var cMax = Math.max(red, green, blue),
-        cMin = Math.min(red, green, blue),
-        delta = cMax - cMin,
-        saturation = cMax ? (delta / cMax) : 0;
-
-    switch (cMax) {
-        default:
-        case 0:
-            return [0, 0, 0];
-        case cMin:
-            return [0, 0, cMax];
-        case red:
-            return [60 * (((green - blue) / delta) % 6) || 0, saturation, cMax];
-        case green:
-            return [60 * (((blue - red) / delta) + 2) || 0, saturation, cMax];
-        case blue:
-            return [60 * (((red - green) / delta) + 4) || 0, saturation, cMax];
+    if (val > 0) {
+        sat = chr / val;
+        if (sat > 0) {
+            if (r === max) {
+                hue = 60 * ((g - min - (b - min)) / chr);
+                if (hue < 0) {
+                    hue += 360;
+                }
+            } else if (g === max) {
+                hue = 120 + 60 * ((b - min - (r - min)) / chr);
+            } else if (b === max) {
+                hue = 240 + 60 * ((r - min - (g - min)) / chr);
+            }
+        }
     }
-}
+    const colorObj: any = {};
+    colorObj["hue"] = hue;
+    colorObj["hex"] = hexString;
+    return colorObj;
+};
+
+export const sortByHue = (colors: string[]) => {
+    return colors.map(color => constructColor(color)).sort((a, b) => (a.hue - b.hue)).map(color => color.hex);
+};
+
+
+
+
