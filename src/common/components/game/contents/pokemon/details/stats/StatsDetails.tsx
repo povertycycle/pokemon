@@ -14,7 +14,7 @@ const StatsDetails: React.FC<StatsDetailsProps> = ({ tag }) => {
 
     useEffect(() => {
         if (details) {
-            setValue(details.stats.filter(s => s.stat.name === tag)[0].base_stat);
+            setValue(details.stats[tag].base_stat);
         }
     }, [details?.stats]);
 

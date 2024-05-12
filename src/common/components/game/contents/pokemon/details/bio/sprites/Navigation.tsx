@@ -1,66 +1,37 @@
-import { Sprites, SpritesData } from "../../../interface";
-import { Dispatch, SetStateAction } from "react";
 import styles from "@/common/styles/custom.module.scss";
-
-const GEN_COLORS: { [key: string]: string } = {
-    "generation-i": "linear-gradient(90deg, #870000 0%, #8a8700 50%, #004187 100%)",
-
-
-    "generation-ii": "linear-gradient(90deg, #90bcc2 0%, #c3a400 50%, #939393 100%)",
-    "generation-iii": "linear-gradient(90deg, #0c4398 0%, #3a5f0b 25%, #399357 50%, #aa4806 75%, #950614 100%)",
-    "generation-iv": "linear-gradient(90deg, #998102 0%, #9a9a8e 25%, #bababa 50%, #9ba3a4 76%, #4d909f 100%)",
-    "generation-v": "linear-gradient(90deg, #000000 0%, #afafaf 100%)",
-    "generation-vi": "linear-gradient(90deg, #6f0c15 0%, #b64000 33%, #29a77b 66%, #0a377e 100%)",
-    "generation-vii": "linear-gradient(90deg, #d76902 0%, #b98301 33%, #017bb6 66%, #3c0774 100%)",
-    "generation-viii": "linear-gradient(90deg, #074674 0%, #5435a4 33%, #a80061 66%, #9f0000 100%)",
-    "others": "linear-gradient(90deg, #c79e01 0%, #249968 50%, #20578b 100%)",
-}
+import { isDark } from "@/common/utils/colors";
+import { Dispatch, SetStateAction, useContext } from "react";
+import { DetailsContext } from "../../contexts";
+import { SpritesData } from "../../../interfaces/sprites";
+import { OTHERS } from "./constants";
 
 type NavigationProps = {
     sprites: SpritesData | null;
-    active: string | null;
-    setActive: Dispatch<SetStateAction<string | null>>;
+    active: string;
+    setActive: Dispatch<SetStateAction<string>>;
 }
 
 const Navigation: React.FC<NavigationProps> = ({ sprites, active, setActive }) => {
-    function formatGenTitle(gen: string) {
-        const num = gen.split("-").at(-1);
-
-        return `Generation ${(num ?? "0").toUpperCase()}`
-    }
+    const { palette } = useContext(DetailsContext);
+    const font = isDark(palette[0]) ? "white" : "black";
 
     return (
-        <div className={`relative z-[1] h-full overflow-y-scroll w-[256px] p-2 ${styles.overflowWhite}`}>
+        <div className={`relative z-[1] h-fit max-h-full overflow-y-scroll flex flex-col gap-2 p-2 rounded-l-[10px] ${styles.hiddenScroll}`} style={{ background: palette.at(-1) }}>
             {
-                sprites && Object.entries(sprites.versions).map((entry: [string, Sprites], i: number) => (
-                    <div key={i} className="w-full flex flex-col">
-                        <div className="w-full text-base leading-4 text-center py-1 px-2 rounded-[6px]" style={{ background: GEN_COLORS[entry[0]] }}>
-                            {formatGenTitle(entry[0])}
-                        </div>
-                        {
-                            Object.entries(entry[1]).map((sprite: [string, string], j: number) => (
-                                <div key={j} className="text-[1.25rem] leading-6">
-                                    {
-                                        sprite[0]
-                                    }
-                                </div>
-                            ))
-                        }
-                    </div>
+                sprites && Object.keys(sprites.versions).map((gen: string, i: number) => (
+                    <Selector key={i} isActive={active === gen} select={() => { setActive(gen) }} color={[palette[0], font]} title={`Gen ${(gen.split("-").at(-1) ?? "0").toUpperCase()}`} />
                 ))
             }
+            {sprites?.others && <Selector isActive={active === OTHERS} color={[palette[0], font]} title={OTHERS.charAt(0).toUpperCase() + OTHERS.slice(1)} select={() => { setActive(OTHERS) }} />}
+        </div>
+    )
+}
 
-
-            <div className="flex flex-col">
-                <div className="w-full text-[1.25rem] leading-5 text-base-white text-center py-2 px-4 border-2 border-base-white" style={{ background: GEN_COLORS.others }}>Others</div>
-                {
-                    sprites && Object.entries(sprites.others).map((entry: [string, string], i: number) => (
-                        <div key={i} className="px-2 bg-black/25 text-base-white">
-                            {entry[0]}
-                        </div>
-                    ))
-                }
-            </div>
+const Selector: React.FC<{ color: [string, string], isActive: boolean, title: string, select: () => void }> = ({ color, isActive, title, select }) => {
+    return (
+        <div className={`group/selector relative w-full h-[24px] flex flex-col items-center justify-center px-2 overflow-hidden text-center leading-4 cursor-pointer rounded-[6px]`} style={{ background: color[0], color: color[1] }} onClick={select}>
+            <div className={`absolute z-[0] ${isActive ? "bg-black/0" : "bg-black/35 group-hover/selector:bg-black/15"} transition-colors w-full h-full`} />
+            <span className="relative z-[1]">{title}</span>
         </div>
     )
 }

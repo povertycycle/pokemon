@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Pokemon } from "./interface";
 import Expander from "./Expander";
 import { DisplayContext } from "./context";
 import Details from "./details/Details";
 import Navigation from "./navigation/Navigation";
+import { Pokemon } from "./interfaces/pokemon";
 
 type DisplayProps = {
     pokemons: Pokemon[]

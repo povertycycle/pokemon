@@ -1,53 +1,22 @@
 import { useContext, useEffect, useState } from "react";
 import { DetailsContext } from "../contexts";
 import Sprites from "./sprites/Sprites";
+import Species from "./species/Species";
+import { SpritesData } from "../../interfaces/sprites";
+import { Pokemon, Stats } from "../../interfaces/pokemon";
 
-const Bio: React.FC = () => {
-    const { details } = useContext(DetailsContext);
-    const [speciesData, setSpeciesData] = useState();
+type BioProps = {
+    details: Pokemon
+    data: SpritesData;
+}
 
-    useEffect(() => {
-        // setDetails(null);
-        // const request = indexedDB.open(POKEMON_DB);
-
-        // request.onsuccess = () => {
-        //     let db: IDBDatabase = request.result;
-        //     const abilityData = db.transaction(Stores.Ability, 'readonly').objectStore(Stores.Ability).get(ability);
-
-        //     abilityData.onsuccess = () => {
-        //         const isHidden = abilityData.result.pokemons.find((pokemon: any) => (pokemon.name === pokeDetails?.name))?.isHidden;
-        //         if (!abilityData.result?.details) {
-        //             fetch(`${BASE_API_URL_ABILITY}/${ability}`).then(res => {
-        //                 if (!res.ok) {
-        //                     throw new Error("Failed to fecth data")
-        //                 }
-        //                 return res.json();
-        //             }).then(res => {
-        //                 const insert = db.transaction(Stores.Ability, 'readwrite').objectStore(Stores.Ability);
-        //                 const effect = res?.effect_entries?.find((entry: any) => (entry?.language?.name === "en"))
-        //                 const details = {
-        //                     effect: effect.effect,
-        //                     short_effect: effect.short_effect,
-        //                     flavors: res?.flavor_text_entries?.map((flavor: any) => (
-        //                         { text: flavor.flavor_text, language: flavor.language.name, version: flavor.version_group.name }
-        //                     ))
-        //                 };
-        //                 insert.put({ ...abilityData.result, details: details }, ability);
-        //                 setDetails({ ...details, isHidden: isHidden });
-        //             }).catch(err => {
-        //                 setDetails(undefined);
-        //             });
-        //         } else {
-        //             setDetails({ ...abilityData.result.details, isHidden: isHidden });
-        //         }
-        //     }
-        // };
-    }, [details]);
-
+const Bio: React.FC<BioProps> = ({ details, data }) => {
+    const primary = { base_experience: details.base_experience, height: details.height, weight: details.weight };
 
     return (
         <div className="w-full flex">
-            <Sprites />
+            <Species species={details.species} stats={details.stats} primary={primary} />
+            <Sprites pokemon={details.name} data={data} />
 
 
 

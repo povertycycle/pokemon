@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import Loading from "../../../utils/Loading";
+import { Pokemon, SecondaryData } from "../interfaces/pokemon";
 
-const DataCorrupted: React.FC<{ pokemon: string | null, error: undefined | null }> = ({ pokemon, error }) => {
+type DataCorruptedProps = {
+    pokemon: string | null,
+    main: Pokemon | null | undefined,
+    second: SecondaryData | null | undefined
+}
+
+const DataCorrupted: React.FC<DataCorruptedProps> = ({ pokemon, main, second }) => {
     const MAX_TIME = 5000;
     const [missing, setMissing] = useState<boolean>(false);
 
@@ -18,16 +25,12 @@ const DataCorrupted: React.FC<{ pokemon: string | null, error: undefined | null 
     return (
         <div className="w-full h-full text-base-white flex items-center justify-center text-[3rem]">
             {
-                error === undefined ?
-                    "Pokemon data corrupted! Please contact developer regarding this issue." :
+                !pokemon ?
+                    "Select a pokemon" :
                     (
-                        !pokemon ?
-                            "Select a pokemon" :
-                            (
-                                !missing ?
-                                    <Loading /> :
-                                    "Pokemon data not found."
-                            )
+                        main === null || second === null ?
+                            "Pokemon data corrupted! Please contact developer regarding this issue." :
+                            <Loading />
                     )
             }
         </div>

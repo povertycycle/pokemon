@@ -15,7 +15,7 @@ const PageSelector: React.FC<PageSelectorProps> = ({ section, setSection }) => {
     const t = "absolute z-[1] w-full h-full flex items-center justify-center tracking-[10px] text-base-white drop-shadow-[0_10px_4px_black]";
     const p = "absolute z-[2] w-full h-0 sm:h-[50vh] overflow-hidden flex justify-center duration-500";
     const b = "z-[0] absolute w-full border-black";
-    const r = "z-[1] relative h-[200%] aspect-square border-[32px] border-black bg-base-white rounded-full";
+    const r = "z-[1] relative h-[200%] aspect-square border-[32px] border-black bg-base-white rounded-full shadow-[inset_0_0_20px_2px_black]";
 
     const toDatabase = () => {
         setSection(PageState.Database);
@@ -31,7 +31,7 @@ const PageSelector: React.FC<PageSelectorProps> = ({ section, setSection }) => {
                 <div className={iC} onClick={toDatabase} />
                 <Image priority className={i} src={"img/mmgs.jpg"} width={1920} height={1080} alt="" />
                 <span className={t}>DATABASE</span>
-                <div className={`${p} bottom-0 peer-hover:bottom-full transition-[bottom] bg-base-red sm:pt-[32px]`}>
+                <div className={`${p} shadow-[0_10px_100px_20px_black] bottom-0 peer-hover:bottom-full transition-[bottom] bg-base-red sm:pt-[32px]`}>
                     <div className={`${b} bottom-0 border-b-[16px]`} />
                     <div className={r} />
                 </div>
@@ -40,7 +40,7 @@ const PageSelector: React.FC<PageSelectorProps> = ({ section, setSection }) => {
                 <div className={iC} onClick={toTCG} />
                 <Image priority className={i} src={"img/mmcs.jpg"} width={1920} height={1080} alt="" />
                 <span className={t}>TCG</span>
-                <div className={`${p} top-0 peer-hover:top-full transition-[top] bg-base-white items-end sm:pb-[32px]`}>
+                <div className={`${p} shadow-[0_-10px_100px_20px_black] top-0 peer-hover:top-full transition-[top] bg-base-white items-end sm:pb-[32px]`}>
                     <div className={`${b} top-0 border-t-[16px]`} />
                     <div className={r} />
                 </div>

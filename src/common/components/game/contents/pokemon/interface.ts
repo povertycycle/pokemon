@@ -1,82 +1,27 @@
-export type Stats = {
-    base_stat: number,
-    effort: number,
-    stat: {
-        name: string,
-        url: string
-    }
-}
+export type SpeciesData = {
+    // Training
+    base_happiness: number,
+    capture_rate: number,
+    growth_rate: string,
 
-export type Pokemon = {
-    abilities: string[],
-    name: string,
-    index: number,
-    base_experience: number,
-    cries: string,
-    height: number,
-    held_items: string[],
-    main_sprite: string,
-    moves: string[],
-    species: string,
-    stats: Stats[],
-    types: string[],
-    weight: number
-}
+    // Breeding
+    egg_groups: string[],
+    gender_rate: number,
+    hatch_counter: number,
 
-export type LevelMethodVersion = {
-    levelLearned: number,
-    method: string,
-    version: string,
-}
+    genera: string,
+    habitat: string,
+    flavor_text_entries: {version: string, text: string}[]
+    shape: string,
+    varieties: string[]
 
-export type MoveDetailsType = {
-    [moveName: string]: LevelMethodVersion[]
-}
+    evolves_from_species: string,
+    form_description: string[],
+    forms_switchable: boolean,
+    is_baby: boolean,
+    is_legendary: boolean,
+    is_mythical: boolean,
 
-export type MoveData = {
-    accuracy: number,
-    damage_class: string,
-    effect_chance: number | null,
-    effect_entries: {
-        effect: string,
-        short_effect: string,
-    } | null,
-    flavor_text_entries: {
-        flavor_text: string,
-        version: string,
-    }[],
-    meta: {
-        ailment: string,
-        ailment_chance: number,
-        category: string,
-        crit_rate: number,
-        drain: number,
-        flinch_chance: number,
-        healing: number,
-        max_hits: number | null,
-        max_turns: number | null,
-        min_hits: number | null,
-        min_turns: number | null,
-        stat_chance: number
-    } | null,
-    generation: string,
-    id: number,
-    power: number | null,
-    pp: number,
-    priority: number,
-    target: string,
-    type: string
-}
-
-export type Sprites = {
-    [key: string]: string
-}
-
-export type GenSprites = {
-    [gen: string]: Sprites
-}
-
-export type SpritesData = {
-    others: Sprites,
-    versions: GenSprites
+    pal_park_encounters: {area: string, base_score: number, rate: number}[],
+    pokedex_numbers: {pokedex: string, entry_number: number}[],
 }

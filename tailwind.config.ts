@@ -17,7 +17,15 @@ const config: Config = {
                 'base-red-dark': '#a10e0e',
                 'base-white': '#f0f0f0',
                 'base-white-soft': '#d9d9d9',
-                'base-white-dark': '#a3a3a3'
+                'base-white-dark': '#a3a3a3',
+                'hp-dark': '#A60000',
+                'atk-dark': '#9C531F',
+                'def-dark': '#A1871F',
+                'sp-atk-dark': '#445E9C',
+                'sp-def-dark': '#4E8234',
+                'spd-dark': '#A13959',
+                'x-dark': '#4b0478',
+                'y-dark': '#04818a',
             },
             fontFamily: {
                 'default': 'vcr-mono'

@@ -1,4 +1,3 @@
-import { Pokemon } from "../interface";
 import { COMPARATOR, CONTAINER_ID, NAV_ID, NAV_WIDTH, OptionTag } from "../constants";
 import { useRef, memo } from "react";
 import styles from "./animation.module.scss";
@@ -6,6 +5,7 @@ import Searchbar from "./Searchbar";
 import TypeFilter from "./TypeFilter";
 import Sorter from "./Sorter";
 import List from "./List";
+import { Pokemon } from "../interfaces/pokemon";
 
 type FilterRef = {
     name?: string,

@@ -1,0 +1,12 @@
+.entryAnimation {
+    animation: entry 1s ease-in-out;
+}
+
+@keyframes entry {
+    0% {
+        scale: 0;
+    }
+    100% {
+        scale: 1;
+    }
+}

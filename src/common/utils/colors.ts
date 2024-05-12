@@ -10,8 +10,8 @@ export function getLuma(color: string) {
     return luma;
 }
 
-export function isDark(color: string) {
-    return getLuma(color) < 156;
+export function isDark(color?: string) {
+    return color ?getLuma(color) < 156 : false;
 }
 
 export function getColorBetween(color1: string, color2: string,) {
@@ -56,7 +56,7 @@ const constructColor = (hexString: string) => {
     return colorObj;
 };
 
-export const sortByHue = (colors: string[]) => {
+export const sortByHue = (colors: string[]): string[] => {
     return colors.map(color => constructColor(color)).sort((a, b) => (a.hue - b.hue)).map(color => color.hex);
 };
 

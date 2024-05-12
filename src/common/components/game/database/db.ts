@@ -3,8 +3,9 @@ export const POKEMON_DB = "pokemon-game-local-db";
 
 export enum Stores {
     Pokemon = "pokemon",
-    Ability = "ability",
     Sprites = "sprites",
+    Ability = "ability",
+    Species = "species",
     Moves = "moves",
     Validator = "validator",
 }
@@ -18,30 +19,15 @@ export const initDB = (): Promise<boolean> => {
         request.onupgradeneeded = () => {
             const db = request.result;
 
-            if (db.objectStoreNames.contains(Stores.Pokemon)) {
-                db.deleteObjectStore(Stores.Pokemon);
-            }
+            if (db.objectStoreNames.length > 0) {
+                Object.values(Stores).forEach(key => {
+                    db.deleteObjectStore(key);
+                })
+            };
 
-            if (db.objectStoreNames.contains(Stores.Ability)) {
-                db.deleteObjectStore(Stores.Ability);
-            }
-
-            if (db.objectStoreNames.contains(Stores.Validator)) {
-                db.deleteObjectStore(Stores.Validator);
-            }
-
-            if (db.objectStoreNames.contains(Stores.Sprites)) {
-                db.deleteObjectStore(Stores.Sprites);
-            }
-
-            if (db.objectStoreNames.contains(Stores.Moves)) {
-                db.deleteObjectStore(Stores.Moves);
-            }
-            db.createObjectStore(Stores.Pokemon);
-            db.createObjectStore(Stores.Ability);
-            db.createObjectStore(Stores.Sprites);
-            db.createObjectStore(Stores.Moves);
-            db.createObjectStore(Stores.Validator);
+            Object.values(Stores).forEach(key => {
+                db.createObjectStore(key);
+            });
         }
 
         request.onsuccess = () => {
@@ -60,12 +46,7 @@ export async function validateDatabase(db: IDBDatabase, count: number): Promise<
         const validator = db.transaction(Stores.Validator, 'readonly').objectStore(Stores.Validator).get(VALIDATOR_KEY);
 
         validator.onsuccess = () => {
-            const validatorCount = validator.result;
-            if (count === validatorCount) {
-                res(true);
-            } else {
-                res(false);
-            }
+            res(count === validator.result);
         }
 
         validator.onerror = () => {

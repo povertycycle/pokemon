@@ -2,12 +2,11 @@ import { useEffect, useContext, useState, useRef } from "react";
 import { DetailsContext } from "../contexts";
 import MoveDetails from "./MoveDetails";
 import styles from "@/common/styles/custom.module.scss";
-import { processMoveDetailsByPokemon } from "@/common/components/game/database/movesDB";
-import { LevelMethodVersion, MoveDetailsType } from "../../interface";
 import tableStyles from "./index.module.scss";
 import VersionSelector from "./VersionSelector";
 import Loading from "../Loading";
 import Navigation from "./Navigation";
+import { LevelMethodVersion, MoveDetailsType } from "../../interfaces/moves";
 
 const Moves: React.FC = () => {
     const { details } = useContext(DetailsContext);
@@ -16,15 +15,6 @@ const Moves: React.FC = () => {
 
     useEffect(() => {
         if (details) {
-            processMoveDetailsByPokemon(details.name, details.moves).then(res => {
-                versionsRef.current = Object.keys(Object.values(res).reduce((acc: { [key: string]: boolean }, lmv: LevelMethodVersion[]) => {
-                    lmv.forEach(v => {
-                        acc[v.version] = true;
-                    })
-                    return acc;
-                }, {}));
-                setInitDetails(res);
-            });
         }
     }, [details]);
 

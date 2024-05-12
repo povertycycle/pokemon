@@ -3,7 +3,7 @@ import { getAllPokemons } from "../../database/pokemonDB";
 import Empty from "../../utils/Empty";
 import Loading from "../../utils/Loading";
 import Display from "./Display";
-import { Pokemon } from "./interface";
+import { Pokemon } from "./interfaces/pokemon";
 
 const PokemonDatabase: React.FC = () => {
     const [pokemons, setPokemons] = useState<Pokemon[] | null | undefined>();

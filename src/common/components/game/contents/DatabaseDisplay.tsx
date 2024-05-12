@@ -1,6 +1,6 @@
 import { DatabaseContext } from "../contexts";
-import Navigator, { Tab } from "./Navigator";
-import { useState } from "react";
+import Navigator from "./navigator/Navigator";
+import { useState, useEffect } from "react";
 import PokemonDatabase from "./pokemon/PokemonDatabase";
 import EvolutionDatabase from "../evolution/EvolutionDatabase";
 import EncounterDatabase from "../encounter/EncounterDatabase";
@@ -10,45 +10,56 @@ import ItemsDatabase from "../items/ItemsDatabase";
 import BerryDatabase from "../berry/BerryDatabase";
 import LocationDatabase from "../location/LocationDatabase";
 import GameDatabase from "../game/GameDatabase";
+import { Tab } from "./constants";
 
 const DatabaseDisplay: React.FC = () => {
     const [tab, setTab] = useState<Tab | null>(null);
 
     return (
-        <div className="w-full h-full relative z-[1] flex ">
+        <div className="w-full h-full relative z-[1] flex">
             <DatabaseContext.Provider value={{ tab, setTab }}>
                 <Navigator />
-                {
-                    (() => {
-                        switch (tab) {
-                            case Tab.Pokemon:
-                                return <PokemonDatabase />;
-
-
-
-                            case Tab.Evolution:
-                                return <EvolutionDatabase />;
-                            case Tab.Encounters:
-                                return <EncounterDatabase />;
-                            case Tab.Machines:
-                                return <MachineDatabase />;
-                            case Tab.Moves:
-                                return <MovesDatabase />;
-                            case Tab.Items:
-                                return <ItemsDatabase />;
-                            case Tab.Berries:
-                                return <BerryDatabase />;
-                            case Tab.Locations:
-                                return <LocationDatabase />;
-                            case Tab.Games:
-                                return <GameDatabase />;
-                            default:
-                                return null;
-                        }
-                    })()
-                }
+                <DisplayContainer tab={tab} />
             </DatabaseContext.Provider>
         </div>
+    )
+}
+
+const DisplayContainer: React.FC<{ tab: Tab | null }> = ({ tab }) => {
+    const [sel, setSel] = useState<Tab | null>(null);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setSel(tab);
+        }, 500)
+    }, [tab]);
+
+    return (
+        (() => {
+            switch (sel) {
+                case Tab.Pokemon:
+                    return <PokemonDatabase />;
+
+
+
+                case Tab.Evolution:
+                    return <EvolutionDatabase />;
+                case Tab.Machines:
+                    return <MachineDatabase />;
+                case Tab.Moves:
+                    return <MovesDatabase />;
+                case Tab.Items:
+                    return <ItemsDatabase />;
+                case Tab.Berries:
+                    return <BerryDatabase />;
+                case Tab.X:
+                    return <LocationDatabase />;
+                case Tab.Y:
+                    return <GameDatabase />;
+                default:
+                    return null;
+            }
+        })()
     )
 }
 
