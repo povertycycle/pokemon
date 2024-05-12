@@ -1,8 +1,8 @@
 import { useEffect, Fragment, useState } from "react";
-import { LevelMethodVersion, MoveData } from "../../interface";
 import LMVDDisplay from "./LMVDisplay";
 import { processMoveDataByName } from "@/common/components/game/database/movesDB";
 import { FILTER_TYPE_COLORS } from "../../constants";
+import { LevelMethodVersion, MoveData } from "../../interfaces/moves";
 
 type MoveDetailsProps = {
     move: string,

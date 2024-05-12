@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { VERSION_NAME } from "./constants";
+import { VERSION_NAME } from "../../constants";
 
 type VersionSelectorProps = {
     versions: string[],

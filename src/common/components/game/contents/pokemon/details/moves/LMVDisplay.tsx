@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { LevelMethodVersion, MoveData } from "../../interface";
 import { VERSION_NAME } from "../../constants";
+import { LevelMethodVersion, MoveData } from "../../interfaces/moves";
 
 type LMVDisplayProps = {
     lmv: LevelMethodVersion[],
