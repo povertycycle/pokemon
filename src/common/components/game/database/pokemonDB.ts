@@ -160,54 +160,54 @@ export async function getPokemonByName(pokemon: string): Promise<Pokemon | null>
     })
 }
 
-export async function processSecondaryData(pokemon: string, moves: string[]): Promise<SecondaryData> {
+function fetchSecondaryData(pokemon: string): Promise<SecondaryData | null> {
+    return new Promise(result => {
+        fetch(`${BASE_API_URL_POKEMON}/${pokemon}`).then(res => {
+            if (!res.ok) throw new Error("Failed to fetch data from API");
+    
+            return res.json();
+        }).then(res => {
+            const resSprites = res.sprites;
+            const spritesData = {
+                others: Object.entries(resSprites.other).reduce((acc: Sprites, entries: [string, any]) => {
+                    const entry = { [entries[0]]: entries[1].front_default };
+                    if (entry) {
+                        acc = { ...acc, ...entry }
+                    }
+                    return acc
+                }, {}),
+                versions: Object.entries(resSprites.versions).reduce((acc: GenSprites, entries: [string, any]) => {
+                    const subSprites = Object.entries(entries[1]).reduce((acc2: Sprites, entries2: [string, any]) => {
+                        return { ...acc2, ...(entries2[1].front_default ? { [entries2[0]]: entries2[1].front_default } : undefined) }
+                    }, {});
+
+                    return Object.keys(subSprites).length === 0 ? acc : {
+                        ...acc, [entries[0]]: subSprites
+                    }
+                }, {})
+            }
+            if (resSprites.front_default) {
+                spritesData.others["base_default"] = resSprites.front_default
+            }
+
+            const moveDetails: MoveDetailsType = res.moves.reduce((acc: MoveDetailsType, move: any) => {
+                acc[move.move.name] = move.version_group_details.map((vgp: any) => ({
+                    levelLearned: vgp.level_learned_at,
+                    method: vgp.move_learn_method.name,
+                    version: vgp.version_group.name
+                }));
+                return acc;
+            }, {});
+            result({ moveDetails, spritesData });
+        }).catch(err => {
+            result(null)
+        })
+    })    
+}
+
+export async function processSecondaryData(pokemon: string, moves: string[]): Promise<SecondaryData | null> {
     function dataIncomplete(details: MoveDetailsType) {
         return Object.values(details).some(value => (value.length <= 0))
-    }
-    
-    function fetchSecondaryData(pokemon: string): Promise<SecondaryData> {
-        return new Promise(result => {
-            fetch(`${BASE_API_URL_POKEMON}/${pokemon}`).then(res => {
-                if (!res.ok) throw new Error("Failed to fetch data from API");
-        
-                return res.json();
-            }).then(res => {
-                const resSprites = res.sprites;
-                const spritesData = {
-                    others: Object.entries(resSprites.other).reduce((acc: Sprites, entries: [string, any]) => {
-                        const entry = { [entries[0]]: entries[1].front_default };
-                        if (entry) {
-                            acc = { ...acc, ...entry }
-                        }
-                        return acc
-                    }, {}),
-                    versions: Object.entries(resSprites.versions).reduce((acc: GenSprites, entries: [string, any]) => {
-                        const subSprites = Object.entries(entries[1]).reduce((acc2: Sprites, entries2: [string, any]) => {
-                            return { ...acc2, ...(entries2[1].front_default ? { [entries2[0]]: entries2[1].front_default } : undefined) }
-                        }, {});
-
-                        return Object.keys(subSprites).length === 0 ? acc : {
-                            ...acc, [entries[0]]: subSprites
-                        }
-                    }, {})
-                }
-                if (resSprites.front_default) {
-                    spritesData.others["base_default"] = resSprites.front_default
-                }
-
-                const moveDetails: MoveDetailsType = res.moves.reduce((acc: MoveDetailsType, move: any) => {
-                    acc[move.move.name] = move.version_group_details.map((vgp: any) => ({
-                        levelLearned: vgp.level_learned_at,
-                        method: vgp.move_learn_method.name,
-                        version: vgp.version_group.name
-                    }));
-                    return acc;
-                }, {});
-                result({ moveDetails, spritesData });
-            }).catch(err => {
-                result(null)
-            })
-        })    
     }
 
     return new Promise(result => {
@@ -265,6 +265,51 @@ export async function processSecondaryData(pokemon: string, moves: string[]): Pr
                 }
             } else {
                 fetchSecondaryData(pokemon).then(res => {
+                    result(res)
+                });
+            }
+        }
+    })
+}
+
+export async function getVarietySprite(pokemon: string): Promise<string> {
+    function fetchVarietySprite(pokemon: string): Promise<string> {
+        return new Promise(result => {
+            fetch(`${BASE_API_URL_POKEMON}/${pokemon}`).then(res => {
+                if (!res.ok) throw new Error("Failed to fetch data from API");
+        
+                return res.json();
+            }).then(res => {
+                result(res?.sprites?.front_default);
+            }).catch(err => {
+                result("")
+            })
+        })    
+    }
+
+    return new Promise(result => {
+        const request = indexedDB.open(POKEMON_DB);
+
+        request.onsuccess = () => {
+            let db: IDBDatabase = request.result;
+
+            if (cacheIsAllowed()) {
+                const spritesTx = db.transaction(Stores.Sprites, 'readonly').objectStore(Stores.Sprites).get(pokemon);
+                spritesTx.onsuccess = () => {
+                    if (spritesTx.result) {
+                        result(spritesTx.result?.others?.base_default);
+                    } else {
+                        const moves = db.transaction(Stores.Pokemon, 'readonly').objectStore(Stores.Pokemon).get(pokemon);
+
+                        moves.onsuccess = () => {
+                            processSecondaryData(pokemon, moves.result.moves).then(res => {
+                                if (res) result(res.spritesData.others.base_default)
+                            });    
+                        }
+                    }
+                }
+            } else {
+                fetchVarietySprite(pokemon).then(res => {
                     result(res)
                 });
             }

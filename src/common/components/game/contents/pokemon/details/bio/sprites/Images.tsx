@@ -36,13 +36,13 @@ const Images: React.FC<ImagesProps> = ({ options }) => {
     const version = Object.entries(options).find(entry => (entry[1] === url));
 
     return (
-        <div className="flex flex-col relative">
+        <div className="flex flex-col relative rounded-bl-[24px] rounded-tr-[24px] shadow-base-black">
             <div className="w-[384px] aspect-square relative z-[1] rounded-tr-[16px] overflow-hidden p-8 flex items-center justify-center" style={{ border: `2px solid ${palette.at(-1)}` }}>
                 <div className="w-full h-full absolute z-[0] bg-black/25 top-0 left-0" />
                 {
                     !url ?
                         <div className="w-full h-full text-[8rem] flex items-center justify-center font-bold"><i className="ri-question-mark" /></div> :
-                        <img className={`max-w-full max-h-full min-h-[128px] min-w-[128px] relative z-[1]`} alt="" src={url} onLoad={animateNewPokemon} />
+                        <img width="100%" height="100%" loading="lazy" className={`max-w-full max-h-full min-h-[128px] min-w-[128px] relative z-[1]`} alt="" src={url} onLoad={animateNewPokemon} />
                 }
                 <Cries audioRef={audioRef} />
             </div>

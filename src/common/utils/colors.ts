@@ -1,65 +1,34 @@
-export function getLuma(color: string) {
-    let c = color.slice(color.indexOf("#")+1, color.indexOf("#")+7);
-    var rgb = parseInt(c, 16);
-    var r = (rgb >> 16) & 0xff;
-    var g = (rgb >>  8) & 0xff;
-    var b = (rgb >>  0) & 0xff;
+import { prominent } from "color.js";
 
-    var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+export function getLuma(c:string){var rgb=parseInt(c.slice(c.indexOf("#")+1,c.indexOf("#")+7),16);return(0.2126*((rgb>>16)&0xff)+0.7152*((rgb>>8)&0xff)+0.0722*((rgb>>0)&0xff));}
+export function isDark(c?:string){return c?getLuma(c)<156:false;}
+export function getColorBetween(a:string,b:string){const p=(color: any)=>parseInt(color,16);const d=[p(b.slice(1,3)),p(b.slice(3, 5)),p(b.slice(5))];return `#${[p(a.slice(1,3)),p(a.slice(3, 5)),p(a.slice(5))].map((l,i)=>Math.round(l+(d[i]-l)*0.5)).map(l=>l.toString(16).padStart(2,'0')).join('')}`;}
+function cc(c:string){const x=c.replace(/#/g,'');const r=parseInt(x.substring(0,2),16)/255;const g=parseInt(x.substring(2,4),16)/255;const b=parseInt(x.substring(4,6),16)/255;const z=Math.max.apply(Math,[r,g,b]);const y=Math.min.apply(Math,[r,g,b]);let o=z-y;let e=0;let l=z;let t=0;if(l>0){t=o/l;if(t>0){if(r===z){e=60*((g-y-(b-y))/o);if(e<0){e+=360;};}else if(g===z){e=120+60*((b-y-(r-y))/o);}else if(b===z){e=240+60*((r-y-(g-y))/o);}}}return {"hue":e,"hex":c};};
+export function sortByHue(s:string[]):string[]{return s.map(c=>cc(c)).sort((a,b)=>(a.hue-b.hue)).map(c=>c.hex);};
 
-    return luma;
+
+
+
+
+export function generateBackground(sprite: string): Promise<string[]> {
+    return new Promise(result => {
+        prominent(sprite, { amount: 7, group: 15, format: "hex" }).then(color => {
+            const newPalette = sortByHue((color as string[]).filter(c => {
+                const luma = getLuma(c);
+                return (luma % 1 !== 0 || luma > 60) && luma < 245
+            })).reduce((acc: { twoPalette: string[], max: number }, color: string, _, nP: string[]) => {
+                nP.forEach((color2: string) => {
+                    if (color !== color2) {
+                        const dE = Math.abs(getLuma(color) - getLuma(color2));
+                        if (acc.max < dE) {
+                            acc.max = dE;
+                            acc.twoPalette = [color2, color];
+                        }
+                    }
+                })
+                return acc;
+            }, { twoPalette: [], max: 0 }).twoPalette.sort((a: string, b: string) => (getLuma(a) - getLuma(b)));
+            result(newPalette.length === 0 ? ["#000000"] : newPalette);
+        })
+    })
 }
-
-export function isDark(color?: string) {
-    return color ?getLuma(color) < 156 : false;
-}
-
-export function getColorBetween(color1: string, color2: string,) {
-    const parseHexColor = (color: any) => parseInt(color, 16);
-    const color1RGB = [parseHexColor(color1.slice(1, 3)), parseHexColor(color1.slice(3, 5)), parseHexColor(color1.slice(5))];
-    const color2RGB = [parseHexColor(color2.slice(1, 3)), parseHexColor(color2.slice(3, 5)), parseHexColor(color2.slice(5))];
-    const interpolatedRGB = color1RGB.map((channel, i) => Math.round(channel + (color2RGB[i] - channel) * 0.5));
-    const interpolatedColor = '#' + interpolatedRGB.map(channel => channel.toString(16).padStart(2, '0')).join('');
-    return interpolatedColor;
-}
-
-const constructColor = (hexString: string) => {
-    const hex = hexString.replace(/#/g, '');
-    const r = parseInt(hex.substring(0, 2), 16) / 255;
-    const g = parseInt(hex.substring(2, 4), 16) / 255;
-    const b = parseInt(hex.substring(4, 6), 16) / 255;
-    const max = Math.max.apply(Math, [r, g, b]);
-    const min = Math.min.apply(Math, [r, g, b]);
-    let chr = max - min;
-    let hue = 0;
-    let val = max;
-    let sat = 0;
-
-    if (val > 0) {
-        sat = chr / val;
-        if (sat > 0) {
-            if (r === max) {
-                hue = 60 * ((g - min - (b - min)) / chr);
-                if (hue < 0) {
-                    hue += 360;
-                }
-            } else if (g === max) {
-                hue = 120 + 60 * ((b - min - (r - min)) / chr);
-            } else if (b === max) {
-                hue = 240 + 60 * ((r - min - (g - min)) / chr);
-            }
-        }
-    }
-    const colorObj: any = {};
-    colorObj["hue"] = hue;
-    colorObj["hex"] = hexString;
-    return colorObj;
-};
-
-export const sortByHue = (colors: string[]): string[] => {
-    return colors.map(color => constructColor(color)).sort((a, b) => (a.hue - b.hue)).map(color => color.hex);
-};
-
-
-
-

@@ -10,7 +10,7 @@ export type SpeciesData = {
     hatch_counter: number,
 
     genera: string,
-    habitat: string,
+    habitat?: string,
     flavor_text_entries: {version: string, text: string}[]
     shape: string,
     varieties: string[]

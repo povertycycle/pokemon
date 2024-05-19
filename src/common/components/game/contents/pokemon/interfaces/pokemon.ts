@@ -27,4 +27,4 @@ export type Pokemon = {
 export type SecondaryData = {
     moveDetails: MoveDetailsType, 
     spritesData: SpritesData
-} | null
+}

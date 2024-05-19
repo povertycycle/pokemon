@@ -1,5 +1,5 @@
 import { COMPARATOR, CONTAINER_ID, NAV_ID, NAV_WIDTH, OptionTag } from "../constants";
-import { useRef, memo } from "react";
+import { useRef, memo, SetStateAction, Dispatch } from "react";
 import styles from "./animation.module.scss";
 import Searchbar from "./Searchbar";
 import TypeFilter from "./TypeFilter";
@@ -16,7 +16,9 @@ type FilterRef = {
 }
 
 type NavigationProps = {
-    pokemons: Pokemon[]
+    pokemons: Pokemon[],
+    pokemon: string | null,
+    setPokemon: Dispatch<SetStateAction<string | null>>
 }
 
 function typeIsCorrect(types: string[], logic: boolean, first?: string, second?: string): boolean {
@@ -27,7 +29,7 @@ function typeIsCorrect(types: string[], logic: boolean, first?: string, second?:
     )
 }
 
-const Navigation = memo(({ pokemons }: NavigationProps) => {
+const Navigation = memo(({ pokemons, pokemon, setPokemon }: NavigationProps) => {
     const filterRef = useRef<FilterRef>({ logic: false });
 
     const doFilter = () => {
@@ -82,7 +84,7 @@ const Navigation = memo(({ pokemons }: NavigationProps) => {
                         <Sorter sort={sort} />
                     </div>
                 </div>
-                <List pokemons={pokemons} />
+                <List pokemons={pokemons} pokemon={pokemon} setPokemon={setPokemon} />
             </div>
         </div>
     )

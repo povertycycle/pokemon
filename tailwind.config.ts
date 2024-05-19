@@ -12,6 +12,9 @@ const config: Config = {
                 'gradient-radial': 'radial-gradient(circle at center, var(--tw-gradient-stops))',
 				'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
 			},
+            boxShadow: {
+                'base-black': '-2px 2px 10px 2px #00000080',
+            },
             colors: {
                 'base-red': '#ee1515',
                 'base-red-dark': '#a10e0e',

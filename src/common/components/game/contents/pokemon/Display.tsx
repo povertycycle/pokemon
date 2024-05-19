@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Expander from "./Expander";
-import { DisplayContext } from "./context";
 import Details from "./details/Details";
 import Navigation from "./navigation/Navigation";
 import { Pokemon } from "./interfaces/pokemon";
@@ -14,10 +13,8 @@ const Display: React.FC<DisplayProps> = ({ pokemons }) => {
 
     return (
         <div className={`w-full h-full justify-between flex items-center`}>
-            <DisplayContext.Provider value={{ pokemon, setPokemon }}>
-                <Details pokemon={pokemon} />
-                <Navigation pokemons={pokemons} />
-            </DisplayContext.Provider>
+            <Details pokemon={pokemon} />
+            <Navigation pokemons={pokemons} pokemon={pokemon} setPokemon={setPokemon} />
             <Expander />
         </div>
     )

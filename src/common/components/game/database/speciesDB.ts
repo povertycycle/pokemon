@@ -31,7 +31,7 @@ function fetchSpeciesData(species: string): Promise<SpeciesData> {
                 gender_rate: res.gender_rate,
                 genera: res.genera.find((g: any) => (g.language.name === "en"))?.genus,
                 growth_rate: res.growth_rate?.name,
-                habitat: res.habitat.name,
+                habitat: res.habitat?.name,
                 hatch_counter: res.hatch_counter,
                 is_baby: res.is_baby,
                 is_legendary: res.is_legendary,

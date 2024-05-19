@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction, useState, useRef, MutableRefObject, useEffect } from "react";
 import { getColorBetween, isDark } from "@/common/utils/colors";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { FILTER_TYPE_COLORS } from "../constants";
 import Logic from "./Logic";
 
