@@ -14,7 +14,7 @@ const Genera: React.FC<MythLegendProps> = ({ genera, is_mythical, is_legendary, 
     const { palette } = useContext(DetailsContext);
 
     return (
-        <div className="w-full h-[28px] text-[1.25rem] leading-6 flex items-center justify-center" style={{ color: isDark(palette.at(-1)) ? "white" : "black", background: palette.at(-1) }}>
+        <div className="shrink-0 w-full h-[28px] text-[1.25rem] leading-6 flex items-center justify-center" style={{ color: isDark(palette[0]) ? "white" : "black", background: palette[0] }}>
             <Typewriter text={`${is_baby ? "(Baby) " : ""}${[is_mythical ? "Mythical" : undefined, is_legendary ? "Legendary" : undefined].filter(Boolean).join(" & ")} ${genera}`} duration={500} />
         </div>
     )

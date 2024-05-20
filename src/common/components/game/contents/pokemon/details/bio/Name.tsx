@@ -14,7 +14,7 @@ type NameProps = {
 const Name: React.FC<NameProps> = ({ name, species, index, types }) => {
     const { palette } = useContext(DetailsContext);
     let identifiers = name && species ? name.replace(species, "").split("-").slice(1) : [];
-    const base = palette.at(-1);
+    const base = palette[0];
 
     return (
         <div className="absolute left-[16px] top-0 z-[1] flex flex-col border-x-2 border-b-2 rounded-b-[10px] overflow-hidden shadow-base-black" style={{
@@ -22,7 +22,7 @@ const Name: React.FC<NameProps> = ({ name, species, index, types }) => {
             background: base
         }}>
             <IndexName base={base} index={`#${index}` ?? "???"} species={species ?? "??????????"} />
-            <Identifiers identifiers={identifiers} background={palette[0]} />
+            <Identifiers identifiers={identifiers} background={palette[1]} />
             <Types types={types} />
         </div>
     )
@@ -37,7 +37,7 @@ const IndexName: React.FC<{ base?: string, index: string, species: string }> = (
     )
 }
 
-const Identifiers: React.FC<{ identifiers: string[], background: string }> = ({ identifiers, background }) => {
+const Identifiers: React.FC<{ identifiers: string[], background?: string }> = ({ identifiers, background }) => {
     return (
         identifiers.length > 0 &&
         <div className="w-full flex justify-between gap-1 text-base px-[2px] pb-[2px]">

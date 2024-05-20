@@ -15,7 +15,7 @@ const PokemonDatabase: React.FC = () => {
     }, [])
 
     return (
-        <div className="absolute z-[0] w-full h-full overflow-hidden flex items-center justify-center">
+        <div className="absolute z-[0] w-full h-full overflow-hidden flex items-center justify-center top-0">
             {
                 pokemons === undefined ?
                     <Loading /> :

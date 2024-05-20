@@ -103,7 +103,7 @@ const AbilityData: React.FC<{ ability: string }> = ({ ability }) => {
                             <>
                                 <span className="italic tracking-[1px] leading-5"><Typewriter text={details.short_effect} duration={1}></Typewriter></span>
                                 <hr className="bg-black h-[2px] w-full shrink-0" />
-                                <div className={`max-h-[128px] overflow-y-scroll ${global.overflow}`}>
+                                <div className={`max-h-[128px] overflow-y-auto ${global.overflow}`}>
                                     <div className="w-full h-full pr-[6px]">
                                         <Typewriter text={details.effect} duration={1}></Typewriter>
                                     </div>

@@ -1,12 +1,9 @@
-import { useContext, useState, useEffect, useRef, SyntheticEvent } from "react";
+import { SyntheticEvent, useContext, useEffect, useRef, useState } from "react";
+import { Sprites } from "../../../interfaces/sprites";
 import { DetailsContext } from "../../contexts";
 import styles from "./animation.module.scss";
 import Cries from "./Cries";
 import Selector from "./Selector";
-import { VERSION_NAME } from "../../../constants";
-import { isDark } from "@/common/utils/colors";
-import { VERSION_COLORS } from "./constants";
-import { Sprites } from "../../../interfaces/sprites";
 
 type ImagesProps = {
     options: Sprites
@@ -33,11 +30,9 @@ const Images: React.FC<ImagesProps> = ({ options }) => {
         }
     }
 
-    const version = Object.entries(options).find(entry => (entry[1] === url));
-
     return (
         <div className="flex flex-col relative rounded-bl-[24px] rounded-tr-[24px] shadow-base-black">
-            <div className="w-[384px] aspect-square relative z-[1] rounded-tr-[16px] overflow-hidden p-8 flex items-center justify-center" style={{ border: `2px solid ${palette.at(-1)}` }}>
+            <div className="w-[384px] aspect-square relative z-[1] rounded-tr-[16px] overflow-hidden p-8 flex items-center justify-center" style={{ border: `2px solid ${palette[0]}` }}>
                 <div className="w-full h-full absolute z-[0] bg-black/25 top-0 left-0" />
                 {
                     !url ?

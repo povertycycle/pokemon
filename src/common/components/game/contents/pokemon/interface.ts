@@ -12,7 +12,7 @@ export type SpeciesData = {
     genera: string,
     habitat?: string,
     flavor_text_entries: {version: string, text: string}[]
-    shape: string,
+    shape?: string,
     varieties: string[]
 
     evolves_from_species: string,

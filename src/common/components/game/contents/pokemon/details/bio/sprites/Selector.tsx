@@ -26,15 +26,15 @@ const Selector: React.FC<{ options: Sprites, url: string, setURL: Dispatch<SetSt
     const { palette } = useContext(DetailsContext);
 
     return (
-        <div className="w-[384px] h-[28px] flex text-base leading-4 border-x-2 border-b-2 rounded-bl-[16px] overflow-hidden" style={{ borderColor: palette.at(-1) }}>
+        <div className="w-[384px] h-[28px] flex text-base leading-4 border-x-2 border-b-2 rounded-bl-[16px] overflow-hidden" style={{ borderColor: palette[0] }}>
             {
                 Object.entries(options).map((entry: [string, string], i: number) => {
                     const select = () => { setURL(entry[1]) };
                     const title = Object.keys(options).find(a => a === "base_default") ? generateOthers(entry[0]) : generateVersion(entry[0])
                     return (
-                        <div title={url === entry[1] ? undefined : title} key={i} className={`${i !== 0 ? "border-l-2" : ""} duration-300 overflow-hidden group/selector whitespace-nowrap flex justify-center items-center transition-[colors,width] relative px-[14px] h-full ${url === entry[1] ? "w-[500%]" : "cursor-pointer w-[28px] hover:w-full"}`} onClick={select} style={{ borderColor: palette.at(-1) }}>
-                            <div className={`absolute left-0 top-0 h-full z-[0] w-full transition-colors`} style={{ background: url === entry[1] ? palette.at(-1) : (entry[0] === "base_default" ? `linear-gradient(90deg,${palette[0]},${palette[1]})` : VERSION_COLORS[entry[0]]) }} />
-                            <div className={`absolute z-[1] h-full flex items-center w-full duration-300 transition-colors ${url === entry[1] ? "bg-black/0" : "bg-black/25 text-base-white-dark hover:text-base-white"}`} style={{ color: url === entry[1] ? (isDark(palette.at(-1)) ? "#f0f0f0" : "#000000") : "" }}>
+                        <div title={url === entry[1] ? undefined : title} key={i} className={`${i !== 0 ? "border-l-2" : ""} duration-300 overflow-hidden group/selector whitespace-nowrap flex justify-center items-center transition-[colors,width] relative px-[14px] h-full ${url === entry[1] ? "w-[500%]" : "cursor-pointer w-[28px] hover:w-full"}`} onClick={select} style={{ borderColor: palette[0] }}>
+                            <div className={`absolute left-0 top-0 h-full z-[0] w-full transition-colors`} style={{ background: url === entry[1] ? palette[0] : (entry[0] === "base_default" ? `linear-gradient(90deg,${palette[1]},${palette[0]})` : VERSION_COLORS[entry[0]]) }} />
+                            <div className={`absolute z-[1] h-full flex items-center w-full duration-300 transition-colors ${url === entry[1] ? "bg-black/0" : "bg-black/25 text-base-white-dark hover:text-base-white"}`} style={{ color: url === entry[1] ? (isDark(palette[0]) ? "#f0f0f0" : "#000000") : "" }}>
                                 {
                                     url !== entry[1] ?
                                         <div className="h-full w-full shrink-0 flex items-center justify-center">{i}</div> :

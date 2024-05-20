@@ -60,9 +60,9 @@ const Displayer = memo(({ mainData, secondaryData, palette }: DisplayerProps) =>
     return (
         <DetailsContext.Provider value={{ details: mainData, palette }}>
             <Name name={mainData.name} species={mainData.species} index={mainData.index} types={mainData.types} />
-            <div className={`w-full z-[0] h-screen flex flex-col relative`} style={{ background: palette[0], color: isDark(palette.at(0)) ? "white" : "black" }}>
+            <div className={`w-full z-[0] h-screen flex flex-col relative`} style={{ background: palette[1], color: isDark(palette[1]) ? "white" : "black" }}>
                 <div className="w-full h-full absolute z-[0] left-0 top-0 bg-black/25" />
-                <div className={`w-full flex flex-col relative z-[1] pr-1 pl-4 pt-4 gap-16 h-screen overflow-y-scroll ${styles.overflowWhite}`}>
+                <div className={`w-full flex flex-col justify-start items-start relative z-[1] pr-2 pl-4 gap-8 h-full overflow-y-auto ${styles.overflowWhite}`}>
                     <Bio details={mainData} data={secondaryData.spritesData} />
 
 

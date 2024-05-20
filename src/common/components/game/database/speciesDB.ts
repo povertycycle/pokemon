@@ -42,7 +42,7 @@ function fetchSpeciesData(species: string): Promise<SpeciesData> {
                 pokedex_numbers: res.pokedex_numbers.map((pN: any) => ({
                     pokedex: pN.pokedex.name, entry_number: pN.entry_number
                 })),
-                shape: res.shape.name,
+                shape: res.shape?.name,
                 varieties: res.varieties.map((v: any) => (v.pokemon.name))
             }
             result(speciesData);
