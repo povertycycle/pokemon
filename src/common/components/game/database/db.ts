@@ -23,7 +23,9 @@ export const initDB = (): Promise<boolean> => {
 
             if (db.objectStoreNames.length > 0) {
                 Object.values(Stores).forEach(key => {
-                    db.deleteObjectStore(key);
+                    if (db.objectStoreNames.contains(key)) {
+                        db.deleteObjectStore(key);
+                    }
                 })
             };
 
