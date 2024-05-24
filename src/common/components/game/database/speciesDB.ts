@@ -1,5 +1,5 @@
 import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_SPECIES } from "../constants";
+import { BASE_API_URL_EVOLUTION, BASE_API_URL_POKEMON, BASE_API_URL_SPECIES } from "../constants";
 import { SpeciesData } from "../contents/pokemon/interface";
 import { POKEMON_DB, Stores } from "./db";
 
@@ -11,10 +11,11 @@ function fetchSpeciesData(species: string): Promise<SpeciesData> {
             return res.json();
         }).then(res => {
             const speciesData = {
+                id: res.id,
                 base_happiness: res.base_happiness,
                 capture_rate: res.capture_rate,
                 egg_groups: res.egg_groups.map((eG: any) => (eG.name)),
-                evolves_from_species: res.evolves_from_species?.name,
+                evolution_chain: res.evolution_chain.url.replace(BASE_API_URL_EVOLUTION, "").replaceAll("/", ""),
                 flavor_text_entries: res.flavor_text_entries.reduce((acc: any, fTE: any) => {
                     if (fTE.language.name === "en") {
                         acc.push({version: fTE.version.name, text: fTE.flavor_text})
@@ -43,7 +44,7 @@ function fetchSpeciesData(species: string): Promise<SpeciesData> {
                     pokedex: pN.pokedex.name, entry_number: pN.entry_number
                 })),
                 shape: res.shape?.name,
-                varieties: res.varieties.map((v: any) => (v.pokemon.name))
+                varieties: res.varieties.map((v: any) => (v.pokemon.url.replaceAll(BASE_API_URL_POKEMON, "").replaceAll("/", "")))
             }
             result(speciesData);
         })

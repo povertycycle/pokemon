@@ -1,8 +1,6 @@
 import { useContext } from "react"
 import { DetailsContext } from "../../contexts"
-import { isDark } from "@/common/utils/colors";
 import styles from "@/common/styles/custom.module.scss";
-import { VERSION_COLORS } from "../sprites/constants";
 
 type FlavorTextsProps = {
     entries: {
@@ -12,11 +10,11 @@ type FlavorTextsProps = {
 }
 
 const FlavorTexts: React.FC<FlavorTextsProps> = ({ entries }) => {
-    const { palette } = useContext(DetailsContext);
+    const { palette, colors } = useContext(DetailsContext);
 
     return (
-        <div className={`flex flex-col w-full h-0 grow`}>
-            <div className="px-4 leading-5 w-fit" style={{ background: palette[0], color: isDark(palette[0]) ? "white" : "black" }}>Entries</div>
+        <div className={`flex flex-col w-full h-[256px]`}>
+            <div className="px-12 text-[1.25rem] w-fit" style={{ background: palette[0], color: colors[0] }}>Entries</div>
             <div className={`w-full flex flex-col border-l-2 overflow-y-auto ${styles.overflowWhite}`} style={{ borderColor: palette[0] }}>
                 {
                     entries.map(({ version, text }, i: number) => (

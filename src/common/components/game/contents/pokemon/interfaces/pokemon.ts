@@ -9,6 +9,7 @@ export type Stats = {
 }
 
 export type Pokemon = {
+    id: string,
     abilities: string[],
     name: string,
     index: number,

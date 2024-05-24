@@ -9,11 +9,11 @@ type PageSelectorProps = {
 }
 
 const PageSelector: React.FC<PageSelectorProps> = ({ section, setSection }) => {
-    const c = "w-full flex justify-center overflow-hidden text-[3rem] sm:text-[7rem] transition-transform duration-500";
-    const iC = "peer aspect-[2/1] h-[50vh] hover:h-[75vh] transition-height relative z-[3] cursor-pointer duration-500";
+    const c = "w-full flex justify-center overflow-hidden text-[3rem] sm:text-[7rem] transition-transform duration-300";
+    const iC = "peer aspect-[2/1] h-[50vh] hover:h-[75vh] transition-height relative z-[3] cursor-pointer duration-300";
     const i = "absolute z-[0] max-sm:h-[50vh] max-sm:object-cover opacity-50 sm:top-[-50%]"
     const t = "absolute z-[1] w-full h-full flex items-center justify-center tracking-[10px] text-base-white drop-shadow-[0_10px_4px_black]";
-    const p = "absolute z-[2] w-full h-0 sm:h-[50vh] overflow-hidden flex justify-center duration-500";
+    const p = "absolute z-[2] w-full h-0 sm:h-[50vh] overflow-hidden flex justify-center duration-300";
     const b = "z-[0] absolute w-full border-black";
     const r = "z-[1] relative h-[200%] aspect-square border-[32px] border-black bg-base-white rounded-full shadow-[inset_0_0_20px_2px_black]";
 

@@ -17,8 +17,8 @@ type FilterRef = {
 
 type NavigationProps = {
     pokemons: Pokemon[],
-    pokemon: string | null,
-    setPokemon: Dispatch<SetStateAction<string | null>>
+    pokeId: string | null,
+    setPokeId: Dispatch<SetStateAction<string | null>>
 }
 
 function typeIsCorrect(types: string[], logic: boolean, first?: string, second?: string): boolean {
@@ -29,7 +29,7 @@ function typeIsCorrect(types: string[], logic: boolean, first?: string, second?:
     )
 }
 
-const Navigation = memo(({ pokemons, pokemon, setPokemon }: NavigationProps) => {
+const Navigation = memo(({ pokemons, pokeId, setPokeId }: NavigationProps) => {
     const filterRef = useRef<FilterRef>({ logic: false });
 
     const doFilter = () => {
@@ -84,7 +84,7 @@ const Navigation = memo(({ pokemons, pokemon, setPokemon }: NavigationProps) => 
                         <Sorter sort={sort} />
                     </div>
                 </div>
-                <List pokemons={pokemons} pokemon={pokemon} setPokemon={setPokemon} />
+                <List pokemons={pokemons} pokeId={pokeId} setPokeId={setPokeId} />
             </div>
         </div>
     )

@@ -10,7 +10,7 @@ const PokemonDatabase: React.FC = () => {
 
     useEffect(() => {
         getAllPokemons().then(res => {
-            setPokemons(res);
+            setPokemons(res?.sort((a, b) => (a.name > b.name ? 1 : (a.name < b.name ? -1 : 0))));
         });
     }, [])
 

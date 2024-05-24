@@ -41,8 +41,8 @@ export const OPTIONS: Option[] = [
 export const COMPARATOR: { [key in OptionTag]: (a: Element, b: Element) => number } = {
     [OptionTag.NAME_ASC]: (a: Element, b: Element) => ((a.getAttribute("data-name") || "") > (b.getAttribute("data-name") || "") ? 1 : -1),
     [OptionTag.NAME_DESC]: (a: Element, b: Element) => ((a.getAttribute("data-name") || "") > (b.getAttribute("data-name") || "") ? -1 : 1),
-    [OptionTag.ID_ASC]: (a: Element, b: Element) => (parseInt(a.getAttribute("data-id") || "") > parseInt(b.getAttribute("data-id") || "") ? 1 : -1),
-    [OptionTag.ID_DESC]: (a: Element, b: Element) => (parseInt(a.getAttribute("data-id") || "") > parseInt(b.getAttribute("data-id") || "") ? -1 : 1)
+    [OptionTag.ID_ASC]: (a: Element, b: Element) => (parseInt(a.getAttribute("data-index") || "") > parseInt(b.getAttribute("data-index") || "") ? 1 : -1),
+    [OptionTag.ID_DESC]: (a: Element, b: Element) => (parseInt(a.getAttribute("data-index") || "") > parseInt(b.getAttribute("data-index") || "") ? -1 : 1)
 }
 export const VERSION_NAME: { [key: string]: string } = {
     "red-blue": "Red & Blue",

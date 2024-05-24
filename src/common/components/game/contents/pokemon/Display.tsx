@@ -9,12 +9,12 @@ type DisplayProps = {
 }
 
 const Display: React.FC<DisplayProps> = ({ pokemons }) => {
-    const [pokemon, setPokemon] = useState<string | null>(null);
+    const [pokeId, setPokeId] = useState<string | null>(null);
 
     return (
         <div className={`w-full h-full justify-between flex items-center`}>
-            <Details pokemon={pokemon} />
-            <Navigation pokemons={pokemons} pokemon={pokemon} setPokemon={setPokemon} />
+            <Details pokeId={pokeId} />
+            <Navigation pokemons={pokemons} pokeId={pokeId} setPokeId={setPokeId} />
             <Expander />
         </div>
     )

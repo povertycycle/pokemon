@@ -1,145 +1,95 @@
-import React, { useContext } from "react"
-import { DetailsContext } from "../../contexts"
 import Typewriter from "@/common/components/game/utils/Typewriter"
 import { isDark } from "@/common/utils/colors"
+import React, { ReactNode, useContext } from "react"
+import { DetailsContext } from "../../contexts"
 import { EGG_GROUPS_NAMES } from "./constants"
 import { SHAPE_ICONS } from "./Icons"
+import { capitalize } from "@/common/utils/capitalize"
 
 type TrainingProps = {
-    capture_rate?: number,
-
-
+    capture_rate: number,
+    hatch_counter: number,
+    growth_rate: string,
+    gender_rate: number,
     shape?: string,
     habitat?: string
-    gender_rate?: number,
     egg_groups?: string[],
-    evolves_from_species?: string,
 }
 
-const Training: React.FC<TrainingProps> = ({ capture_rate,
+function captureRate(rate: number) {
+    return Math.pow((Math.floor(4096 / 3 * (rate ?? 0)) / 1044480), 0.75)
+}
 
-    shape, habitat, gender_rate, egg_groups, evolves_from_species }) => {
-    const { palette } = useContext(DetailsContext);
-    const parsedHabitat = habitat?.split("-").map(h => {
-        let word = h.charAt(0).toUpperCase() + h.slice(1);
-        if (word.endsWith("s")) {
-            word = word.slice(0, word.length - 1) + "'s"
-        }
-        return word;
-    }).join(" ") ?? "Unknown";
-    const { darker, bgFont } = { darker: palette[1] ?? "", bgFont: isDark(palette[1]) ? "white" : "black" };
-    const { lighter, brFont } = { lighter: palette[0], brFont: isDark(palette[0]) ? "white" : "black" }
+const Training: React.FC<TrainingProps> = ({ capture_rate, hatch_counter, growth_rate, gender_rate, habitat, shape, egg_groups }) => {
+    const { palette, colors } = useContext(DetailsContext);
+
+    const Header: React.FC<{ title: string, children: ReactNode }> = ({ title, children }) => {
+        return (
+            <div className="flex flex-col gap-1 items-end text-[1.125rem] leading-5">
+                <div className="text-[1.25rem] px-8 leading-6" style={{ background: palette[0], color: colors[0] }}>{title}</div>
+                <div className="px-2">{children}</div>
+            </div>
+        )
+    }
 
     return (
-        <div className="flex flex-col border-2 rounded-[8px] overflow-hidden w-[384px] h-0 grow p-2 items-end" style={{ color: bgFont, borderColor: lighter }}>
-            <CaptureRate capture_rate={capture_rate} />
-
-
-
-
-
-
-            {/* <div className="w-full flex flex-col h-full text-base leading-4 justify-between py-1">
-                <Habitat habitat={parsedHabitat} />
-                <GenderRate gender_rate={gender_rate} male={darker} female={lighter} />
-
-                <div className="w-full flex gap-1 h-[48px] py-1 px-2">
-                    <Shape shape={shape} />
-                    <EggGroups egg_groups={egg_groups} />
+        <div className="flex flex-col border-r-2 overflow-hidden w-full pl-8 h-full items-end gap-2 leading-4" style={{ color: colors[1], borderColor: palette[0] }}>
+            <Header title="Capture Rate">
+                <span title="Chance to capture at full HP with a pokeball" className="underline text-base cursor-help">{Math.round(captureRate(capture_rate) * 10000) / 100}%</span> {capture_rate}
+            </Header>
+            <Header title="Egg Cycles">
+                <span className="underline cursor-help text-base" title="Sword, Shield, Scarlet, and Violet">{128 * hatch_counter} Steps</span> {hatch_counter}
+            </Header>
+            <Header title="Growth Rate">
+                {capitalize(growth_rate)}
+            </Header>
+            <Header title="Habitat">
+                <span>{habitat?.split("-").map(h => (`${h.charAt(0).toUpperCase()}${h.slice(1, h.length - 1)}${h.endsWith("s") ? "'s" : h.charAt(h.length - 1)}`)).join(" ") ?? "Unknown"}</span>
+            </Header>
+            <div className="flex justify-end">
+                <Header title="Egg Groups">
+                    <div className="flex gap-1 mr-[-4px]">
+                        {
+                            egg_groups?.map((eG: string, i: number) => (
+                                <div key={i} className="h-full overflow-hidden text-base leading-5 px-4 flex items-center relative rounded-[4px]" style={{ background: EGG_GROUPS_NAMES[eG].color, color: isDark(EGG_GROUPS_NAMES[eG].color) ? "white" : "black" }}>
+                                    <span className="relative z-[1]">{EGG_GROUPS_NAMES[eG].title}</span>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </Header>
+                <div className="p-1 aspect-square h-[48px]" style={{ background: palette[0] }}>
+                    {SHAPE_ICONS[shape ?? ""]}
                 </div>
-
-
-            </div> */}
-        </div>
-    )
-}
-
-const CaptureRate: React.FC<{ capture_rate?: number }> = ({ capture_rate }) => {
-    const calculate = Math.pow((Math.floor(4096 / 3 * (capture_rate ?? 0)) / 1044480), 0.75);
-
-    return (
-        <div>
-            Capture Rate: {capture_rate} {Math.round(calculate * 10000) / 100}%
-        </div>
-    )
-}
-
-
-
-
-
-
-
-
-
-const Habitat: React.FC<{ habitat?: string }> = ({ habitat }) => {
-    return (
-        <div className="flex w-full justify-between px-2 text-[1.125rem] leading-6">
-            <span>Habitat: </span>
-            <span><Typewriter text={habitat ?? ""} duration={500} /></span>
-        </div>
-    )
-}
-
-const GenderRate: React.FC<{ gender_rate?: number, male: string, female: string }> = ({ gender_rate, male, female }) => {
-    const mRatio = (8 - (gender_rate ?? 0)) / 8 * 100;
-    const fRatio = (gender_rate ?? 0) / 8 * 100;
-
-    return (
-        <div className="px-2 flex h-full grow justify-between text-[1.125rem] leading-6 items-center">
-            <div className="w-full">Gender Ratio:</div>
-
-
-
-
-            <div className="w-full h-[14px] rounded-[50px] overflow-hidden flex border-2" style={{ borderColor: (gender_rate ?? 0) < 0 ? "black" : male }}>
-                {
-                    (gender_rate ?? 0) < 0 ?
-                        <div className="h-full w-full bg-black" /> :
-                        <>
-                            <div className="h-full transition-width duration-500" style={{ width: `${mRatio}%`, background: male }} />
-                            <div className="h-full transition-width duration-500" style={{ width: `${fRatio}%`, background: female }} />
-                        </>
-                }
             </div>
-            {/* <div className="w-full text-[1.125rem] leading-6 flex">
-                {
-                    gender_rate < 0 ?
-                        <span><Typewriter text={"Genderless"} duration={500} /></span> :
-                        <>
-                            <div className="flex w-full justify-start">
-                                <span>Male:<Typewriter text={`${mRatio}%`} duration={500} /></span>
-                            </div>
-                            <div className="flex w-full justify-end">
-                                <span>Female:<Typewriter text={`${fRatio}%`} duration={500} /></span>
-                            </div>
-                        </>
-                }
-            </div> */}
+            <GenderRate female={gender_rate} color={palette[0]} />
         </div>
     )
 }
 
-const Shape: React.FC<{ shape?: string }> = ({ shape }) => {
+const GenderRate: React.FC<{ female: number, color: string }> = ({ female, color }) => {
     return (
-        <div className="h-full flex items-center justify-center px-2">
-            <div className="h-full aspect-square">{SHAPE_ICONS[shape ?? ""]}</div>
-        </div>
-    )
-}
-const EggGroups: React.FC<{ egg_groups?: string[] }> = ({ egg_groups }) => {
-    return (
-        <div className="flex flex-col gap-[2px] justify-between w-full">
-            <div className="underline h-full text-[1.125rem] flex items-center justify-center leading-6 text-center pb-[2px]">Egg Group{(egg_groups?.length ?? 0) > 1 ? "s" : ""}</div>
-            <div className="w-full flex h-full gap-1 text-base-white">
-                {
-                    egg_groups?.map((eG: string, i: number) => (
-                        <div key={i} className="w-full h-full overflow-hidden text-base leading-5 flex items-center justify-center relative rounded-[4px]" style={{ background: EGG_GROUPS_NAMES[eG].color, color: isDark(EGG_GROUPS_NAMES[eG].color) ? "white" : "black" }}>
-                            <span className="relative z-[1]">{EGG_GROUPS_NAMES[eG].title}</span>
+        <div className="w-full overflow-hidden flex text-base border-l-2 border-y-2" style={{ borderColor: color }}>
+            {
+                female < 0 ?
+                    <div className="h-full w-full bg-black text-base-white flex justify-center items-center">Genderless</div> :
+                    <div className="w-full h-[24px] flex bg-black">
+                        <div className="h-full flex items-center justify-center text-[1.25rem] pl-[2px] pr-2 border-r-2" style={{ background: "#6fa8dca3", borderColor: color }}>
+                            <div className="h-full gap-2 flex items-center justify-center">
+                                <i className="ri-men-line" />
+                                <span className="text-base">{(8 - female) / 8 * 100}%</span>
+                            </div>
                         </div>
-                    ))
-                }
-            </div>
+                        <div className="h-full" style={{ background: "#6fa8dc", width: `${(8 - female) / 8 * 100}%` }} />
+                        <div className="h-full" style={{ background: "#d5a6bd", width: `${female / 8 * 100}%` }} />
+                        <div className="h-full flex items-center justify-center text-[1.25rem] pl-2 pr-[2px] border-l-2" style={{ background: "#d5a6bda3", borderColor: color }}>
+                            <div className="h-full gap-2 flex items-center justify-center">
+                                <span className="text-base">{female / 8 * 100}%</span>
+                                <i className="ri-women-line" />
+                            </div>
+                        </div>
+                    </div>
+            }
         </div>
     )
 }

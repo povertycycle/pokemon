@@ -1,21 +1,19 @@
-import { useState, useEffect } from "react";
 import Loading from "../../../utils/Loading";
-import { Pokemon, SecondaryData } from "../interfaces/pokemon";
+import { PokePayload } from "./constants";
 
 type DataCorruptedProps = {
     pokemon: string | null,
-    main: Pokemon | null | undefined,
-    second: SecondaryData | null | undefined
+    data: PokePayload
 }
 
-const DataCorrupted: React.FC<DataCorruptedProps> = ({ pokemon, main, second }) => {
+const DataCorrupted: React.FC<DataCorruptedProps> = ({ pokemon, data }) => {
     return (
         <div className="w-full h-full text-base-white flex items-center justify-center text-[3rem]">
             {
                 !pokemon ?
                     "Select a pokemon" :
                     (
-                        main === null || second === null ?
+                        data.main === null || data.secondary === null || data.species ?
                             "Pokemon data corrupted! Please contact developer regarding this issue." :
                             <Loading />
                     )

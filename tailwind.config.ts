@@ -31,7 +31,8 @@ const config: Config = {
                 'y-dark': '#04818a',
             },
             fontFamily: {
-                'default': 'vcr-mono'
+                'default': 'vcr-mono',
+                'gb': 'pokemon-gb'
             },
             transitionProperty: {
                 'height': 'height',

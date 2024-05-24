@@ -31,8 +31,8 @@ const Images: React.FC<ImagesProps> = ({ options }) => {
     }
 
     return (
-        <div className="flex flex-col relative rounded-bl-[24px] rounded-tr-[24px] shadow-base-black">
-            <div className="w-[384px] aspect-square relative z-[1] rounded-tr-[16px] overflow-hidden p-8 flex items-center justify-center" style={{ border: `2px solid ${palette[0]}` }}>
+        <div className="flex flex-col relative shadow-base-black">
+            <div className="w-[384px] aspect-square relative z-[1] overflow-hidden p-8 flex items-center justify-center" style={{ border: `2px solid ${palette[0]}` }}>
                 <div className="w-full h-full absolute z-[0] bg-black/25 top-0 left-0" />
                 {
                     !url ?

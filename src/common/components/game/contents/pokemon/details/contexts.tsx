@@ -4,9 +4,11 @@ import { Pokemon } from "../interfaces/pokemon";
 type DetailsContextProps = {
     details: Pokemon | undefined | null,
     palette: string[],
+    colors: string[],
 }
 
 export const DetailsContext = createContext<DetailsContextProps>({
     details: null,
-    palette: ["#000000"],
+    palette: ["#F0F0F0", "#000000"],
+    colors: ["#000000", "#F0F0F0"]
 })

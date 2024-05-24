@@ -4,14 +4,16 @@ export const POKEMON_DB = "pokemon-game-local-db";
 export enum Stores {
     Pokemon = "pokemon",
     Sprites = "sprites",
-    Ability = "ability",
     Species = "species",
+    Evolution = "evolution",
+
+    Ability = "ability",
     Moves = "moves",
     Validator = "validator",
 }
 
 export const initDB = (): Promise<boolean> => {
-    const version = 1;
+    const version = 2;
 
     return new Promise(res => {
         const request = indexedDB.open(POKEMON_DB, version);

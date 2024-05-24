@@ -1,4 +1,3 @@
-import { getLuma, isDark } from "@/common/utils/colors"
 import React, { useContext } from "react"
 import { FILTER_TYPE_COLORS } from "../../../constants"
 import { TYPE_EFFECTIVENESS } from "../../../types/constants"
@@ -9,69 +8,45 @@ type EffectivenessProps = {
 }
 
 const Effectiveness: React.FC<EffectivenessProps> = ({ types }) => {
-    const { palette } = useContext(DetailsContext);
-    const effectiveness = types && Object.entries(types.reduce((acc: { [key: string]: number }, curr: string) => {
-        const chart = TYPE_EFFECTIVENESS[curr];
-        Object.entries(chart).forEach(([type, value]) => {
-            if (acc[type]) {
-                acc[type] *= value;
-            } else {
-                acc[type] = value;
-            }
-        })
-        return acc;
-    }, {})).filter(e => (e[1] !== 1)).reduce((acc: { [key: string]: string[] }, [type, value]) => {
-        if (acc[String(value)]) {
-            acc[String(value)].push(type);
-        } else {
-            acc[String(value)] = [type]
-        }
-        return acc;
-    }, {})
-
-    const refBg = getLuma(palette[1] ?? "#000000") < 86;
+    const { palette, colors } = useContext(DetailsContext);
+    const effectiveness = generateEffectiveness(types);
 
     return (
-        <div className={`flex w-full flex-col mt-8 relative z-[1]`}>
-            <div className="px-4 w-fit" style={{ background: palette[0], color: isDark(palette[0]) ? "white" : "black" }}>Effectiveness</div>
-            <div className="w-fit max-w-full flex flex-col pt-2 gap-4 border-l-2" style={{ borderColor: palette[0] }}>
+        <div className={`flex w-full flex-col mt-4 relative z-[1] gap-4`}>
+            <div className="px-4 text-[1.25rem] w-full flex justify-center" style={{ background: palette[0], color: colors[0] }}>Effectiveness</div>
+            <div className="w-fit max-w-full flex flex-col py-4 gap-4">
                 {
-                    effectiveness && Object.entries(effectiveness).sort(([a]: [string, string[]], [b]: [string, string[]]) => (parseFloat(b) - parseFloat(a))).map(([weak, types]: [string, string[]], i: number) => (
-                        <Information key={i} level={weak} types={types} refBg={refBg} />
-                    ))
+                    effectiveness ?
+                        [
+                            { t: "WEAK", b: "bg-hp-dark", c: "ri-arrow-down-double-line", e: "4" },
+                            { t: "WEAK", b: "bg-spd-dark", c: "ri-arrow-down-s-line", e: "2" },
+                            { t: "RESIST", b: "bg-sp-atk-dark", c: "ri-arrow-up-s-line", e: "1/2" },
+                            { t: "RESIST", b: "bg-sp-def-dark", c: "ri-arrow-up-double-line", e: "1/4" },
+                            { t: "IMMUNE", b: "bg-black", c: "ri-close-fill", e: "0" },
+                            { t: "NORMAL", b: "bg-base-white-dark", c: "ri-subtract-line", e: "1" }
+                        ].map((dat, i: number) => (
+                            effectiveness[dat.e] &&
+                            <Information types={effectiveness[dat.e]} key={i} {...dat} color={palette[0]} />
+                        )) :
+                        <div className="px-4 text-[1.25rem]">Unknown Type</div>
                 }
             </div>
         </div>
     )
 }
 
-const d: { [key: string]: { title: string, bg: string, desc: string, icon: string } } = {
-    "4": { title: "WEAK", bg: "bg-hp-dark", desc: "X4", icon: "ri-arrow-down-double-line" },
-    "2": { title: "WEAK", bg: "bg-spd-dark", desc: "X2", icon: "ri-arrow-down-s-line" },
-    "0.5": { title: "RESIST", bg: "bg-sp-atk-dark", desc: "X1/2", icon: "ri-arrow-up-s-line" },
-    "0.25": { title: "RESIST", bg: "bg-sp-def-dark", desc: "X1/4", icon: "ri-arrow-up-double-line" },
-    "0": { title: "IMMUNE", bg: "bg-black", desc: "X0", icon: "ri-close-fill" }
-}
 
-const Information: React.FC<{ level: string, types: string[], refBg: boolean }> = ({ level, types, refBg }) => {
-    const { title, bg, desc, icon } = d[level];
-    const { palette } = useContext(DetailsContext);
-
+const Information: React.FC<{ types: string[], t: string, b: string, c: string, e: string, color: string }> = ({ types, t, b, c, e, color }) => {
     return (
         <div className="flex text-[1.125rem] leading-8 gap-4">
-            <div className={`min-h-[48px] transition-height shrink-0 w-[192px] border-r-2 border-y-2 flex items-center justify-between ${bg} text-white`} style={{ borderColor: palette[0] }}>
-                <div className="h-full flex items-center">
-                    {icon && <i className={`text-[2.5rem] ${icon}`} />}
-                    {title}
-                </div>
-                <div className="h-full px-2 flex items-center justify-center">
-                    {desc}
-                </div>
+            <div className={`h-[36px] shrink-0 w-[192px] border-r-2 border-y-2 rounded-r-[6px] flex items-center justify-between pr-2 ${b} text-base-white`} style={{ borderColor: color }}>
+                <span className="flex items-center"><i className={`text-[2.5rem] ${c}`} /> {t}</span>
+                <span>X{e}</span>
             </div>
             <div className={`flex flex-wrap gap-2 leading-4 items-center`}>
                 {
                     types.map((t: string, i: number) => (
-                        <div key={i} className={`px-4 border-2 shadow-base-black h-[32px] rounded-[6px] flex items-center justify-center`} style={{ background: FILTER_TYPE_COLORS[t] }}>
+                        <div key={i} className={`px-4 border-2 shadow-base-black h-[36px] rounded-[6px] flex items-center justify-center`} style={{ background: FILTER_TYPE_COLORS[t] }}>
                             <span className="text-base-white drop-shadow-[0_0_4px_black]">{t.toUpperCase()}</span>
                         </div>
                     ))
@@ -79,6 +54,27 @@ const Information: React.FC<{ level: string, types: string[], refBg: boolean }> 
             </div>
         </div>
     )
+}
+
+function generateEffectiveness(types?: string[]) {
+    return types && Object.entries(Object.entries(TYPE_EFFECTIVENESS).reduce((acc: { [type: string]: number }, [t, chart]) => {
+        if (types.includes(t)) {
+            Object.entries(chart).forEach(([c, e]) => {
+                acc[c] = acc[c] * e;
+            })
+        }
+
+        return acc;
+    }, Object.keys(TYPE_EFFECTIVENESS).reduce((acc: any, t: string) => { acc[t] = 1; return acc; }, {}))).reduce((acc: { [eff: string]: string[] }, [type, value]) => {
+        let parsed = String(value);
+        if (value === 0.25) {
+            parsed = "1/4";
+        } else if (value === 0.5) {
+            parsed = "1/2"
+        }
+        acc[parsed] = (acc[parsed] ?? []).concat([type])
+        return acc;
+    }, {});
 }
 
 export default Effectiveness;

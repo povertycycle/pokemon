@@ -1,15 +1,16 @@
-import { isDark } from "@/common/utils/colors";
-import { CONTAINER_ID, FILTER_TYPE_COLORS } from "../constants";
 import styles from "@/common/styles/custom.module.scss";
-import { Dispatch, memo, SetStateAction, useContext } from "react";
+import { Dispatch, memo, SetStateAction } from "react";
+import { CONTAINER_ID, FILTER_TYPE_COLORS } from "../constants";
 import { Pokemon } from "../interfaces/pokemon";
+import { isDark } from "@/common/utils/colors";
+import { capitalize } from "@/common/utils/capitalize";
 
 function displayPokemonName(name: string, species: string) {
     let identifiers = name.replace(species, "").split("-");
 
     return (
         <>
-            <span>{species.split("-").map(text => (text.charAt(0).toUpperCase() + text.slice(1))).join(" ")}</span>
+            <span>{capitalize(species)}</span>
             {identifiers.slice(1).map((id: string, i: number) => (
                 <span className="ml-1 text-[0.875rem] bg-black/10 px-2 rounded-[4px]" key={i}>{id.toUpperCase()}</span>
             ))}
@@ -17,21 +18,21 @@ function displayPokemonName(name: string, species: string) {
     )
 }
 
-const List: React.FC<{ pokemons: Pokemon[], pokemon: string | null, setPokemon: Dispatch<SetStateAction<string | null>> }> = ({ pokemon, setPokemon, pokemons }) => {
+const List: React.FC<{ pokemons: Pokemon[], pokeId: string | null, setPokeId: Dispatch<SetStateAction<string | null>> }> = ({ pokeId, setPokeId, pokemons }) => {
     return (
         <div id={CONTAINER_ID} className={`${styles.overflow} h-0 bg-base-white grow w-full flex flex-col gap-1 text-base leading-4 overflow-y-scroll shadow-[inset_0_0_4px_black] rounded-tl-[16px] rounded-bl-[4px] rounded-r-[4px]`}>
             {
                 pokemons.map((p: Pokemon, i: number) => (
-                    <Option key={i} p={p} pokemon={pokemon} setPokemon={setPokemon} />
+                    <Option key={i} p={p} pokeId={pokeId} setPokeId={setPokeId} />
                 ))
             }
         </div>
     )
 }
 
-const Option = memo(({ p, pokemon, setPokemon }: { p: Pokemon, pokemon: string | null, setPokemon: Dispatch<SetStateAction<string | null>> }) => {
+const Option = memo(({ p, pokeId, setPokeId }: { p: Pokemon, pokeId: string | null, setPokeId: Dispatch<SetStateAction<string | null>> }) => {
     return (
-        <div data-name={p.name} data-id={p.index} onClick={() => { if (pokemon !== p.name) setPokemon(p.name) }} className={`w-full shrink-0 flex items-center cursor-pointer relative ${pokemon === p.name ? "bg-black/10" : "hover:bg-black/10"} transition-colors px-4 py-2`}>
+        <div data-name={p.name} data-id={p.id} data-index={p.index} onClick={() => { if (pokeId !== p.id) setPokeId(p.id) }} className={`w-full shrink-0 flex items-center cursor-pointer relative ${pokeId === p.id ? "bg-black/10" : "hover:bg-black/10"} transition-colors px-4 py-2`}>
             <div className="w-full h-full flex items-center tracking-[1px]">
                 {displayPokemonName(p.name, p.species)}
             </div>
@@ -48,8 +49,8 @@ const Option = memo(({ p, pokemon, setPokemon }: { p: Pokemon, pokemon: string |
     )
 }, arePropsEqual)
 
-function arePropsEqual(a: { p: Pokemon, pokemon: string | null, setPokemon: Dispatch<SetStateAction<string | null>> }, b: { p: Pokemon, pokemon: string | null, setPokemon: Dispatch<SetStateAction<string | null>> }) {
-    return !(a.pokemon === a.p.name) && !(b.pokemon === b.p.name)
+function arePropsEqual(a: { p: Pokemon, pokeId: string | null, setPokeId: Dispatch<SetStateAction<string | null>> }, b: { p: Pokemon, pokeId: string | null, setPokeId: Dispatch<SetStateAction<string | null>> }) {
+    return !(a.pokeId === a.p.id) && !(b.pokeId === b.p.id)
 }
 
 export default List;
