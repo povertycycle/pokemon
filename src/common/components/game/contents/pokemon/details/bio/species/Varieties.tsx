@@ -11,7 +11,7 @@ type VarietiesProps = {
 }
 
 const BASE = 64;
-const MAX = 6;
+const MAX = 7;
 
 const Varieties: React.FC<VarietiesProps> = ({ varieties, switchable, description }) => {
     const { palette, colors } = useContext(DetailsContext);
@@ -22,9 +22,9 @@ const Varieties: React.FC<VarietiesProps> = ({ varieties, switchable, descriptio
     return (
         <div className="flex flex-col items-end relative gap-2">
             <div className="w-fit flex items-start relative">
-                <div className={`px-4 text-[1.25rem]`} style={{ color: colors[0], background: base }}>Variations</div>
+                <div className={`px-4 text-[1.25rem] bg-black/50 border-l-2 border-b-2 text-base-white`} style={{ borderColor: palette[0] }}>Variations</div>
                 <div className={`border-l-2 border-b-2`} style={{ borderColor: base }}>
-                    <div className={`bg-black/25 relative transition-[width, height] duration-300 flex overflow-hidden flex-wrap`} style={{ width: `${w}px`, height: `${h}px` }}>
+                    <div className={`bg-black/25 relative transition-[width, height] flex overflow-hidden flex-wrap`} style={{ width: `${w}px`, height: `${h}px` }}>
                         {
                             varieties.map((variety: string, i: number) => (
                                 <Variety varietyId={variety} key={i} color={base} />
@@ -86,8 +86,8 @@ const FormDescription: React.FC<FormDescriptionProps> = ({ description, switchab
         <div className="w-full flex justify-end">
             <div className="flex flex-col items-end">
                 <span className="text-base leading-4 px-2">{switchable !== null ? `${switchable ? "Able" : "Unable"} to switch between forms` : "Has no other forms"}</span>
-                <div className={`text-[1.25rem] overflow-hidden transition-[height,margin] duration-300 ${description.length > 0 ? "h-[32px] mt-4" : "h-0"} pl-4 pr-[12px]`} style={{ color: font, background: color }}>Form Description</div>
-                <div className={`${description.length > 0 ? "h-[72px] w-full border-y-2" : "w-0 h-0 border-[0px]"} transition-[width,height,border] duration-300 tracking-[1px] overflow-y-auto text-base leading-5 flex flex-col items-end text-end bg-black/15 ${styles.overflowWhite}`} style={{ borderColor: color }}>
+                <div className={`text-[1.25rem] overflow-hidden transition-[height,margin] ${description.length > 0 ? "h-[32px] mt-2" : "h-0"} pl-4 pr-[12px]`} style={{ color: font, background: color }}>Form Description</div>
+                <div className={`${description.length > 0 ? "h-[72px] w-full border-y-2" : "w-0 h-0 border-[0px]"} transition-[width,height,border] tracking-[1px] overflow-y-auto text-base leading-5 flex flex-col items-end text-end bg-black/15 ${styles.overflowWhite}`} style={{ borderColor: color }}>
                     {
                         description.map((desc: string, i: number) => (
                             <span className="p-1" key={i}>

@@ -8,12 +8,12 @@ import { DISPLAY_ID, NAV_WIDTH } from "../constants";
 import { SpeciesData } from "../interface";
 import { Pokemon, SecondaryData } from "../interfaces/pokemon";
 import DataCorrupted from "./DataCorrupted";
-import Bio from "./bio/Bio";
 import Name from "./bio/Name";
+import EvolutionChain from "./bio/evolution/EvolutionChain";
 import FlavorTexts from "./bio/species/FlavorTexts";
 import { PokePayload } from "./constants";
 import { DetailsContext } from "./contexts";
-import Stats from "./stats/Stats";
+import Bio from "./bio/Bio";
 
 const Details: React.FC<{ pokeId: string | null }> = ({ pokeId }) => {
     const [data, setData] = useState<PokePayload>({});
@@ -85,7 +85,7 @@ const Displayer = memo(({ data, palette }: DisplayerProps) => {
             <div className={`w-full z-[0] h-screen flex flex-col relative`} style={{ background: palette[1], color: isDark(palette[1]) ? "white" : "black" }}>
                 <div className="w-full h-full absolute z-[0] left-0 top-0 bg-black/25" />
                 <div className={`w-full flex flex-col justify-start items-start relative z-[1] pr-[2px] pl-4 gap-8 h-full overflow-y-scroll ${styles.overflowWhite}`}>
-                    <Bio main={main} data={secondary.spritesData} species={species} />
+                    <Bio data={secondary.spritesData} species={species} primary={{ base_experience: main.base_experience, height: main.height, weight: main.weight }} />
 
 
 
@@ -94,11 +94,11 @@ const Displayer = memo(({ data, palette }: DisplayerProps) => {
 
 
 
+                    <EvolutionChain chain={species.evolution_chain} />
 
-
-                    <Stats />
                     {/* <Moves /> */}
                     <FlavorTexts entries={species.flavor_text_entries} />
+                    {/* pal_park_encounters: {area: string, base_score: number, rate: number}[], */}
 
 
 

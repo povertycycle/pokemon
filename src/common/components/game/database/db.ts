@@ -21,13 +21,11 @@ export const initDB = (): Promise<boolean> => {
         request.onupgradeneeded = () => {
             const db = request.result;
 
-            if (db.objectStoreNames.length > 0) {
-                Object.values(Stores).forEach(key => {
-                    if (db.objectStoreNames.contains(key)) {
-                        db.deleteObjectStore(key);
-                    }
-                })
-            };
+            Object.values(Stores).forEach(key => {
+                if (db.objectStoreNames.contains(key)) {
+                    db.deleteObjectStore(key);
+                }
+            })
 
             Object.values(Stores).forEach(key => {
                 db.createObjectStore(key);

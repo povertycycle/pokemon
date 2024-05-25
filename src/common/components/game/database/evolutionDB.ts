@@ -13,7 +13,11 @@ function getChainData(chains: any[], acc: EvolutionChain[][]): EvolutionChain[][
         ...(c.evolution_details.length > 0 ? {
             evolution_details: c.evolution_details.map((d: any) => ({
                 trigger: d.trigger?.name,
-                min_level: d.min_level
+                min_level: d.min_level,
+                min_happiness: d.min_happiness,
+                item: d?.item?.name,
+                held_item: d?.held_item?.name,
+                gender: d?.gender,
             }))
         } : undefined)
     }))]);

@@ -74,7 +74,7 @@ const Dropdown: React.FC<DropdownProps> = ({ type, setType, parentRef, pool, lef
             <div className={`shadow-[0_0_4px_black] absolute w-full overflow-hidden flex flex-col bg-default-white top-full mt-2 transition-height rounded-[4px] overflow-hidden text-base leading-4`} style={{ height: menu ? `${24 * pool.length}px` : 0 }}>
                 {
                     pool.map((entries: [string, string], i: number) => (
-                        <div key={i} onClick={() => { setType(entries[0]); setMenu(false); }} className={`cursor-pointer h-[24px]`} style={{ background: entries[1] }}>
+                        <div key={i} data-type={`${entries[0]}-${left ? "1" : "2"}`} onClick={() => { setType(entries[0]); setMenu(false); }} className={`cursor-pointer h-[24px]`} style={{ background: entries[1] }}>
                             <div className={`w-full h-full flex items-center justify-center ${isDark(entries[1]) ? "text-white" : "hover:text-black text-white"} bg-black/50 transition-colors hover:bg-black/0`}>{entries[0].toUpperCase()}</div>
                         </div>
                     ))

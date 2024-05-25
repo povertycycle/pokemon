@@ -13,7 +13,7 @@ const Effectiveness: React.FC<EffectivenessProps> = ({ types }) => {
 
     return (
         <div className={`flex w-full flex-col mt-4 relative z-[1] gap-4`}>
-            <div className="px-4 text-[1.25rem] w-full flex justify-center" style={{ background: palette[0], color: colors[0] }}>Effectiveness</div>
+            <div className="px-4 text-[1.25rem] w-full flex justify-center bg-black/50 text-base-white border-y-2" style={{ borderColor: palette[0] }}>Effectiveness</div>
             <div className="w-fit max-w-full flex flex-col py-4 gap-4">
                 {
                     effectiveness ?
@@ -46,8 +46,18 @@ const Information: React.FC<{ types: string[], t: string, b: string, c: string, 
             <div className={`flex flex-wrap gap-2 leading-4 items-center`}>
                 {
                     types.map((t: string, i: number) => (
-                        <div key={i} className={`px-4 border-2 shadow-base-black h-[36px] rounded-[6px] flex items-center justify-center`} style={{ background: FILTER_TYPE_COLORS[t] }}>
-                            <span className="text-base-white drop-shadow-[0_0_4px_black]">{t.toUpperCase()}</span>
+                        <div className={`group/select`}>
+                            <div key={i} onClick={() => {
+                                const type1 = document.querySelector(`[data-type='${t}-1']`) as HTMLDivElement;
+                                const type2 = document.querySelector(`[data-type='${t}-2']`) as HTMLDivElement;
+                                if (type1) {
+                                    type1.click();
+                                } else if (type2) {
+                                    type2.click();
+                                }
+                            }} className={`px-4 border-2 group-hover/select:translate-y-[-6px] transition-transform shadow-base-black h-[36px] cursor-pointer rounded-[6px] flex items-center justify-center`} style={{ background: FILTER_TYPE_COLORS[t] }}>
+                                <span className="text-base-white drop-shadow-[0_0_4px_black]">{t.toUpperCase()}</span>
+                            </div>
                         </div>
                     ))
                 }

@@ -1,29 +1,28 @@
 import { SpeciesData } from "../../interface";
-import { Pokemon } from "../../interfaces/pokemon";
 import { SpritesData } from "../../interfaces/sprites";
-import EvolutionChain from "./evolution/EvolutionChain";
+import PokedexNo from "./species/PokedexNo";
 import Species from "./species/Species";
 import Training from "./species/Training";
 import Sprites from "./sprites/Sprites";
+import Stats from "./stats/Stats";
 
 type BioProps = {
-    main: Pokemon;
+    primary: { base_experience: number, height: number, weight: number }
     data: SpritesData;
     species: SpeciesData;
 }
 
-const Bio: React.FC<BioProps> = ({ main, data, species }) => {
-    const primary = main && { base_experience: main.base_experience, height: main.height, weight: main.weight };
-
+const Bio: React.FC<BioProps> = ({ primary, data, species }) => {
     return (
-        <div className="w-full flex justify-end  h-auto">
-            <div className="w-full flex flex-col gap-4">
+        <div className="w-full flex justify-end">
+            <div className="w-full flex flex-col">
                 <Species {...species} />
-                <div className="">
-                    <EvolutionChain chain={species.evolution_chain} />
+                <div className="w-full flex gap-14 z-[1] pr-2">
+                    <Stats />
+                    <PokedexNo pokedex_numbers={species.pokedex_numbers} />
                 </div>
             </div>
-            <div className="flex flex-col shrink-0 pt-2 items-end gap-4">
+            <div className="flex flex-col shrink-0 pt-2 items-end gap-8">
                 <Sprites data={data} />
                 <Training {...{
                     capture_rate: species.capture_rate,
@@ -33,10 +32,12 @@ const Bio: React.FC<BioProps> = ({ main, data, species }) => {
                     habitat: species?.habitat,
                     shape: species?.shape,
                     egg_groups: species?.egg_groups,
-
-                    // <PokedexNo pokedex_numbers={speciesData.pokedex_numbers} /> 
-                    // pal_park_encounters: {area: string, base_score: number, rate: number}[],
-                    // base_happiness: number,
+                    measurements: {
+                        base_experience: primary.base_experience,
+                        base_happiness: species.base_happiness,
+                        height: primary.height,
+                        weight: primary.weight
+                    }
                 }} />
             </div>
         </div>

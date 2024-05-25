@@ -1,6 +1,6 @@
 import { TransitionEvent, useContext, useState } from "react";
 import { DatabaseContext } from "../../contexts";
-import { BerryTabIcon, EvolutionTabIcon, ItemTabIcon, MachineTabIcon, PokemonTabIcon, UnknownTabIcon } from "../Icons";
+import { BerryTabIcon, EvolutionTabIcon, ItemTabIcon, MachineTabIcon, MovesTabIcon, PokemonTabIcon, UnknownTabIcon } from "../Icons";
 import styles from "./animation.module.scss";
 import { Tab } from "../constants";
 
@@ -8,12 +8,12 @@ const Icons: { [key in Tab]: React.ReactElement } = {
     [Tab.Pokemon]: <PokemonTabIcon />,
     [Tab.Items]: <ItemTabIcon />,
     [Tab.Berries]: <BerryTabIcon />,
-    [Tab.Machines]: <MachineTabIcon />,
+    [Tab.Moves]: <MovesTabIcon />,
     [Tab.Evolution]: <EvolutionTabIcon />,
+    [Tab.Machines]: <MachineTabIcon />,
 
 
 
-    [Tab.Moves]: <UnknownTabIcon />,
     [Tab.X]: <UnknownTabIcon />,
     [Tab.Y]: <UnknownTabIcon />
 }
@@ -23,10 +23,10 @@ const Navigator: React.FC = () => {
         { bg: "bg-sp-def-dark", text: "text-sp-def-dark", border: "border-sp-def-dark", transition: "translate-x-0 group-hover/selector:translate-x-[-105%]" },
         { bg: "bg-x-dark", text: "text-x-dark", border: "border-hp-dark", transition: "translate-y-0 group-hover/selector:translate-y-[-105%]" },
         { bg: "bg-sp-atk-dark", text: "text-sp-atk-dark", border: "border-sp-atk-dark", transition: "translate-x-0 group-hover/selector:translate-x-[105%]" },
-        { bg: "bg-def-dark", text: "text-def-dark", border: "border-def-dark", transition: "translate-y-0 group-hover/selector:translate-y-[105%]" },
+        { bg: "bg-hp-dark", text: "text-hp-dark", border: "border-def-dark", transition: "translate-y-0 group-hover/selector:translate-y-[105%]" },
         { bg: "bg-atk-dark", text: "text-atk-dark", border: "border-atk-dark", transition: "translate-y-0 group-hover/selector:translate-y-[105%]" },
-        { bg: "bg-spd-dark", text: "text-spd-dark", border: "border-spd-dark", transition: "translate-x-0 group-hover/selector:translate-x-[105%]" },
-        { bg: "bg-hp-dark", text: "text-hp-dark", border: "border-base-white-dark", transition: "group-hover/selector:translate-y-[-105%]" },
+        { bg: "bg-def-dark", text: "text-def-dark", border: "border-spd-dark", transition: "translate-x-0 group-hover/selector:translate-x-[105%]" },
+        { bg: "bg-spd-dark", text: "text-spd-dark", border: "border-base-white-dark", transition: "group-hover/selector:translate-y-[-105%]" },
         { bg: "bg-y-dark", text: "text-y-dark", border: "border-base-white-dark", transition: "group-hover/selector:translate-x-[-105%]" }
     ]
     const SIZE = 48;

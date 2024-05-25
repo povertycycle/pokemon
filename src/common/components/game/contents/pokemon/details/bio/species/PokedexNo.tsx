@@ -15,12 +15,14 @@ const PokedexNo: React.FC<PokedexNoProps> = ({ pokedex_numbers }) => {
     }
 
     return (
-        <div className={`h-full text-base flex flex-col items-end`}>
-            <div className="px-4 flex w-fit items-center justify-center" style={{ color: colors[0], background: palette[0] }}>Pokédex Entries</div>
-            <div className={`flex flex-col h-0 grow text-[0.875rem] leading-4 transition-height overflow-y-auto border-r-2 ${styles.overflowWhite}`} style={{ borderColor: palette[0] }}>
+        <div className={`flex flex-col shrink-0 shadow-[-2px_4px_10px_2px_#00000080] border-x-2 border-b-2 max-h-[256px]`} style={{ borderColor: palette[0] }}>
+            <div className="text-[1.25rem] pt-4">
+                <div className="w-full px-4 bg-black/50 border-b-2 flex justify-center" style={{ borderColor: palette[0] }}>Pokédex Entries</div>
+            </div>
+            <div className={`pt-1 flex flex-col h-0 grow text-base leading-4 transition-height overflow-x-hidden overflow-y-auto z-[1] ${styles.overflowWhite}`}>
                 {
                     pokedex_numbers.map((pdn: Entry, i: number) => (
-                        <div className={`flex gap-4 items-center justify-between pl-2 pr-[2px] shrink-0 h-[24px] tracking-[0.5px] py-[2px] ${i % 2 === 0 ? "" : "bg-black/15"}`} key={i}>
+                        <div className={`flex gap-4 items-center justify-between px-2 shrink-0 h-[24px] tracking-[0.5px] py-[2px] ${i % 2 === 0 ? "" : "bg-black/15"}`} key={i}>
                             <span className="whitespace-nowrap">{generateRegion(pdn.pokedex)}</span>
                             <span>#{pdn.entry_number}</span>
                         </div>

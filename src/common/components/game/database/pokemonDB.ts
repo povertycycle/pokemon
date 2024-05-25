@@ -282,7 +282,7 @@ export async function getVarietySprite(id: string): Promise<{name: string, url: 
         
                 return res.json();
             }).then(res => {
-                result({name: res?.name, url: res?.sprites?.front_default});
+                result({name: res?.species?.name, url: res?.sprites?.front_default});
             }).catch(err => {
                 result({name: "", url: ""})
             })
@@ -302,10 +302,10 @@ export async function getVarietySprite(id: string): Promise<{name: string, url: 
                     
                     pokedata.onsuccess = () => {
                         if (spritesTx.result) {
-                            result({ name: pokedata.result.name, url: spritesTx.result?.others?.base_default });
+                            result({ name: pokedata.result.species, url: spritesTx.result?.others?.base_default });
                         } else {
                             processSecondaryData(id, pokedata.result.moves).then(res => {
-                                if (res) result({ name: pokedata.result.name, url: res.spritesData.others.base_default})
+                                if (res) result({ name: pokedata.result.species, url: res.spritesData.others.base_default})
                             }); 
                         }
                     }
