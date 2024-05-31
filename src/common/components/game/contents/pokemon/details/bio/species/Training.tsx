@@ -45,8 +45,8 @@ const Training: React.FC<TrainingProps> = ({ capture_rate, hatch_counter, growth
         return (
             <div className={`w-full flex flex-col`}>
                 <div className="w-full flex justify-between">
-                    <div className="text-[1.25rem] bg-black/50 px-4 border-b-2" style={{ borderColor: palette[0], color: colors[1] }}>{title}</div>
-                    <div className="text-[1.25rem] bg-black/50 px-4 border-b-2" style={{ borderColor: palette[0], color: colors[1] }}>{title2}</div>
+                    <div className="text-[1.25rem] text-base-white bg-black/50 px-4 border-b" style={{ borderColor: palette[0] }}>{title}</div>
+                    <div className="text-[1.25rem] text-base-white bg-black/50 px-4 border-b" style={{ borderColor: palette[0] }}>{title2}</div>
                 </div>
                 <div className="w-full flex justify-between items-center bg-black/15 px-2 text-[1.125rem]">
                     {children}
@@ -56,7 +56,7 @@ const Training: React.FC<TrainingProps> = ({ capture_rate, hatch_counter, growth
     }
 
     return (
-        <div className="flex flex-col border-r-2 overflow-hidden w-full pl-12 h-fit items-end gap-4 mt-8" style={{ color: colors[1], borderColor: palette[0] }}>
+        <div className="flex flex-col border-r-2 overflow-hidden w-full mt-16 pl-12 h-fit items-end gap-4" style={{ color: colors[1], borderColor: palette[0] }}>
             <div className="w-full flex flex-col gap-2">
                 <Header title="Capture Rate" title2="Egg Cycles">
                     <span>{capture_rate} <span title="Chance to capture at full HP with a pokeball" className="underline text-base cursor-help">{Math.round(captureRate(capture_rate) * 10000) / 100}%</span></span>
@@ -77,7 +77,7 @@ const Training: React.FC<TrainingProps> = ({ capture_rate, hatch_counter, growth
             </div>
             <div className="flex justify-end w-full h-[64px]">
                 <div className="w-full flex flex-col h-full">
-                    <div className="shrink-0 text-[1.25rem] px-8 w-full justify-center flex border-b-2 bg-black/50" style={{ borderColor: palette[0], color: colors[1] }}>Egg Groups</div>
+                    <div className="shrink-0 text-[1.25rem] px-8 w-full justify-center flex border-b bg-black/50 text-base-white" style={{ borderColor: palette[0] }}>Egg Groups</div>
                     <div className="h-full flex w-full gap-2 p-2 bg-black/15 leading-4 text-base">
                         {
                             egg_groups?.map((eG: string, i: number) => (

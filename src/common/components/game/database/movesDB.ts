@@ -1,62 +1,71 @@
+import { trimUrl } from "@/common/utils/trimUrl";
 import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_MOVES, BASE_API_URL_POKEMON } from "../constants";
-import { MoveData, MoveDetailsType } from "../contents/pokemon/interfaces/moves";
+import { BASE_API_URL_MACHINES, BASE_API_URL_MOVES } from "../constants";
+import { MoveData } from "../contents/pokemon/interfaces/moves";
 import { POKEMON_DB, Stores } from "./db";
 
-function fetchMoveData(move: string): Promise<MoveData> {
+function fetchMoveData(id: string): Promise<{ name: string, data: MoveData | null }> {
     return new Promise(result => {
-        fetch(`${BASE_API_URL_MOVES}/${move}`).then(res => {
+        fetch(`${BASE_API_URL_MOVES}/${id}`).then(res => {
             if (!res.ok) throw new Error("Failed to fetch data from API");
     
             return res.json();
         }).then(res => {
-            const eE = res.effect_entries.find((eE: any) => (eE?.language?.name === "en"));
-            const fE = res.flavor_text_entries.reduce((acc: any, fte: any) => {
-                if (fte.language.name === "en") {
-                    acc.push({
-                        flavor_text: fte.flavor_text,
-                        version: fte.version_group.name
-                    })
-                }
-                return acc;
-            }, [])
-            const moveData = {
-                accuracy: res.accuracy,
-                damage_class: res.damage_class.name,
-                effect_chance: res.effect_chance,
-                effect_entries: eE ? {
-                    effect: eE.effect,
-                    short_effect: eE.short_effect,
-                } : null,
-                flavor_text_entries: fE,
-                generation: res.generation.name,
-                id: res.id,
-                meta: res.meta ? {
-                    ailment: res.meta.ailment.name,
-                    ailment_chance: res.meta.ailment_chance,
-                    category: res.meta.category.name,
-                    crit_rate: res.meta.crit_rate,
-                    drain: res.meta.drain,
-                    flinch_chance: res.meta.flinch_chance,
-                    healing: res.meta.healing,
-                    max_hits: res.meta.max_hits,
-                    max_turns: res.meta.max_turns,
-                    min_hits: res.meta.min_hits,
-                    min_turns: res.meta.min_turns,
-                    stat_chance: res.meta.stat_chance
-                } : null,
-                power: res.power,
+            let eE = res.effect_entries.find((e: any) => e.language.name === "en");            
+            let moveName = res.name;
+            let moveData = {
+                ...(res.accuracy && { accuracy: res.accuracy }),
+                ...(res.effect_chance && { effect_chance: res.effect_chance }),
                 pp: res.pp,
                 priority: res.priority,
-                target: res.target.name,
-                type: res.type.name
+                ...(res.power && { power: res.power }), 
+                damage_class: res?.damage_class.name,
+                ...(eE && { effect: eE?.effect, short_effect: eE?.short_effect }),
+                flavor_text_entries: res.flavor_text_entries?.reduce((acc: any, fTE: any) => {
+                    if (fTE.language.name === "en") {
+                        acc.push({
+                            flavor_text: fTE.flavor_text,
+                            version: fTE.version_group.name
+                        })
+                    }
+                    return acc;
+                }, []),
+                ...(res.meta && {
+                    meta: Object.entries(res.meta).reduce((acc: any, [tag, value]: any) => {
+                        if (typeof value === "object") {
+                            if (value?.name) {
+                                acc[tag] = value.name
+                            }
+                        } else {
+                            if (value) {
+                                acc[tag] = value
+                            }
+                        }
+
+                        return acc;
+                    }, {})
+                }),
+                target: res?.target.name,
+                type: res?.type.name
             }
-            result(moveData);
+            
+            Promise.all(res?.machines?.map((m: any) => fetch(m.machine.url).then(res => { if (res.ok) return res.json(); else throw new Error("Failed to get TM data.") }))).then(res => {
+                moveData.machines = res?.map(moveResponse => ({
+                    id: moveResponse?.id,
+                    item: { name: moveResponse?.item?.name, id: trimUrl(moveResponse?.item?.url) },
+                    version: moveResponse?.version_group?.name
+                }))
+                result({ name: moveName, data: moveData });
+            }).catch(err => {
+                throw new Error(err);
+            })
+        }).catch(err => {
+            result({ name: "", data: null });
         })
     })
 }
 
-export async function processMoveDataByName(move: string): Promise<MoveData | null> {
+export function getMoveData(id: string): Promise<{ name: string, data: MoveData | null }> {
     return new Promise(result => {
         const request = indexedDB.open(POKEMON_DB);
 
@@ -65,26 +74,40 @@ export async function processMoveDataByName(move: string): Promise<MoveData | nu
             const moveTx = db.transaction(Stores.Moves, 'readonly');
 
             if (cacheIsAllowed()) {
-                const moveData = moveTx.objectStore(Stores.Moves).get(move);
+                const moveData = moveTx.objectStore(Stores.Moves).get(id);
                 
                 moveData.onsuccess = () => {
-                    if (moveData.result.data) {
-                        result(moveData.result.data);
+                    if (moveData.result?.data) {
+                        result({ name: moveData.result.name ,data: moveData.result?.data });
                     } else {
-                        fetchMoveData(move).then(res => {
-                            const insertTx = db.transaction(Stores.Moves, 'readwrite').objectStore(Stores.Moves).put({
+                        fetchMoveData(id).then(res => {
+                            db.transaction(Stores.Moves, 'readwrite').objectStore(Stores.Moves).put({
                                 ...moveData.result,
-                                data: res
-                            }, move);
+                                data: res.data
+                            }, id);
                             result(res);
                         })
                     }
                 }
-
             } else {
-                fetchMoveData(move).then(res => {
+                fetchMoveData(id).then(res => {
                     result(res);
                 });
+            }
+        }
+    })
+}
+
+export function getMoveName(id: string): Promise<string | null> {
+    return new Promise(result => {
+        const request = indexedDB.open(POKEMON_DB);
+
+        request.onsuccess = () => {
+            let db: IDBDatabase = request.result;
+            const moveData = db.transaction(Stores.Moves, 'readonly').objectStore(Stores.Moves).get(id);
+            
+            moveData.onsuccess = () => {
+                result(moveData.result.name);
             }
         }
     })

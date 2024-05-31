@@ -1,44 +1,36 @@
-export type LevelMethodVersion = {
-    levelLearned: number,
+export type VersionDetails = {
+    min_level: number,
     method: string,
-    version: string,
+    version: string
 }
 
-export type MoveDetailsType = {
-    [moveName: string]: LevelMethodVersion[]
+export type MoveVersions = {
+    [moveId: string]: VersionDetails[]
 }
 
 export type MoveData = {
-    accuracy: number,
+    accuracy?: number,
+    effect_chance?: number,
+    pp: number,
+    priority: number,
+    power?: number,
     damage_class: string,
-    effect_chance: number | null,
-    effect_entries: {
+    effect_entries?:{
         effect: string,
         short_effect: string,
-    } | null,
-    flavor_text_entries: {
+    },
+    flavor_text_entries?: {
         flavor_text: string,
         version: string,
     }[],
-    meta: {
-        ailment: string,
-        ailment_chance: number,
-        category: string,
-        crit_rate: number,
-        drain: number,
-        flinch_chance: number,
-        healing: number,
-        max_hits: number | null,
-        max_turns: number | null,
-        min_hits: number | null,
-        min_turns: number | null,
-        stat_chance: number
-    } | null,
-    generation: string,
-    id: number,
-    power: number | null,
-    pp: number,
-    priority: number,
+    machines: {
+        id: string,
+        item: {name: string, id: string}
+        version: string,
+    }[],    
+    meta?: {
+        [tag: string]: number | string
+    },
     target: string,
     type: string
 }

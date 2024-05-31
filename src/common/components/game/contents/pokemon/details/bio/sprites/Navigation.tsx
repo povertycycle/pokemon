@@ -25,7 +25,7 @@ const Navigation: React.FC<NavigationProps> = ({ sprites, active, setActive }) =
 
                     return (
                         <div key={i} className={`${i === 0 ? "rounded-tl-[8px]" : ""} ${i === ref.length - 1 ? "rounded-bl-[8px]" : ""} ${active === gen ? "px-2" : "hover:translate-x-[-4px] hover:translate-y-[-4px] px-[6px]"} shrink-0 overflow-hidden transition-transform w-full flex items-center justify-end overflow-hidden leading-4 cursor-pointer`}
-                            style={{ height: `${HEIGHT}px`, background: active !== gen ? `transparent` : palette[0], border: `2px solid ${palette[0]}80`, color: active !== gen ? colors[1] : colors[0] }} onClick={pickGen}>
+                            style={{ height: `${HEIGHT}px`, background: active !== gen ? `transparent` : palette[0], border: `2px solid ${palette[0]}80`, color: active !== gen ? "#f0f0f0" : colors[0] }} onClick={pickGen}>
                             {i < ref.length - 1 ? `GEN ${num}` : num}
                         </div>
                     )

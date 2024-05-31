@@ -33,10 +33,10 @@ export type Option = {
     tag: OptionTag
 }
 export const OPTIONS: Option[] = [
-    { name: "Name (Ascending)", tag: OptionTag.NAME_ASC },
-    { name: "Name (Descending)", tag: OptionTag.NAME_DESC },
     { name: "Id (Ascending)", tag: OptionTag.ID_ASC },
     { name: "Id (Descending)", tag: OptionTag.ID_DESC },
+    { name: "Name (Ascending)", tag: OptionTag.NAME_ASC },
+    { name: "Name (Descending)", tag: OptionTag.NAME_DESC },
 ]
 export const COMPARATOR: { [key in OptionTag]: (a: Element, b: Element) => number } = {
     [OptionTag.NAME_ASC]: (a: Element, b: Element) => ((a.getAttribute("data-name") || "") > (b.getAttribute("data-name") || "") ? 1 : -1),
@@ -60,7 +60,7 @@ export const VERSION_NAME: { [key: string]: string } = {
     "xd": "XD: Gale of Darkness",
     "black-2-white-2": "Black 2 & White 2",
     "x-y": "X & Y",
-    "omegaruby-alphasapphire": "Omega Ruby & Alpha Sapphire",
+    "omega-ruby-alpha-sapphire": "Omega Ruby & Alpha Sapphire",
     "sun-moon": "Sun & Moon",
     "ultra-sun-ultra-moon": "Ultra Sun & Ultra Moon",
     "lets-go-pikachu-lets-go-eevee": "Let's Go Pikachu & Let's Go Eevee",

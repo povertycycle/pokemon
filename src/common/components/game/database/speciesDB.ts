@@ -1,9 +1,10 @@
+import { trimUrl } from "@/common/utils/trimUrl";
 import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_EVOLUTION, BASE_API_URL_POKEMON, BASE_API_URL_SPECIES } from "../constants";
+import { BASE_API_URL_SPECIES } from "../constants";
 import { SpeciesData } from "../contents/pokemon/interface";
 import { POKEMON_DB, Stores } from "./db";
 
-function fetchSpeciesData(species: string): Promise<SpeciesData> {
+function fetchSpeciesData(species: string): Promise<SpeciesData | null> {
     return new Promise(result => {
         fetch(`${BASE_API_URL_SPECIES}/${species}`).then(res => {
             if (!res.ok) throw new Error("Failed to fetch data from API");
@@ -15,7 +16,7 @@ function fetchSpeciesData(species: string): Promise<SpeciesData> {
                 base_happiness: res.base_happiness,
                 capture_rate: res.capture_rate,
                 egg_groups: res.egg_groups.map((eG: any) => (eG.name)),
-                evolution_chain: res.evolution_chain.url.replace(BASE_API_URL_EVOLUTION, "").replaceAll("/", ""),
+                evolution_chain: trimUrl(res.evolution_chain.url),
                 flavor_text_entries: res.flavor_text_entries.reduce((acc: any, fTE: any) => {
                     if (fTE.language.name === "en") {
                         acc.push({version: fTE.version.name, text: fTE.flavor_text})
@@ -44,9 +45,11 @@ function fetchSpeciesData(species: string): Promise<SpeciesData> {
                     pokedex: pN.pokedex.name, entry_number: pN.entry_number
                 })),
                 shape: res.shape?.name,
-                varieties: res.varieties.map((v: any) => (v.pokemon.url.replaceAll(BASE_API_URL_POKEMON, "").replaceAll("/", "")))
+                varieties: res.varieties.map((v: any) => (trimUrl(v.pokemon.url)))
             }
             result(speciesData);
+        }).catch(err => {
+            result(null);
         })
     })
 }
@@ -72,10 +75,39 @@ export function fetchSpeciesDetails(species: string): Promise<SpeciesData | null
                         })
                     }
                 }
-
             } else {
                 fetchSpeciesData(species).then(res => {
                     result(res);
+                });
+            }
+        }
+    })
+}
+
+export async function getVariants(species: string): Promise<string[]> {
+    return new Promise(result => {
+        const request = indexedDB.open(POKEMON_DB);
+
+        request.onsuccess = () => {
+            let db: IDBDatabase = request.result;
+            const speciesTx = db.transaction(Stores.Species, 'readonly');
+
+            if (cacheIsAllowed()) {
+                const speciesData = speciesTx.objectStore(Stores.Species).get(species);
+                
+                speciesData.onsuccess = () => {
+                    if (speciesData.result) {
+                        result(speciesData.result.varieties);
+                    } else {
+                        fetchSpeciesData(species).then(res => {
+                            db.transaction(Stores.Species, 'readwrite').objectStore(Stores.Species).put(res, species);
+                            result(res?.varieties ?? []);
+                        })
+                    }
+                }
+            } else {
+                fetchSpeciesData(species).then(res => {
+                    result(res?.varieties ?? []);
                 });
             }
         }

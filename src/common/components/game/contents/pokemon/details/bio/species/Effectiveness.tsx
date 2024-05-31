@@ -8,13 +8,13 @@ type EffectivenessProps = {
 }
 
 const Effectiveness: React.FC<EffectivenessProps> = ({ types }) => {
-    const { palette, colors } = useContext(DetailsContext);
+    const { palette } = useContext(DetailsContext);
     const effectiveness = generateEffectiveness(types);
 
     return (
-        <div className={`flex w-full flex-col mt-4 relative z-[1] gap-4`}>
-            <div className="px-4 text-[1.25rem] w-full flex justify-center bg-black/50 text-base-white border-y-2" style={{ borderColor: palette[0] }}>Effectiveness</div>
-            <div className="w-fit max-w-full flex flex-col py-4 gap-4">
+        <div className={`flex w-full flex-col mt-12 relative z-[1] gap-4`}>
+            <div className="px-4 text-[1.5rem] w-full flex justify-center bg-black/50 text-base-white border-y" style={{ borderColor: palette[0] }}>Effectiveness</div>
+            <div className="w-fit max-w-full flex flex-col py-4 gap-4 pr-2">
                 {
                     effectiveness ?
                         [
@@ -26,7 +26,7 @@ const Effectiveness: React.FC<EffectivenessProps> = ({ types }) => {
                             { t: "NORMAL", b: "bg-base-white-dark", c: "ri-subtract-line", e: "1" }
                         ].map((dat, i: number) => (
                             effectiveness[dat.e] &&
-                            <Information types={effectiveness[dat.e]} key={i} {...dat} color={palette[0]} />
+                            <Information key={i} types={effectiveness[dat.e]} {...dat} color={palette[0]} />
                         )) :
                         <div className="px-4 text-[1.25rem]">Unknown Type</div>
                 }
@@ -46,8 +46,8 @@ const Information: React.FC<{ types: string[], t: string, b: string, c: string, 
             <div className={`flex flex-wrap gap-2 leading-4 items-center`}>
                 {
                     types.map((t: string, i: number) => (
-                        <div className={`group/select`}>
-                            <div key={i} onClick={() => {
+                        <div key={i} className={`group/select`}>
+                            <div onClick={() => {
                                 const type1 = document.querySelector(`[data-type='${t}-1']`) as HTMLDivElement;
                                 const type2 = document.querySelector(`[data-type='${t}-2']`) as HTMLDivElement;
                                 if (type1) {

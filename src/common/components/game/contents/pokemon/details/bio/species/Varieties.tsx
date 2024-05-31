@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { DetailsContext } from "../../contexts";
 import styles from "@/common/styles/custom.module.scss";
 import { capitalize } from "@/common/utils/capitalize";
+import { useSprites } from "@/common/components/game/hooks/useSprites";
 
 type VarietiesProps = {
     varieties: string[],
@@ -22,9 +23,9 @@ const Varieties: React.FC<VarietiesProps> = ({ varieties, switchable, descriptio
     return (
         <div className="flex flex-col items-end relative gap-2">
             <div className="w-fit flex items-start relative">
-                <div className={`px-4 text-[1.25rem] bg-black/50 border-l-2 border-b-2 text-base-white`} style={{ borderColor: palette[0] }}>Variations</div>
-                <div className={`border-l-2 border-b-2`} style={{ borderColor: base }}>
-                    <div className={`bg-black/25 relative transition-[width, height] flex overflow-hidden flex-wrap`} style={{ width: `${w}px`, height: `${h}px` }}>
+                <div className={`px-4 text-[1.25rem] bg-black/50 border-l border-b text-base-white`} style={{ borderColor: palette[0] }}>Variations</div>
+                <div className={`border-l border-b`} style={{ borderColor: base }}>
+                    <div className={`bg-black/25 relative transition-[width,height] flex overflow-hidden flex-wrap`} style={{ width: `${w}px`, height: `${h}px` }}>
                         {
                             varieties.map((variety: string, i: number) => (
                                 <Variety varietyId={variety} key={i} color={base} />
@@ -40,20 +41,8 @@ const Varieties: React.FC<VarietiesProps> = ({ varieties, switchable, descriptio
 
 const Variety: React.FC<{ varietyId: string, color: string }> = ({ varietyId, color }) => {
     const { details } = useContext(DetailsContext);
-    const [id, setId] = useState<string>("");
-    const [url, setUrl] = useState<string>("");
-    const [name, setName] = useState<string>("");
+    const { name, url } = useSprites("species", varietyId);
     const isCurrent = details?.id === varietyId;
-
-    useEffect(() => {
-        if (id !== varietyId) {
-            getVarietySprite(varietyId).then(res => {
-                setUrl(res.url);
-                setName(res.name);
-                setId(varietyId);
-            })
-        }
-    }, [varietyId])
 
     const goToPokemon = () => {
         if (!isCurrent) {
@@ -62,7 +51,7 @@ const Variety: React.FC<{ varietyId: string, color: string }> = ({ varietyId, co
     }
 
     return (
-        <div ref={ref => { !isCurrent && ref?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" }); }} title={!isCurrent ? capitalize(name) : undefined}
+        <div title={!isCurrent ? capitalize(name) : undefined}
             className={`p-[2px] relative transition-colors text-center ${isCurrent ? "" : "hover:bg-white/15 bg-white/0 cursor-pointer"}`}
             onClick={goToPokemon} style={{ background: isCurrent ? color : "", width: `${BASE}px`, height: `${BASE}px` }}>
             {

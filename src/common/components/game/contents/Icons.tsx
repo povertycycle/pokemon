@@ -23,7 +23,9 @@ export const EvolutionTabIcon: React.FC = () => {
 export const MovesTabIcon: React.FC = () => {
     return <svg width="100%" height="100%" viewBox="0 0 100 105"><path fill="#202020" d="M55 15v-5h10V5h20v5h5v10h5v15h-5v10h-5v5h-5v5h-5v5H65v5H45v5H35v15h5v5h15v-5h10v-5h5v-5h5v-5h5v-5h5v-5h5v5h5v20h-5v5h-5v5H75v5H65v5H35v-5H25v-5h-5v-5h-5V65h5v-5h5v-5h10v-5h20v-5h10V35h5V25h-5v5h-5v5h-5v5H45v5H15v-5h-5v-5H5V25H0V5h5V0h15v20h5v10h5v5h5v-5h5v-5h5v-5h5v-5h5Zm40 55h5v10h-5V70Z" /><path fill="#FFA452" d="M20 30h-5v5h-5V25H5v-5h5v-5h5v5h5v10Zm75 45h-5v-5h5v5Zm-5-5h-5v-5h5v5ZM55 95v-5h10v-5h10v10H55Z" /><path fill="#BD3131" d="M35 85v5h5v5h10v5H35v-5H25v-5h-5V80h5v5h10Zm40-50v5h10v5h-5v5h-5v5H60v-5h5v-5h5V35h5ZM45 25h5v-5h5v-5h10v10h-5v5h-5v5H45v5H35v-5h5v-5h5v-5Z" /><path fill="#DE734A" d="M50 100v-5h15v5H50ZM15 15h-5v5H5V5h10v10Z" /><path fill="#FF8383" d="M85 20H70v-5h-5v-5h20v10ZM30 70v-5h-5v-5h10v-5h10v10H35v5h-5Z" /><path fill="#EE5252" d="M45 60v-5h10v-5h5v5h5v5H45ZM30 85h-5v-5h-5V65h10v20Zm60-50h-5v5H75V20h15v15Z" /><path fill="#FFE652" d="M75 90v-5h-5v-5h5v-5h5v-5h10v5h5v5h-5v5h-5v5H75ZM25 30v5h5v5H15V30h10Z" /></svg>
 }
-
 export const UnknownTabIcon: React.FC = () => {
     return <i className="ri-question-mark" />;
+}
+export const EggSvg: React.FC = () => {
+    return <svg width="100%" height="100%" viewBox="0 0 65 70"><path fill="#313131" d="M65 25v25h-5v10h-5v5H45v5H20v-5H10v-5H5V50H0V25h5V15h5v-5h5V5h10V0h15v5h10v5h5v5h5v10h5Z" /><path fill="#948B62" d="M55 20v5h5v25h-5v10H10V50H5V25h5l35-15h5v5h5v5Z" /><path fill="#D5D56A" d="M60 30v15h-5v5h-5L35 65H20v-5h-5v-5h-5V45H5v-5l20-30V5h15v15h15v10h5Z" /><path fill="#7B9C4A" d="M55 30v10H45L10 20v-5h5v-5h5l30 20h5Zm-5 15v5h5v5h-5v5h-5v5H35v-5h-5V50h5v-5h15Z" /><path fill="#9CCD4A" d="m25 10 25 15v10H25v15H15V40l-5-15v-5h5v-5h5v-5h5Z" /><path fill="#F6F6AC" d="M40 45H25v-5H15v5h-5v-5H5V30h5v-5h10v-5h5V10h20v5h5v10H40v10h5v5h-5v5Z" /></svg>
 }

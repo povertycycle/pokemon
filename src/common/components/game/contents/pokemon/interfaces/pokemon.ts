@@ -1,4 +1,4 @@
-import { MoveDetailsType } from "./moves"
+import { MoveVersions } from "./moves"
 import { SpritesData } from "./sprites"
 
 export type Stats = {
@@ -26,6 +26,6 @@ export type Pokemon = {
 }
 
 export type SecondaryData = {
-    moveDetails: MoveDetailsType, 
+    moveVersions: MoveVersions, 
     spritesData: SpritesData
 }

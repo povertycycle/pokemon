@@ -1,12 +1,13 @@
+import { trimUrl } from "@/common/utils/trimUrl";
 import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_POKEMON, BASE_API_URL_SPECIES } from "../constants";
-import { LevelMethodVersion, MoveDetailsType } from "../contents/pokemon/interfaces/moves";
+import { BASE_API_URL_POKEMON } from "../constants";
+import { MoveVersions, VersionDetails } from "../contents/pokemon/interfaces/moves";
 import { Pokemon, SecondaryData, Stats } from "../contents/pokemon/interfaces/pokemon";
 import { GenSprites, Sprites } from "../contents/pokemon/interfaces/sprites";
 import { POKEMON_DB, Stores, validateDatabase } from "./db";
 
-type InitAbliity = { pokemons: { id: string, isHidden: boolean }[] };
-type InitMoves = { pokemons: {[key: string]: {}} }
+type InitAbliity = { pokemons: { id: string, isHidden: boolean }[], name: string };
+type InitMoves = { pokemons: {[key: string]: {}}, name: string }
 type PokeData = { name: string, url: string }
 type PokeAPIResponse = {
     count: number,
@@ -52,30 +53,32 @@ export async function updatePokemonDatabase(pokemon: PokeAPIResponse): Promise<b
                 res.forEach(pokeRes => {
                     const necessaryData = {
                         abilities: pokeRes.abilities.map((a: any) => {
+                            let aId = trimUrl(a.ability.url);
                             const ability = { id: pokeRes.id.toString(), isHidden: a.is_hidden };
-                            if (!initAbilities[a.ability.name]) {
-                                initAbilities[a.ability.name] = { pokemons: [ability] }
+                            if (!initAbilities[aId]) {
+                                initAbilities[aId] = { pokemons: [ability], name: a.ability.name }
                             } else {
-                                initAbilities[a.ability.name].pokemons.push(ability);
+                                initAbilities[aId].pokemons.push(ability);
                             }
-                            return a.ability.name;
+                            return aId;
                         }),
                         name: pokeRes.name,
                         id: pokeRes.id.toString(),
-                        index: parseInt(pokeRes.species.url.replaceAll(BASE_API_URL_SPECIES, "").replaceAll("/", "")),
+                        index: parseInt(trimUrl(pokeRes.species.url)),
                         base_experience: pokeRes.base_experience,
                         cries: pokeRes.cries.latest,
                         height: pokeRes.height,
-                        held_items: pokeRes.held_items.map((i: any) => (i.item.name)),
+                        held_items: pokeRes.held_items.map((i: any) => (trimUrl(i.item.url))),
                         main_sprite: pokeRes.sprites.other["official-artwork"]?.front_default ?? pokeRes.sprites.front_default,
                         moves: pokeRes.moves.map((m: any) => {
-                            if (!initMoves[m.move.name]) {
-                                initMoves[m.move.name] = { pokemons: { [pokeRes.id.toString()]: []} }
+                            let id = trimUrl(m.move.url);
+                            if (!initMoves[id]) {
+                                initMoves[id] = { pokemons: { [pokeRes.id.toString()]: []}, name: m.move.name }
                             } else {
-                                initMoves[m.move.name].pokemons[pokeRes.id.toString()] = [];
+                                initMoves[id].pokemons[pokeRes.id.toString()] = [];
                             }
 
-                            return m.move.name;
+                            return id;
                         }),
                         stats: pokeRes.stats.reduce((acc: Stats, s: any) => {
                             acc[s.stat.name] = {
@@ -191,26 +194,24 @@ function fetchSecondaryData(id: string): Promise<SecondaryData | null> {
                 spritesData.others["base_default"] = resSprites.front_default
             }
 
-            const moveDetails: MoveDetailsType = res.moves.reduce((acc: MoveDetailsType, move: any) => {
-                acc[move.move.name] = move.version_group_details.map((vgp: any) => ({
-                    levelLearned: vgp.level_learned_at,
-                    method: vgp.move_learn_method.name,
-                    version: vgp.version_group.name
-                }));
+            const moveVersions = res?.moves?.reduce((acc: MoveVersions, c: any) => {
+                acc[trimUrl(c.move.url)] = c.version_group_details.map((vgd: any) => ({
+                    ...(vgd.level_learned_at && {min_level: vgd.level_learned_at}),
+                    method: vgd.move_learn_method?.name,
+                    version: vgd.version_group?.name
+                }))
+
                 return acc;
-            }, {});
-            result({ moveDetails, spritesData });
+            }, {})
+
+            result({ moveVersions, spritesData });
         }).catch(err => {
             result(null)
         })
     })    
 }
 
-export async function processSecondaryData(id: string, moves: string[]): Promise<SecondaryData | null> {
-    function dataIncomplete(details: MoveDetailsType) {
-        return Object.values(details).some(value => (value.length <= 0))
-    }
-
+export async function processSecondaryData(pokeId: string, moves: string[]): Promise<SecondaryData | null> {
     return new Promise(result => {
         const request = indexedDB.open(POKEMON_DB);
 
@@ -218,55 +219,55 @@ export async function processSecondaryData(id: string, moves: string[]): Promise
             let db: IDBDatabase = request.result;
 
             if (cacheIsAllowed()) {
-                const moveTx = db.transaction(Stores.Moves, 'readonly');
-                const store = moveTx.objectStore(Stores.Moves);
+                const movesTx = db.transaction(Stores.Moves, 'readonly');
 
-                const moveDetails: MoveDetailsType = moves.reduce((acc: MoveDetailsType, m: string) => {
-                    const s = store.get(m);
-                    s.onsuccess = () => {
-                        acc[m] = s.result.pokemons[id];
-                    };
-                    return acc;
-                }, {})
-
-                moveTx.oncomplete = () => {
-                    const spritesData = db.transaction(Stores.Sprites, 'readonly').objectStore(Stores.Sprites).get(id);
+                Promise.all(
+                    moves.map(m => new Promise(result => {
+                        const moveData = movesTx.objectStore(Stores.Moves).get(m)
+                        moveData.onsuccess = () => {
+                            if (moveData.result.pokemons[pokeId].length > 0) {
+                                result([m, moveData.result.pokemons[pokeId]])
+                            } else {
+                                result(undefined);
+                            }
+                        }
+                    }))
+                ).then(res => {
+                    const spritesData = db.transaction(Stores.Sprites, 'readonly').objectStore(Stores.Sprites).get(pokeId);
                     spritesData.onsuccess = () => {
-                        if (!dataIncomplete(moveDetails) && spritesData.result) {
-                            result({ moveDetails, spritesData: spritesData.result });
+                        if (res.filter(Boolean).length === moves.length && spritesData.result) {
+                            let moveVersions = Object.fromEntries(res as [string, VersionDetails[]][])
+                            result({ moveVersions, spritesData: spritesData.result });
                         } else {
-                            fetchSecondaryData(id).then(res => {
+                            fetchSecondaryData(pokeId).then(res => {
                                 if (res) {
-                                    const { moveDetails, spritesData } = res;
-                                    const moveInsTx = db.transaction(Stores.Moves, 'readwrite');
-                                    const store = moveInsTx.objectStore(Stores.Moves);
-                                    Object.entries(moveDetails).forEach((entry: [string, LevelMethodVersion[]]) => {
-                                        const prev = store.get(entry[0]);
-                                        prev.onsuccess = () => {
-                                            const result = prev.result;
-                                            result.pokemons[id] = entry[1];
-                                            store.put(result, entry[0]);                                    
+                                    const { moveVersions, spritesData } = res;
+                                    const insertTx = db.transaction(Stores.Moves, 'readwrite');
+                                    const store = insertTx.objectStore(Stores.Moves);
+                                    Object.entries(moveVersions).forEach(([moveId, versionDetails]) => {
+                                        const moveData = store.get(moveId);
+                                        moveData.onsuccess = () => {
+                                            const data = moveData.result;
+                                            data.pokemons[pokeId] = versionDetails;
+                                            store.put(data, moveId);
                                         }
+
                                     })
 
-                                    moveInsTx.oncomplete = () => {
-                                        const spritesInsTx = db.transaction(Stores.Sprites, 'readwrite');
-                                        spritesInsTx.objectStore(Stores.Sprites).put(spritesData, id);
-                                        spritesInsTx.oncomplete = () => {
-                                            result({ moveDetails, spritesData });
+                                    insertTx.oncomplete = () => {
+                                        const insertSprites = db.transaction(Stores.Sprites, 'readwrite').objectStore(Stores.Sprites).put(spritesData, pokeId); 
+                                        insertSprites.onsuccess  = () => {
+                                            result(res);
                                         }
                                     }
-                                } else {
-                                    throw new Error("failed to process secondary data.")
                                 }
-                            }).catch(err => {
-                                result(null);
+                                result(res);
                             })
                         }
                     }
-                }
+                })
             } else {
-                fetchSecondaryData(id).then(res => {
+                fetchSecondaryData(pokeId).then(res => {
                     result(res)
                 });
             }
@@ -282,7 +283,7 @@ export async function getVarietySprite(id: string): Promise<{name: string, url: 
         
                 return res.json();
             }).then(res => {
-                result({name: res?.species?.name, url: res?.sprites?.front_default});
+                result({name: res?.name, url: res?.sprites?.front_default});
             }).catch(err => {
                 result({name: "", url: ""})
             })
@@ -302,10 +303,10 @@ export async function getVarietySprite(id: string): Promise<{name: string, url: 
                     
                     pokedata.onsuccess = () => {
                         if (spritesTx.result) {
-                            result({ name: pokedata.result.species, url: spritesTx.result?.others?.base_default });
+                            result({ name: pokedata.result.name, url: spritesTx.result?.others?.base_default });
                         } else {
                             processSecondaryData(id, pokedata.result.moves).then(res => {
-                                if (res) result({ name: pokedata.result.species, url: res.spritesData.others.base_default})
+                                if (res) result({ name: pokedata.result.name, url: res.spritesData.others.base_default})
                             }); 
                         }
                     }

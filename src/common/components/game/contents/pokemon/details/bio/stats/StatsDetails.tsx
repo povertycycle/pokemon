@@ -24,7 +24,7 @@ const StatsDetails: React.FC<StatsDetailsProps> = ({ tag, base }) => {
                 <span className="text-[1.25rem] leading-5">{properties.tag}</span>
                 <span className="leading-4 text-base tracking-[0.5px] whitespace-nowrap">Base Value</span>
             </div>
-            <div className="h-full text-[1.75rem] leading-6 w-[60px] flex items-center justify-start shrink-0 px-4 text-black" style={{ background: properties.colors[2] }}>
+            <div className="h-full text-[1.75rem] leading-6 w-[60px] flex items-center justify-start pl-2 shrink-0 text-black" style={{ background: properties.colors[2] }}>
                 {value}
             </div>
             <div className="h-full w-full flex items-center justify-end px-4 text-base-white relative overflow-hidden" style={{ background: properties.colors[0] }}>

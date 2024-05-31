@@ -1,12 +1,7 @@
+export type EvolutionMethod = {[key: string]: string | number | boolean}
+
 export type EvolutionChain = {
-    is_baby: boolean,
+    is_baby?: string,
     species_id: string,
-    evolution_details?: { 
-        trigger: string, 
-        min_level: number | null, 
-        min_happiness: number | null,
-        item?: string,
-        held_item?: string,
-        gender: number | null,
-    }[],
+    evolution_details?: EvolutionMethod[],
 }

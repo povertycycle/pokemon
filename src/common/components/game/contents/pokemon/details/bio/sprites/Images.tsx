@@ -6,10 +6,11 @@ import Cries from "./Cries";
 import Selector from "./Selector";
 
 type ImagesProps = {
-    options: Sprites
+    options: Sprites,
+    gen: string,
 }
 
-const Images: React.FC<ImagesProps> = ({ options }) => {
+const Images: React.FC<ImagesProps> = ({ options, gen }) => {
     const { details, palette } = useContext(DetailsContext);
     const [url, setURL] = useState<string>("");
     const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -32,7 +33,7 @@ const Images: React.FC<ImagesProps> = ({ options }) => {
 
     return (
         <div className="flex flex-col relative shadow-base-black">
-            <div className="w-[384px] aspect-square relative z-[1] overflow-hidden p-8 flex items-center justify-center" style={{ border: `2px solid ${palette[0]}` }}>
+            <div className="w-[20vw] aspect-square relative z-[1] overflow-hidden p-8 flex items-center justify-center" style={{ border: `2px solid ${palette[0]}` }}>
                 <div className="w-full h-full absolute z-[0] bg-black/25 top-0 left-0" />
                 {
                     !url ?
@@ -41,7 +42,7 @@ const Images: React.FC<ImagesProps> = ({ options }) => {
                 }
                 <Cries audioRef={audioRef} />
             </div>
-            <Selector options={options} url={url} setURL={setURL} />
+            <Selector options={options} url={url} setURL={setURL} gen={gen} />
         </div>
     )
 }

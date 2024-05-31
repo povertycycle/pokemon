@@ -1,27 +1,33 @@
+import { trimUrl } from "@/common/utils/trimUrl";
 import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_EVOLUTION, BASE_API_URL_SPECIES } from "../constants";
+import { BASE_API_URL_EVOLUTION } from "../constants";
 import { EvolutionChain } from "../contents/pokemon/interfaces/evolution";
 import { POKEMON_DB, Stores } from "./db";
 
+const namedKeys = ["trigger", "party_type", "known_move_type", "location"];
 
-function getChainData(chains: any[], acc: EvolutionChain[][]): EvolutionChain[][] {
+function getChainData(chains: any[], acc: EvolutionChain[][], baby_item?: string): EvolutionChain[][] {
     if (chains.length <= 0) return acc;
 
     let newAcc = acc.concat([chains.map(c => ({
-        is_baby: c.is_baby,
-        species_id: c.species.url.replaceAll(BASE_API_URL_SPECIES, "").replaceAll("/", ""),
+        ...(c.is_baby && {is_baby: baby_item === "-1" ? "" : baby_item}),
+        species_id: trimUrl(c.species.url),
         ...(c.evolution_details.length > 0 ? {
-            evolution_details: c.evolution_details.map((d: any) => ({
-                trigger: d.trigger?.name,
-                min_level: d.min_level,
-                min_happiness: d.min_happiness,
-                item: d?.item?.name,
-                held_item: d?.held_item?.name,
-                gender: d?.gender,
-            }))
+            evolution_details: c.evolution_details.map((d: any) => (
+                Object.entries(d as {[key: string]: any}).reduce((acc: {[key: string]: string | boolean | number}, [key, value]) => {
+                    if (value) {
+                        if (namedKeys.includes(key)) {
+                            acc[key] = value.name
+                        } else if (typeof value === 'object' && !!value.url) {
+                            acc[key] = trimUrl(value.url)
+                        } else {
+                            acc[key] = value;
+                        }
+                    }
+                    return acc;
+                }, {})))
         } : undefined)
     }))]);
-
     return getChainData(chains.reduce((a, c) => (a.concat(c.evolves_to)), []), newAcc);
 }
 
@@ -29,10 +35,9 @@ function fetchEvolutionData(chain: string): Promise<EvolutionChain[][]> {
     return new Promise(result => {
         fetch(`${BASE_API_URL_EVOLUTION}/${chain}`).then(res => {
             if (!res.ok) throw new Error("Failed to fetch data from API");
-    
             return res.json();
         }).then(res => {
-            const evolData = getChainData([res.chain], [])
+            const evolData = getChainData([res.chain], [], trimUrl(res.baby_trigger_item?.url))
             if (evolData.length > 10) throw new Error("Maximum depths reached")
             result(evolData);
         }).catch(err => {
@@ -48,7 +53,7 @@ export function fetchEvolutionChain(chain: string): Promise<EvolutionChain[][]> 
         request.onsuccess = () => {
             let db: IDBDatabase = request.result;
             const evolTx = db.transaction(Stores.Evolution, 'readonly');
-
+            
             if (cacheIsAllowed()) {
                 const evolutionData = evolTx.objectStore(Stores.Evolution).get(chain);
                 

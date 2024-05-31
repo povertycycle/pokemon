@@ -14,7 +14,7 @@ const Sprites: React.FC<SpritesProps> = ({ data }) => {
     return (
         <div className="flex justify-end shrink-0 h-fit">
             <Navigation sprites={data} active={active} setActive={setActive} />
-            <Images options={active === OTHERS ? data.others : data.versions[active]} />
+            <Images options={active === OTHERS ? data.others : data.versions[active]} gen={active} />
         </div>
     )
 }

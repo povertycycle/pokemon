@@ -9,11 +9,12 @@ export enum Stores {
 
     Ability = "ability",
     Moves = "moves",
+    Items= "items",
     Validator = "validator",
 }
 
 export const initDB = (): Promise<boolean> => {
-    const version = 2;
+    const version = 4;
 
     return new Promise(res => {
         const request = indexedDB.open(POKEMON_DB, version);
