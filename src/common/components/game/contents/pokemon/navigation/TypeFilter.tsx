@@ -1,8 +1,8 @@
 import { getColorBetween, isDark } from "@/common/utils/colors";
-import { MutableRefObject, useEffect, useRef, useState } from "react";
-import { FILTER_TYPE_COLORS } from "../constants";
-import Logic from "./Logic";
+import { useState } from "react";
 import { useDropdown } from "../../../hooks/useDropdown";
+import Logic from "./Logic";
+import { TYPE_COLORS } from "../types/constants";
 
 type TypeFilterProps = {
     filter: (type: string | null, section: 0 | 1) => void
@@ -12,9 +12,9 @@ type TypeFilterProps = {
 const TypeFilter: React.FC<TypeFilterProps> = ({ filter, toggle }) => {
     const [typeOne, setTypeOne] = useState<string | null>(null);
     const [typeTwo, setTypeTwo] = useState<string | null>(null);
-    const pool = Object.entries(FILTER_TYPE_COLORS).filter(entries => (entries[0] !== typeOne && entries[0] !== typeTwo));
-    const firstColor = typeOne ? FILTER_TYPE_COLORS[typeOne] : "#d9d9d9";
-    const secondColor = typeTwo ? FILTER_TYPE_COLORS[typeTwo] : "#d9d9d9";
+    const pool = Object.entries(TYPE_COLORS).filter(entries => (entries[0] !== typeOne && entries[0] !== typeTwo));
+    const firstColor = typeOne ? TYPE_COLORS[typeOne] : "#d9d9d9";
+    const secondColor = typeTwo ? TYPE_COLORS[typeTwo] : "#d9d9d9";
 
     const setFirst = (type: string | null) => {
         filter(type, 0);
@@ -43,7 +43,7 @@ type DropdownProps = {
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ type, setType, pool, left }) => {
-    const color = (type && isDark(FILTER_TYPE_COLORS[type])) ? "text-white" : "text-black";
+    const color = (type && isDark(TYPE_COLORS[type])) ? "text-white" : "text-black";
     const { menu, toggle, closeMenu, ref } = useDropdown();
 
     return (

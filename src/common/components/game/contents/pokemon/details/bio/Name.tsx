@@ -1,8 +1,8 @@
 import Typewriter from "../../../../utils/Typewriter";
 import { useContext } from "react";
 import { DetailsContext } from "../contexts";
-import { FILTER_TYPE_COLORS } from "../../constants";
 import { capitalize } from "@/common/utils/capitalize";
+import { TYPE_COLORS } from "../../types/constants";
 
 type NameProps = {
     name?: string | null,
@@ -60,7 +60,7 @@ const Types: React.FC<{ types: string[] }> = ({ types }) => {
         <div className="flex gap-1 text-base-white p-[2px]">
             {
                 types.map((t: string, i: number) => (
-                    <div key={i} className={`w-full h-[24px] shadow-[inset_0_0_4px_2px_#00000080] flex items-center justify-center ${i === 0 ? "rounded-bl-[8px]" : ""} ${i === types.length - 1 ? "rounded-br-[8px]" : ""}`} style={{ background: FILTER_TYPE_COLORS[t] }}>
+                    <div key={i} className={`w-full h-[24px] shadow-[inset_0_0_4px_2px_#00000080] flex items-center justify-center ${i === 0 ? "rounded-bl-[8px]" : ""} ${i === types.length - 1 ? "rounded-br-[8px]" : ""}`} style={{ background: TYPE_COLORS[t] }}>
                         <span className="drop-shadow-[0_0_2px_black]">{t.toUpperCase()}</span>
                     </div>
                 ))

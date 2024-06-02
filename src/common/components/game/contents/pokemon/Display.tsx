@@ -3,6 +3,7 @@ import Expander from "./Expander";
 import Details from "./details/Details";
 import Navigation from "./navigation/Navigation";
 import { Pokemon } from "./interfaces/pokemon";
+import ScrollNavigator from "./shortcuts/ScrollNavigator";
 
 type DisplayProps = {
     pokemons: Pokemon[]

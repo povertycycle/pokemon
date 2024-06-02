@@ -1,3 +1,4 @@
+import { SHORTCUT_WIDTH } from "../../constants";
 import { SpeciesData } from "../../interface";
 import { SpritesData } from "../../interfaces/sprites";
 import HeldItems from "./held-items/HeldItems";
@@ -16,7 +17,7 @@ type BioProps = {
 
 const Bio: React.FC<BioProps> = ({ primary, data, species, held_items }) => {
     return (
-        <div className="w-full flex justify-end">
+        <div className="w-full flex justify-end" style={{ paddingRight: `${SHORTCUT_WIDTH / 2}px` }}>
             <div className="w-full flex flex-col">
                 <Species {...species} />
                 <div className="w-full flex gap-[52px] z-[1] pr-2">

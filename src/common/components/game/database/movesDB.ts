@@ -3,13 +3,12 @@ import { cacheIsAllowed } from "../../home/cache/utils";
 import { BASE_API_URL_MACHINES, BASE_API_URL_MOVES } from "../constants";
 import { MoveData } from "../contents/pokemon/interfaces/moves";
 import { POKEMON_DB, Stores } from "./db";
+import { errorCheck } from "@/common/utils/errorCheck";
 
 function fetchMoveData(id: string): Promise<{ name: string, data: MoveData | null }> {
     return new Promise(result => {
         fetch(`${BASE_API_URL_MOVES}/${id}`).then(res => {
-            if (!res.ok) throw new Error("Failed to fetch data from API");
-    
-            return res.json();
+            return errorCheck(res);
         }).then(res => {
             let eE = res.effect_entries.find((e: any) => e.language.name === "en");            
             let moveName = res.name;

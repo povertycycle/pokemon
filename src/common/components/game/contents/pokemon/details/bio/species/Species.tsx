@@ -3,7 +3,6 @@ import { DetailsContext } from "../../contexts";
 import Effectiveness from "./Effectiveness";
 import Genera from "./Genera";
 import Varieties from "./Varieties";
-import PokedexNo from "./PokedexNo";
 
 type SpeciesProps = {
     varieties: string[];

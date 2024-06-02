@@ -1,29 +1,29 @@
+import { errorCheck } from "@/common/utils/errorCheck";
 import { cacheIsAllowed } from "../../home/cache/utils";
 import { BASE_API_URL_ABILITY } from "../constants";
 import { AbilityDetails } from "../contents/pokemon/interfaces/ability";
 import { POKEMON_DB, Stores } from "./db";
 
-function fetchAbilityData(id: string, pokemon: string): Promise<{ name: string, data: AbilityDetails | null, isHidden: boolean }> {
+function fetchAbilityData(id: string, pokemon: string): Promise<AbilityDetails | null> {
     return new Promise(result => {
         fetch(`${BASE_API_URL_ABILITY}/${id}`).then(res => {
-            if (!res.ok) throw new Error("Failed to fetch data from API");
-    
-            return res.json();
+            return errorCheck(res);
         }).then(res => {
-            let eE =  res.effect_entries.find((e: any) => (e.language.name === "en"));
-            let h = res.pokemon.find((p: any) => (p.pokemon.name === pokemon))?.is_hidden
+            let eE =  res.effect_entries?.find((e: any) => (e.language.name === "en"));
+            let h = res.pokemon.find((p: any) => (p.pokemon.name === pokemon))?.is_hidden;
             const abilityData = {
                 ...(!res.is_main_series && { not_main_series: true }),
-                effect_entries: { effect: eE?.effect, short_effect: eE?.short_effect },
+                flavor_text: res?.flavor_text_entries?.filter((fTE: any) => (fTE.language.name === "en"))?.at(-1)?.flavor_text ?? "-",
+                ...(eE?.effect &&  { effect: eE.effect }),
             }
-            result({ name: res.name, data: abilityData, isHidden: h });
+            result({ name: res.name, is_hidden: h, data: abilityData });
         }).catch(err => {
-            result({ name: "", data: null, isHidden: false });
+            result(null);
         })
     })
 }
 
-export function getAbilityData(id: string, pokemon: string, pokeId: string): Promise<{ name: string, data: AbilityDetails | null, isHidden: boolean }> {
+export function getAbilityData(id: string, pokemon: string, pokeId: string): Promise<AbilityDetails | null> {
     return new Promise(result => {
         const request = indexedDB.open(POKEMON_DB);
 
@@ -36,20 +36,28 @@ export function getAbilityData(id: string, pokemon: string, pokeId: string): Pro
                 
                 abilityData.onsuccess = () => {
                     if (abilityData.result?.data) {
-                        result({ name: abilityData.result.name, data: abilityData.result?.data, isHidden: abilityData.result.pokemons.find((p: any) => (p.id === pokeId))?.isHidden ?? false });
+                        result({ name: abilityData.result.name, data: abilityData.result.data, is_hidden: abilityData.result.pokemons.find((p: any) => (p.id === pokeId))?.is_hidden ?? false });
                     } else {
                         fetchAbilityData(id, pokemon).then(res => {
-                            db.transaction(Stores.Ability, 'readwrite').objectStore(Stores.Ability).put({
-                                ...abilityData.result,
-                                data: res.data
-                            }, id);
-                            result(res);
+                            if (res?.data) {
+                                db.transaction(Stores.Ability, 'readwrite').objectStore(Stores.Ability).put({
+                                    ...abilityData.result,
+                                    data: res.data,
+                                }, id);
+                                result(res);
+                            } else {
+                                result(null);
+                            }
+                        }).catch(err => {
+                            result(null)
                         })
                     }
                 }
             } else {
                 fetchAbilityData(id, pokemon).then(res => {
                     result(res);
+                }).catch(err => {
+                    result(null)
                 });
             }
         }

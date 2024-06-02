@@ -3,6 +3,8 @@ import React, { ReactNode, useContext } from "react"
 import { DetailsContext } from "../../contexts"
 import { EGG_GROUPS_NAMES } from "./constants"
 import { SHAPE_ICONS } from "./Icons"
+import { shortcutID } from "@/common/utils/shortcut"
+import { Shortcuts } from "../../../shortcuts/constants"
 
 type TrainingProps = {
     capture_rate: number,
@@ -43,7 +45,7 @@ const Training: React.FC<TrainingProps> = ({ capture_rate, hatch_counter, growth
 
     const Header: React.FC<{ title: string, title2: string, children: ReactNode }> = ({ title, title2, children }) => {
         return (
-            <div className={`w-full flex flex-col`}>
+            <div id={shortcutID(Shortcuts.Bio)} className={`w-full flex flex-col`}>
                 <div className="w-full flex justify-between">
                     <div className="text-[1.25rem] text-base-white bg-black/50 px-4 border-b" style={{ borderColor: palette[0] }}>{title}</div>
                     <div className="text-[1.25rem] text-base-white bg-black/50 px-4 border-b" style={{ borderColor: palette[0] }}>{title2}</div>
@@ -59,8 +61,8 @@ const Training: React.FC<TrainingProps> = ({ capture_rate, hatch_counter, growth
         <div className="flex flex-col border-r-2 overflow-hidden w-full mt-16 pl-12 h-fit items-end gap-4" style={{ color: colors[1], borderColor: palette[0] }}>
             <div className="w-full flex flex-col gap-2">
                 <Header title="Capture Rate" title2="Egg Cycles">
-                    <span>{capture_rate} <span title="Chance to capture at full HP with a pokeball" className="underline text-base cursor-help">{Math.round(captureRate(capture_rate) * 10000) / 100}%</span></span>
-                    <span>{hatch_counter} <span className="underline cursor-help text-base" title="Sword, Shield, Scarlet, and Violet">{128 * hatch_counter} Steps</span></span>
+                    <span>{capture_rate} <span title="Chance to capture at full HP with a pokeball" className="underline decoration-dotted text-base cursor-help">{Math.round(captureRate(capture_rate) * 10000) / 100}%</span></span>
+                    <span>{hatch_counter} <span className="underline decoration-dotted cursor-help text-base" title="Sword, Shield, Scarlet, and Violet">{128 * hatch_counter} Steps</span></span>
                 </Header>
                 <Header title="Base Friendship" title2="Exp Yield">
                     <span>{measurements.base_happiness}</span>

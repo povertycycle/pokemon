@@ -6,11 +6,11 @@ import EvolutionDatabase from "../evolution/EvolutionDatabase";
 import EncounterDatabase from "../encounter/EncounterDatabase";
 import MachineDatabase from "../machine/MachineDatabase";
 import MovesDatabase from "../moves/MovesDatabase";
-import ItemsDatabase from "../items/ItemsDatabase";
+import ItemsDatabase from "./items/ItemsDatabase";
 import BerryDatabase from "../berry/BerryDatabase";
 import LocationDatabase from "../location/LocationDatabase";
 import GameDatabase from "../game/GameDatabase";
-import { Tab } from "./constants";
+import { Tab } from "./pokemon/details/constants";
 
 const DatabaseDisplay: React.FC = () => {
     const [tab, setTab] = useState<Tab | null>(null);
@@ -39,7 +39,8 @@ const DisplayContainer: React.FC<{ tab: Tab | null }> = ({ tab }) => {
             switch (sel) {
                 case Tab.Pokemon:
                     return <PokemonDatabase />;
-
+                case Tab.Items:
+                    return <ItemsDatabase />;
 
 
                 case Tab.Evolution:
@@ -48,8 +49,6 @@ const DisplayContainer: React.FC<{ tab: Tab | null }> = ({ tab }) => {
                     return <MachineDatabase />;
                 case Tab.Moves:
                     return <MovesDatabase />;
-                case Tab.Items:
-                    return <ItemsDatabase />;
                 case Tab.Berries:
                     return <BerryDatabase />;
                 case Tab.X:

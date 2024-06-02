@@ -15,10 +15,8 @@ export type MoveData = {
     priority: number,
     power?: number,
     damage_class: string,
-    effect_entries?:{
-        effect: string,
-        short_effect: string,
-    },
+    effect?: string,
+    short_effect?: string,
     flavor_text_entries?: {
         flavor_text: string,
         version: string,

@@ -1,8 +1,8 @@
-import { TransitionEvent, useContext, useState } from "react";
+import { useContext } from "react";
 import { DatabaseContext } from "../../contexts";
 import { BerryTabIcon, EvolutionTabIcon, ItemTabIcon, MachineTabIcon, MovesTabIcon, PokemonTabIcon, UnknownTabIcon } from "../Icons";
+import { Tab } from "../pokemon/details/constants";
 import styles from "./animation.module.scss";
-import { Tab } from "../constants";
 
 const Icons: { [key in Tab]: React.ReactElement } = {
     [Tab.Pokemon]: <PokemonTabIcon />,

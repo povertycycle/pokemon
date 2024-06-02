@@ -1,4 +1,4 @@
-import { COMPARATOR, CONTAINER_ID, NAV_ID, NAV_WIDTH, OptionTag } from "../constants";
+import { CONTAINER_ID, NAV_WIDTH } from "../constants";
 import { useRef, memo, SetStateAction, Dispatch } from "react";
 import styles from "./animation.module.scss";
 import Searchbar from "./Searchbar";
@@ -6,6 +6,7 @@ import TypeFilter from "./TypeFilter";
 import Sorter from "./Sorter";
 import List from "./List";
 import { Pokemon } from "../interfaces/pokemon";
+import { COMPARATOR, OptionTag } from "./constants";
 
 type FilterRef = {
     name?: string,
@@ -74,7 +75,7 @@ const Navigation = memo(({ pokemons, pokeId, setPokeId }: NavigationProps) => {
     }
 
     return (
-        <div id={NAV_ID} className={`${styles.navAnimation} overflow-hidden transition-width h-full duration-500`} style={{ width: `${NAV_WIDTH}%` }}>
+        <div className={`${styles.navAnimation} z-[0] shrink-0 overflow-hidden h-full absolute right-0 top-0`} style={{ width: `${NAV_WIDTH}%` }}>
             <div className="w-full h-full flex flex-col gap-4 relative p-4">
                 <h3 className="text-[1.75rem] leading-6 p-1">Pokémons</h3>
                 <div className="w-full flex flex-col gap-2">

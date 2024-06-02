@@ -3,6 +3,7 @@ import { cacheIsAllowed } from "../../home/cache/utils";
 import { BASE_API_URL_EVOLUTION } from "../constants";
 import { EvolutionChain } from "../contents/pokemon/interfaces/evolution";
 import { POKEMON_DB, Stores } from "./db";
+import { errorCheck } from "@/common/utils/errorCheck";
 
 const namedKeys = ["trigger", "party_type", "known_move_type", "location"];
 
@@ -11,7 +12,7 @@ function getChainData(chains: any[], acc: EvolutionChain[][], baby_item?: string
 
     let newAcc = acc.concat([chains.map(c => ({
         ...(c.is_baby && {is_baby: baby_item === "-1" ? "" : baby_item}),
-        species_id: trimUrl(c.species.url),
+        species: c.species.name,
         ...(c.evolution_details.length > 0 ? {
             evolution_details: c.evolution_details.map((d: any) => (
                 Object.entries(d as {[key: string]: any}).reduce((acc: {[key: string]: string | boolean | number}, [key, value]) => {
@@ -34,8 +35,7 @@ function getChainData(chains: any[], acc: EvolutionChain[][], baby_item?: string
 function fetchEvolutionData(chain: string): Promise<EvolutionChain[][]> {
     return new Promise(result => {
         fetch(`${BASE_API_URL_EVOLUTION}/${chain}`).then(res => {
-            if (!res.ok) throw new Error("Failed to fetch data from API");
-            return res.json();
+            return errorCheck(res);
         }).then(res => {
             const evolData = getChainData([res.chain], [], trimUrl(res.baby_trigger_item?.url))
             if (evolData.length > 10) throw new Error("Maximum depths reached")

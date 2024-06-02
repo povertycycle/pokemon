@@ -4,18 +4,21 @@ import React, { memo, useEffect, useState } from "react";
 import { getPokemonById, processSecondaryData } from "../../../database/pokemonDB";
 import { fetchSpeciesDetails } from "../../../database/speciesDB";
 import Loading from "../../../utils/Loading";
-import { DISPLAY_ID, NAV_WIDTH } from "../constants";
+import { DISPLAY_ID, NAV_WIDTH, SCROLL_ID } from "../constants";
 import { SpeciesData } from "../interface";
 import { Pokemon, SecondaryData } from "../interfaces/pokemon";
+import ScrollNavigator from "../shortcuts/ScrollNavigator";
 import DataCorrupted from "./DataCorrupted";
+import Abilities from "./abilities/Abilities";
 import Bio from "./bio/Bio";
 import Name from "./bio/Name";
 import EvolutionDisplay from "./bio/evolution/EvolutionDisplay";
 import FlavorTexts from "./bio/species/FlavorTexts";
 import { PokePayload } from "./constants";
 import { DetailsContext } from "./contexts";
-import Abilities from "./abilities/Abilities";
+import Encounters from "./encounters/LocationEncounters";
 import Moves from "./moves/Moves";
+import BugReporting from "../bug-reporting/BugReporting";
 
 const Details: React.FC<{ pokeId: string | null }> = ({ pokeId }) => {
     const [data, setData] = useState<PokePayload>({});
@@ -54,15 +57,17 @@ const Details: React.FC<{ pokeId: string | null }> = ({ pokeId }) => {
     }, [pokeId]);
 
     return (
-        <div id={DISPLAY_ID} className="h-full flex flex-col bg-black transition-width duration-500 relative" style={{ width: `${100 - NAV_WIDTH}%` }}>
-            {
-                !data.main || !data.secondary || !data.species ?
-                    <DataCorrupted pokemon={pokeId} data={data} /> :
-                    <>
-                        {loading && <div className="fixed z-[100] w-screen h-screen bg-black/50"><Loading /></div>}
-                        <Displayer data={{ main: data.main, secondary: data.secondary, species: data.species }} palette={palette} />
-                    </>
-            }
+        <div id={DISPLAY_ID} className="h-full flex absolute left-0 top-0 z-[1] transition-width duration-[500ms]" style={{ width: `${100 - NAV_WIDTH}%` }}>
+            <div className="h-full flex flex-col bg-black w-full">
+                {
+                    !data.main || !data.secondary || !data.species ?
+                        <DataCorrupted pokemon={pokeId} data={data} /> :
+                        <>
+                            {loading && <div className="fixed z-[100] w-screen h-screen bg-black/50"><Loading /></div>}
+                            <Displayer data={{ main: data.main, secondary: data.secondary, species: data.species }} palette={palette} />
+                        </>
+                }
+            </div>
         </div>
     )
 }
@@ -84,32 +89,19 @@ const Displayer = memo(({ data, palette }: DisplayerProps) => {
     return (
         <DetailsContext.Provider value={{ details: main, palette, colors: palette.map(p => isDark(p) ? "#f0f0f0" : "#000000") }}>
             <Name name={main.name} species={main.species} index={main.index} types={main.types} />
-            <div className={`w-full z-[0] h-screen flex flex-col relative`} style={{ background: palette[1], color: isDark(palette[1]) ? "white" : "black" }}>
+            <div className={`w-full z-[0] h-screen flex relative overflow-x-hidden`} style={{ background: palette[1], color: isDark(palette[1]) ? "white" : "black" }}>
                 <div className="w-full h-full absolute z-[0] left-0 top-0 bg-black/25" />
-                <div className={`w-full flex flex-col justify-start items-start relative z-[1] pr-[2px] pl-4 gap-8 h-full overflow-y-scroll ${styles.overflowWhite}`}>
-                    <Bio data={secondary.spritesData} species={species} primary={{ base_experience: main.base_experience, height: main.height, weight: main.weight }} held_items={main.held_items} />
-                    <Abilities />
-                    <Moves moveVersions={secondary.moveVersions} />
-
-
-
-                    <EvolutionDisplay chain={species.evolution_chain} />
-
-
-
-
-
-
-
-
-
-                    <FlavorTexts entries={species.flavor_text_entries} />
-                    {/* pal_park_encounters: {area: string, base_score: number, rate: number}[], */}
-
-
-
-                    {/* <div className="w-full h-[40vh] flex flex-col justify-start items-start gap-8 px-4 mt-8 relative z-[1]">
-            </div> */}
+                <div className={`w-full flex h-full`}>
+                    <div id={SCROLL_ID} className={`w-full flex flex-col justify-start items-start relative z-[1] pl-4 gap-8 h-full overflow-y-scroll ${styles.overflowWhite}`}>
+                        <Bio data={secondary.spritesData} species={species} primary={{ base_experience: main.base_experience, height: main.height, weight: main.weight }} held_items={main.held_items} />
+                        <Abilities />
+                        <Moves moveVersions={secondary.moveVersions} />
+                        <Encounters pal_park={species.pal_park_encounters} />
+                        <EvolutionDisplay chain={species.evolution_chain} />
+                        <FlavorTexts entries={species.flavor_text_entries} />
+                        <BugReporting />
+                    </div>
+                    <ScrollNavigator />
                 </div>
             </div>
         </DetailsContext.Provider>

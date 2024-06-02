@@ -22,3 +22,24 @@ export const TYPE_EFFECTIVENESS: {[key: string]: Effectiveness} = {
     "dark": { "fighting": 2, "bug": 2, "ghost": 0.5, "psychic": 0, "dark": 0.5, "fairy": 2 },
     "fairy": { "fighting": 0.5, "poison": 2, "bug": 0.5, "steel": 2, "dragon": 0, "dark": 0.5 }
 }
+
+export const TYPE_COLORS: { [key: string]: string } = {
+    bug: "#91A119",
+    dark: "#624D4E",
+    dragon: "#5060E1",
+    electric: "#FAC000",
+    fairy: "#EF70EF",
+    fighting: "#FF8000",
+    fire: "#E62829",
+    flying: "#81B9EF",
+    ghost: "#704170",
+    grass: "#3FA129",
+    ground: "#915121",
+    ice: "#3DCEF3",
+    normal: "#9FA19F",
+    rock: "#AFA981",
+    steel: "#60A1B8",
+    poison: "#9141CB",
+    psychic: "#EF4179",
+    water: "#2980EF",
+}

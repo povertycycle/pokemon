@@ -1,9 +1,10 @@
 import styles from "@/common/styles/custom.module.scss";
 import { Dispatch, memo, SetStateAction } from "react";
-import { CONTAINER_ID, FILTER_TYPE_COLORS } from "../constants";
+import { CONTAINER_ID } from "../constants";
 import { Pokemon } from "../interfaces/pokemon";
 import { isDark } from "@/common/utils/colors";
 import { capitalize } from "@/common/utils/capitalize";
+import { TYPE_COLORS } from "../types/constants";
 
 function displayPokemonName(name: string, species: string) {
     let identifiers = name.replace(species, "").split("-");
@@ -20,7 +21,7 @@ function displayPokemonName(name: string, species: string) {
 
 const List: React.FC<{ pokemons: Pokemon[], pokeId: string | null, setPokeId: Dispatch<SetStateAction<string | null>> }> = ({ pokeId, setPokeId, pokemons }) => {
     return (
-        <div id={CONTAINER_ID} className={`${styles.overflow} h-0 bg-base-white grow w-full flex flex-col gap-1 text-base leading-4 overflow-y-scroll shadow-[inset_0_0_4px_black] rounded-tl-[16px] rounded-bl-[4px] rounded-r-[4px]`}>
+        <div id={CONTAINER_ID} className={`${styles.overflow} h-0 bg-base-white grow w-full flex flex-col gap-1 text-base leading-4 overflow-y-scroll overflow-x-hidden shadow-[inset_0_0_4px_black] rounded-tl-[16px] rounded-bl-[4px] rounded-r-[4px]`}>
             {
                 pokemons.map((p: Pokemon, i: number) => (
                     <Option key={i} p={p} pokeId={pokeId} setPokeId={setPokeId} />
@@ -39,7 +40,7 @@ const Option = memo(({ p, pokeId, setPokeId }: { p: Pokemon, pokeId: string | nu
             <div className="absolute right-0 flex gap-1 p-2 text-[0.75rem] h-full">
                 {
                     p.types.map((type: string, i: number) => (
-                        <div key={i} className={`rounded-full flex items-center justify-center px-2 h-full shrink-0`} style={{ background: FILTER_TYPE_COLORS[type], color: isDark(FILTER_TYPE_COLORS[type]) ? "white" : "black" }}>
+                        <div key={i} className={`rounded-full flex items-center justify-center px-2 h-full shrink-0`} style={{ background: TYPE_COLORS[type], color: isDark(TYPE_COLORS[type]) ? "white" : "black" }}>
                             {type.toUpperCase()}
                         </div>
                     ))

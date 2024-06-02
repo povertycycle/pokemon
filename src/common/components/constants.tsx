@@ -13,3 +13,4 @@ export enum PageState {
     Database = 1,
     TCG = 2
 }
+export const MAX_REQUEST_AT_ONCE = 100;

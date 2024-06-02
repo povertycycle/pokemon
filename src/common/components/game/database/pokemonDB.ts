@@ -5,8 +5,11 @@ import { MoveVersions, VersionDetails } from "../contents/pokemon/interfaces/mov
 import { Pokemon, SecondaryData, Stats } from "../contents/pokemon/interfaces/pokemon";
 import { GenSprites, Sprites } from "../contents/pokemon/interfaces/sprites";
 import { POKEMON_DB, Stores, validateDatabase } from "./db";
+import { errorCheck } from "@/common/utils/errorCheck";
+import { MAX_REQUEST_AT_ONCE } from "../../constants";
+import { doBatchProcess } from "./_utils";
 
-type InitAbliity = { pokemons: { id: string, isHidden: boolean }[], name: string };
+type InitAbliity = { pokemons: { id: string, is_hidden: boolean }[], name: string };
 type InitMoves = { pokemons: {[key: string]: {}}, name: string }
 type PokeData = { name: string, url: string }
 type PokeAPIResponse = {
@@ -37,92 +40,50 @@ export async function validatePokemonDatabase(onsuccess: () => void, onfailed: (
 }
 
 export async function updatePokemonDatabase(pokemon: PokeAPIResponse): Promise<boolean> {
-    return new Promise(res => {
-        const initAbilities: {[key: string]: InitAbliity} = {};
-        const initMoves: {[key: string]: InitMoves} = {};
-        Promise.all(pokemon.results.map(async (pokemon: PokeData) => {
-            return fetch(pokemon.url).then(res => {
-                if (!res.ok) throw new Error("Failed to fetch data from API");
-                return res.json();
-            })
-        })).then(res => {
-            const request = indexedDB.open(POKEMON_DB);
-
-            request.onsuccess = () => {
-                const insert = request.result.transaction(Stores.Pokemon, 'readwrite').objectStore(Stores.Pokemon);
-                res.forEach(pokeRes => {
-                    const necessaryData = {
-                        abilities: pokeRes.abilities.map((a: any) => {
-                            let aId = trimUrl(a.ability.url);
-                            const ability = { id: pokeRes.id.toString(), isHidden: a.is_hidden };
-                            if (!initAbilities[aId]) {
-                                initAbilities[aId] = { pokemons: [ability], name: a.ability.name }
-                            } else {
-                                initAbilities[aId].pokemons.push(ability);
-                            }
-                            return aId;
-                        }),
-                        name: pokeRes.name,
-                        id: pokeRes.id.toString(),
-                        index: parseInt(trimUrl(pokeRes.species.url)),
-                        base_experience: pokeRes.base_experience,
-                        cries: pokeRes.cries.latest,
-                        height: pokeRes.height,
-                        held_items: pokeRes.held_items.map((i: any) => (trimUrl(i.item.url))),
-                        main_sprite: pokeRes.sprites.other["official-artwork"]?.front_default ?? pokeRes.sprites.front_default,
-                        moves: pokeRes.moves.map((m: any) => {
-                            let id = trimUrl(m.move.url);
-                            if (!initMoves[id]) {
-                                initMoves[id] = { pokemons: { [pokeRes.id.toString()]: []}, name: m.move.name }
-                            } else {
-                                initMoves[id].pokemons[pokeRes.id.toString()] = [];
-                            }
-
-                            return id;
-                        }),
-                        stats: pokeRes.stats.reduce((acc: Stats, s: any) => {
-                            acc[s.stat.name] = {
-                                base_stat: s.base_stat,
-                                effort: s.effort
-                            }
-                            return acc;
-                        }, {}),
-                        species: pokeRes.species.name,
-                        types: pokeRes.types.map((t: any) => (t.type.name)),
-                        weight: pokeRes.weight
-                    };
-                    insert.add(necessaryData, pokeRes.id.toString());
-                });
+    return new Promise(result => {
+        const request = indexedDB.open(POKEMON_DB);
+        const iA: {[key: string]: InitAbliity} = {};
+        const iM: {[key: string]: InitMoves} = {};
+        function processData(data: any) {
+            const insert = request.result.transaction(Stores.Pokemon, 'readwrite').objectStore(Stores.Pokemon);
+            const necessaryData = {
+                abilities: data.abilities.map((a:any)=>{let aId=trimUrl(a.ability.url);const d={id: data.id.toString(),is_hidden:a.is_hidden};if(!iA[aId]){iA[aId]={pokemons:[d],name:a.ability.name}}else{iA[aId].pokemons.push(d);}return aId;}),
+                name: data.name,
+                id: data.id.toString(),
+                index: parseInt(trimUrl(data.species.url)),
+                base_experience: data.base_experience,
+                cries: data.cries.latest,
+                height: data.height,
+                held_items: data.held_items.map((i:any)=>(trimUrl(i.item.url))),
+                main_sprite: data.sprites.other["official-artwork"]?.front_default ?? data.sprites.front_default,
+                moves: data.moves.map((m: any)=>{let id=trimUrl(m.move.url);if(!iM[id]){iM[id]={pokemons:{[data.id.toString()]:[]},name:m.move.name}}else{iM[id].pokemons[data.id.toString()]=[];}return id;}),
+                stats: data.stats.reduce((acc:Stats,s:any)=>{acc[s.stat.name]={base_stat:s.base_stat,effort:s.effort};return acc;},{}),
+                species: data.species.name,
+                types: data.types.map((t: any) => (t.type.name)),
+                weight: data.weight
             }
-        }).catch(err => {
-            res(false);
-        }).finally(() => {
-            const request = indexedDB.open(POKEMON_DB);
+            insert.add(necessaryData, data.id.toString());
+        }
 
-            request.onsuccess = () => {
-                const insert = request.result.transaction(Stores.Ability, 'readwrite');
-                Object.entries(initAbilities).forEach((entries: [string, InitAbliity]) => {
-                    insert.objectStore(Stores.Ability).put(entries[1], entries[0]);
-                });
-                insert.oncomplete = () => {
-                    const insertMoves = request.result.transaction(Stores.Moves, 'readwrite');
-                    Object.entries(initMoves).forEach((entries: [string, InitMoves]) => {
-                        insertMoves.objectStore(Stores.Moves).put(entries[1], entries[0]);
+        request.onsuccess = () => {
+            doBatchProcess(pokemon.results.map((p: any)=>(p.url)), processData).then(res=> {
+                if (res) {
+                    const txA = request.result.transaction(Stores.Ability, 'readwrite');
+                    const txM = request.result.transaction(Stores.Moves, 'readwrite');
+                    Object.entries(iA).forEach((e:[string,InitAbliity])=>{
+                        txA.objectStore(Stores.Ability).put(e[1],e[0]);
                     });
-
-                    insertMoves.oncomplete = () => {
-                        res(true);
-                    }
+                    Object.entries(iM).forEach((e: [string, InitMoves]) => {
+                        txM.objectStore(Stores.Moves).put(e[1], e[0]);
+                    });
+                    result(true);
+                } else {
+                    result(false);
                 }
-                insert.onabort = () => {
-                    res(false);
-                }
-            }
-            
-            request.onerror = () => {
-                res(false);
-            }
-        })
+            }).catch(err => {
+                result(false);
+            })
+        }
     })
 }
 
@@ -167,9 +128,7 @@ export async function getPokemonById(id: string): Promise<Pokemon | null> {
 function fetchSecondaryData(id: string): Promise<SecondaryData | null> {
     return new Promise(result => {
         fetch(`${BASE_API_URL_POKEMON}/${id}`).then(res => {
-            if (!res.ok) throw new Error("Failed to fetch data from API");
-    
-            return res.json();
+            return errorCheck(res);
         }).then(res => {
             const resSprites = res.sprites;
             const spritesData = {
@@ -279,9 +238,7 @@ export async function getVarietySprite(id: string): Promise<{name: string, url: 
     function fetchVarietySprite(id: string): Promise<{name: string, url: string}> {
         return new Promise(result => {
             fetch(`${BASE_API_URL_POKEMON}/${id}`).then(res => {
-                if (!res.ok) throw new Error("Failed to fetch data from API");
-        
-                return res.json();
+                return errorCheck(res);
             }).then(res => {
                 result({name: res?.name, url: res?.sprites?.front_default});
             }).catch(err => {

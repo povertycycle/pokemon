@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { OPTIONS, Option, OptionTag } from "../constants";
-
+import { Option, OPTIONS, OptionTag } from "./constants";
 
 const Sorter: React.FC<{ sort: (option: OptionTag) => void }> = ({ sort }) => {
     const [options, setOptions] = useState<boolean>(false);

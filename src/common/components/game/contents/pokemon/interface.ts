@@ -1,3 +1,9 @@
+export type PalParkData = {
+    area: string,
+    base_score: number,
+    rate: number
+}
+
 export type SpeciesData = {
     base_happiness: number,
     capture_rate: number,
@@ -16,6 +22,6 @@ export type SpeciesData = {
     is_legendary: boolean,
     is_mythical: boolean,
     evolution_chain: string,
-    pal_park_encounters: {area: string, base_score: number, rate: number}[],
+    pal_park_encounters: PalParkData[],
     pokedex_numbers: {pokedex: string, entry_number: number}[],
 }

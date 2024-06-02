@@ -1,6 +1,10 @@
-import { useContext } from "react"
-import { DetailsContext } from "../../contexts"
-import styles from "@/common/styles/custom.module.scss";
+import { shortcutID } from "@/common/utils/shortcut";
+import { useContext } from "react";
+import { Shortcuts } from "../../../shortcuts/constants";
+import { getGameColors } from "../../_utils/getGameColors";
+import { getGameName } from "../../_utils/getGameName";
+import { DetailsContext } from "../../contexts";
+import { SENTENCES_REGEX } from "@/common/components/game/constants";
 
 type FlavorTextsProps = {
     entries: {
@@ -10,17 +14,29 @@ type FlavorTextsProps = {
 }
 
 const FlavorTexts: React.FC<FlavorTextsProps> = ({ entries }) => {
-    const { palette, colors } = useContext(DetailsContext);
+    const { palette } = useContext(DetailsContext);
 
     return (
-        <div className={`flex flex-col w-full h-[256px]`}>
-            <div className="px-12 text-[1.25rem] w-fit" style={{ background: palette[0], color: colors[0] }}>Entries</div>
-            <div className={`w-full flex flex-col border-l-2 overflow-y-auto ${styles.overflowWhite}`} style={{ borderColor: palette[0] }}>
+        <div id={shortcutID(Shortcuts.Flavors)} className={`flex flex-col w-full items-center gap-8`}>
+            <div className="px-32 text-[1.5rem] w-fit flex justify-center bg-black/50 text-base-white border-y" style={{ borderColor: palette[0] }}>Entries</div>
+            <div className={`flex flex-col gap-8`}>
                 {
                     entries.map(({ version, text }, i: number) => (
-                        <div key={i} className={`w-full flex items-center gap-1 ${i % 2 === 0 ? "bg-black/15" : ""}`}>
-                            <div className="h-full flex text-[1.125rem] items-center justify-start w-[212px] shrink-0 px-4">{version.split("-").map(t => `${t.charAt(0).toUpperCase()}${t.slice(1)}`).join(" ")}</div>
-                            <p className="border-l-2 p-2 font-mono leading-5 text-base tracking-[0.5px]" style={{ borderColor: palette[0] }}>{text.replace("\u000c", " ")}</p>
+                        <div key={i} className={`flex items-center flex-col`}>
+                            <div className="h-full flex text-[1.25rem] items-center justify-start px-16" style={{ background: getGameColors(version) }}>
+                                <span className="drop-shadow-[0_0_2px_black]">{getGameName(version)}</span>
+                            </div>
+                            <span className="px-4 py-2 max-w-[70%] text-center italic leading-5 text-[1.5rem] tracking-[1px] border-y bg-black/25 flex flex-col" style={{ borderColor: palette[0] }}>
+                                <span className="text-start">{"\u201C"}</span>
+                                <div className="flex flex-col text-[1.125rem]">
+                                    {
+                                        text?.match(SENTENCES_REGEX)?.map(((t: string, j: number) => (
+                                            <span key={j}>{t.replace("\u000c", " ")}</span>
+                                        )))
+                                    }
+                                </div>
+                                <span className="text-end">{"\u201D"}</span>
+                            </span>
                         </div>
                     ))
                 }

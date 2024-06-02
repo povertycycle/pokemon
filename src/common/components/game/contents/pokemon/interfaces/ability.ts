@@ -1,4 +1,11 @@
-export type AbilityDetails = {
+export type AbilityData = {
+    flavor_text: string,
     not_main_series?: boolean,
-    effect_entries: { effect: string, short_effect: string },
+    effect?: string,
+}
+
+export type AbilityDetails = {
+    name: string,
+    is_hidden: boolean,
+    data: AbilityData
 }

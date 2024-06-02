@@ -1,7 +1,8 @@
 import React, { useContext } from "react"
-import { FILTER_TYPE_COLORS } from "../../../constants"
-import { TYPE_EFFECTIVENESS } from "../../../types/constants"
+import { TYPE_COLORS, TYPE_EFFECTIVENESS } from "../../../types/constants"
 import { DetailsContext } from "../../contexts"
+import { shortcutID } from "@/common/utils/shortcut"
+import { Shortcuts } from "../../../shortcuts/constants"
 
 type EffectivenessProps = {
     types?: string[],
@@ -12,7 +13,7 @@ const Effectiveness: React.FC<EffectivenessProps> = ({ types }) => {
     const effectiveness = generateEffectiveness(types);
 
     return (
-        <div className={`flex w-full flex-col mt-12 relative z-[1] gap-4`}>
+        <div id={shortcutID(Shortcuts.Effectiveness)} className={`flex w-full flex-col mt-12 relative z-[1] gap-8`}>
             <div className="px-4 text-[1.5rem] w-full flex justify-center bg-black/50 text-base-white border-y" style={{ borderColor: palette[0] }}>Effectiveness</div>
             <div className="w-fit max-w-full flex flex-col py-4 gap-4 pr-2">
                 {
@@ -55,7 +56,7 @@ const Information: React.FC<{ types: string[], t: string, b: string, c: string, 
                                 } else if (type2) {
                                     type2.click();
                                 }
-                            }} className={`px-4 border-2 group-hover/select:translate-y-[-6px] transition-transform shadow-base-black h-[36px] cursor-pointer rounded-[6px] flex items-center justify-center`} style={{ background: FILTER_TYPE_COLORS[t] }}>
+                            }} className={`px-4 border-2 group-hover/select:translate-y-[-6px] transition-transform shadow-base-black h-[36px] cursor-pointer rounded-[6px] flex items-center justify-center`} style={{ background: TYPE_COLORS[t] }}>
                                 <span className="text-base-white drop-shadow-[0_0_4px_black]">{t.toUpperCase()}</span>
                             </div>
                         </div>

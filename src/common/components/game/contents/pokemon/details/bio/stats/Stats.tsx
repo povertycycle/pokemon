@@ -1,13 +1,15 @@
 import { useContext } from "react";
 import StatsDetails from "./StatsDetails";
 import { DetailsContext } from "../../contexts";
+import { shortcutID } from "@/common/utils/shortcut";
+import { Shortcuts } from "../../../shortcuts/constants";
 
 const Stats: React.FC = () => {
     const { details, palette } = useContext(DetailsContext);
 
     return (
         details &&
-        <div className="flex flex-col w-full items-end mt-[50px] border-y-2 border-r-2 ml-[-16px]" style={{ borderColor: palette[0] }}>
+        <div id={shortcutID(Shortcuts.Stats)} className="flex flex-col w-full items-end mt-[50px] border-y-2 border-r-2 ml-[-16px]" style={{ borderColor: palette[0] }}>
             <div className="w-full flex flex-col">
                 {
                     [

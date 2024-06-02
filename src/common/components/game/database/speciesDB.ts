@@ -3,13 +3,12 @@ import { cacheIsAllowed } from "../../home/cache/utils";
 import { BASE_API_URL_SPECIES } from "../constants";
 import { SpeciesData } from "../contents/pokemon/interface";
 import { POKEMON_DB, Stores } from "./db";
+import { errorCheck } from "@/common/utils/errorCheck";
 
 function fetchSpeciesData(species: string): Promise<SpeciesData | null> {
     return new Promise(result => {
         fetch(`${BASE_API_URL_SPECIES}/${species}`).then(res => {
-            if (!res.ok) throw new Error("Failed to fetch data from API");
-    
-            return res.json();
+            return errorCheck(res);
         }).then(res => {
             const speciesData = {
                 id: res.id,

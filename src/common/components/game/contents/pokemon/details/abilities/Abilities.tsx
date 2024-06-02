@@ -3,16 +3,19 @@ import styles from "@/common/styles/custom.module.scss";
 import { capitalize } from "@/common/utils/capitalize";
 import { useContext, useEffect, useState } from "react";
 import Typewriter from "../../../../utils/Typewriter";
-import { AbilityDetails } from "../../interfaces/ability";
 import { DetailsContext } from "../contexts";
 import { SENTENCES_REGEX } from "@/common/components/game/constants";
 import Loading from "../Loading";
+import { SHORTCUT_WIDTH } from "../../constants";
+import { shortcutID } from "@/common/utils/shortcut";
+import { Shortcuts } from "../../shortcuts/constants";
+import { AbilityData } from "../../interfaces/ability";
 
 const Abilities: React.FC = () => {
     const { details, palette } = useContext(DetailsContext);
     return (
         details ?
-            <div className="w-full ml-[-2px] mt-24 flex justify-center">
+            <div id={shortcutID(Shortcuts.Abilities)} className="w-full ml-[-2px] mt-16 flex justify-center" style={{ paddingRight: `${SHORTCUT_WIDTH / 2}px` }}>
                 <div className="flex flex-col border-2" style={{ borderColor: palette[0] }}>
                     <div className="w-full text-[1.5rem] py-1 flex items-center justify-center bg-black/50 text-base-white" style={{ borderColor: palette[0] }}>
                         Abilities
@@ -21,7 +24,7 @@ const Abilities: React.FC = () => {
                         {
                             details &&
                             details.abilities.map((id: string, i: number) => (
-                                <AbilityData id={id} pokemon={details.name} key={i} />
+                                <Ability id={id} pokemon={details.name} key={i} />
                             ))
                         }
                     </div>
@@ -31,17 +34,19 @@ const Abilities: React.FC = () => {
     )
 }
 
-const AbilityData: React.FC<{ id: string, pokemon: string }> = ({ id, pokemon }) => {
+const Ability: React.FC<{ id: string, pokemon: string }> = ({ id, pokemon }) => {
     const { details, palette, colors } = useContext(DetailsContext);
     const [name, setName] = useState<string | null>(null);
-    const [data, setData] = useState<AbilityDetails | null>(null);
+    const [data, setData] = useState<AbilityData | null>(null);
     const [isHidden, setIsHidden] = useState<boolean | null>(false);
 
     useEffect(() => {
         getAbilityData(id, pokemon, details?.id ?? "-1").then(res => {
-            setName(res.name);
-            setData(res.data);
-            setIsHidden(res.isHidden);
+            if (res) {
+                setName(res.name);
+                setData(res.data);
+                setIsHidden(res.is_hidden);
+            }
         })
     }, [id]);
 
@@ -55,12 +60,12 @@ const AbilityData: React.FC<{ id: string, pokemon: string }> = ({ id, pokemon })
             {
                 <div className="flex flex-col gap-1 bg-black/25 p-2 text-base grow">
                     <span className="italic leading-5 tracking-[0.25px] py-4 text-center">
-                        <Typewriter text={data.effect_entries.short_effect} duration={1} />
+                        <Typewriter text={data.flavor_text ?? "-"} duration={1} />
                     </span>
                     <hr className="h-[2px] w-full shrink-0" style={{ borderColor: palette[0] }} />
                     <div className={`${styles.overflowWhite} max-h-[160px] flex flex-col gap-2 overflow-y-auto font-mono tracking-[-0.5px] leading-[18px] [word-spacing:2px]`}>
                         {
-                            data.effect_entries.effect.match(SENTENCES_REGEX)?.map(((t: string, i: number) => (
+                            data?.effect?.match(SENTENCES_REGEX)?.map(((t: string, i: number) => (
                                 <span key={i}>
                                     <Typewriter text={t} duration={1.5} />
                                 </span>

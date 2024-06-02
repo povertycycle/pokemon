@@ -6,15 +6,16 @@ export enum Stores {
     Sprites = "sprites",
     Species = "species",
     Evolution = "evolution",
-
     Ability = "ability",
     Moves = "moves",
-    Items= "items",
+    Items = "items",
+    Encounters = "encounters",
+    Locations = "locations",
     Validator = "validator",
 }
 
 export const initDB = (): Promise<boolean> => {
-    const version = 4;
+    const version = 5;
 
     return new Promise(res => {
         const request = indexedDB.open(POKEMON_DB, version);
@@ -43,13 +44,13 @@ export const initDB = (): Promise<boolean> => {
     })
 };
 
-export const VALIDATOR_KEY = "PkOq3NuqNXXxgpZZofHHlOc6JcDNKLne";
+export const POKEMON_VALIDATOR_KEY = "PkOq3NuqNXXxgpZZofHHlOc6JcDNKLne";
 export async function validateDatabase(db: IDBDatabase, count: number): Promise<boolean> {
     return new Promise((res, rej) => {
-        const validator = db.transaction(Stores.Validator, 'readonly').objectStore(Stores.Validator).get(VALIDATOR_KEY);
+        const validator = db.transaction(Stores.Validator, 'readonly').objectStore(Stores.Validator).get(POKEMON_VALIDATOR_KEY);
 
         validator.onsuccess = () => {
-            res(count === validator.result);
+            res(count === validator.result?.count);
         }
 
         validator.onerror = () => {
@@ -58,16 +59,17 @@ export async function validateDatabase(db: IDBDatabase, count: number): Promise<
     })
 }
 
-export async function updateValidator(newCount: number): Promise<{count: number} | null> {
+export async function updateValidator(newCount: number): Promise<{count: number, lastFetched: Date} | null> {
     return new Promise(res => {
         const request = indexedDB.open(POKEMON_DB);
 
         request.onsuccess = () => {
             let db: IDBDatabase = request.result;
-            const validatorTx = db.transaction(Stores.Validator, 'readwrite').objectStore(Stores.Validator).put(newCount, VALIDATOR_KEY);
+            let validated = {count: newCount, lastFetched: new Date()}
+            const validatorTx = db.transaction(Stores.Validator, 'readwrite').objectStore(Stores.Validator).put(validated, POKEMON_VALIDATOR_KEY);
     
             validatorTx.onsuccess = () => {
-                res({count: newCount});
+                res(validated);
             }
 
             validatorTx.onerror = () => {

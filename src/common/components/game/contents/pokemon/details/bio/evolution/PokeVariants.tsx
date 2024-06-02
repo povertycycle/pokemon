@@ -1,13 +1,12 @@
+import { getVarietySprite } from "@/common/components/game/database/pokemonDB";
+import { getVariants } from "@/common/components/game/database/speciesDB";
+import { capitalize } from "@/common/utils/capitalize";
 import { useContext, useEffect, useState } from "react";
+import { EggSvg } from "../../../../Icons";
 import { EvolutionChain } from "../../../interfaces/evolution";
 import { DetailsContext } from "../../contexts";
-import { getVariants } from "@/common/components/game/database/speciesDB";
-import { getVarietySprite } from "@/common/components/game/database/pokemonDB";
-import Methods from "./Methods";
-import { capitalize } from "@/common/utils/capitalize";
-import Loading from "@/common/components/game/utils/Loading";
-import { EggSvg } from "../../../../Icons";
 import ImageSprites from "./ImageSprites";
+import Methods from "./Methods";
 
 type PokeVariantsProps = {
     data: EvolutionChain
@@ -19,31 +18,31 @@ const PokeVariants: React.FC<PokeVariantsProps> = ({ data }) => {
     const isBaby = data.is_baby;
 
     useEffect(() => {
-        if (data.species_id) {
-            getVariants(data.species_id).then(res => {
+        if (data.species) {
+            getVariants(data.species).then(res => {
                 Promise.all(res.map(variant => getVarietySprite(variant))).then(res => {
                     setPokemons(res);
                 })
             });
         }
-    }, [data.species_id]);
+    }, [data.species]);
 
     return (
         pokemons.length > 0 &&
         <div className={`flex justify-end text-[1.125rem] ${isBaby ? "max-w-[192px]" : ""}`}>
             {
                 isBaby &&
-                <div className="flex flex-col w-[176px] justify-center items-center text-center pl-[4px] py-4 gap-4 shrink-0 border-y-2 border-l-2 bg-black/15" style={{ borderColor: palette[0] }}>
-                    <div className="text-[1.25rem] leading-5 flex flex-col items-center w-full">
+                <div className="flex flex-col w-[176px] justify-center items-center text-center pl-[4px] py-4 gap-1 shrink-0 border-y-2 border-l-2 bg-black/15" style={{ borderColor: palette[0] }}>
+                    <div className="text-base leading-4 flex flex-col items-center w-full">
                         <div className="flex gap-1 items-center pl-4">
-                            <span title="Prior to Gen XI" className="underline cursor-help">Breed</span>
+                            <span title="Prior to Gen XI" className="underline cursor-help decoration-dotted">Breed</span>
                             <div className="h-[32px] aspect-square py-1 flex justify-center items-center">
                                 <EggSvg />
                             </div>
                         </div>
-                        <span className="text-base leading-4">while holding</span>
+                        <span>while holding</span>
                     </div>
-                    <div className="w-[64px] flex items-center justify-center">
+                    <div className="w-[56px] flex items-center justify-center">
                         <ImageSprites id={isBaby} type="item" />
                     </div>
                 </div>
