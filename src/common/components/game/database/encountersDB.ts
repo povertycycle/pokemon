@@ -5,38 +5,47 @@ import { POKEMON_DB, Stores } from "./db";
 import { EncounterData } from "../contents/pokemon/interfaces/encounters";
 import { errorCheck } from "@/common/utils/errorCheck";
 
-
 function fetchEncounterData(id: string): Promise<EncounterData | null> {
     return new Promise(result => {
         fetch(`${BASE_API_URL_POKEMON}/${id}/encounters`).then(res => {
             return errorCheck(res);
         }).then(res => {
-            const encounters = (res as any[]).reduce((acc: EncounterData, curr: any) => {
-                let loc_id = trimUrl(curr?.location_area?.url);
-                
-                curr?.version_details?.forEach((enc: any) => {
-                    let version = enc?.version?.name;
-                    let encounter = enc?.encounter_details?.map((ed: any) => ({
-                        chance: ed.chance,
-                        ...((ed.condition_values?.length ?? 0) > 0 && { condition: ed.condition_values.map((cv: any) => cv.name) }),
-                        level_range: ed.min_level === ed.max_level ? String(ed.min_level) : `${ed.min_level};${ed.max_level}`,
-                        method: ed.method.name
-                    }))
-
-                    if (acc[version]) {
-                        let encs = acc[version][loc_id];
-                        if (encs) {
-                            enc.push(encounter)
+            result(
+                (res as any[])?.reduce((acc: EncounterData, enc: any) => {
+                    let locId = trimUrl(enc?.location_area?.url);
+                    enc?.version_details?.forEach((gameData: any) => {
+                        let version = gameData?.version?.name;
+                        let encounters = gameData?.encounter_details?.reduce((encAcc:any,ed:any)=> {
+                            let hasSame = false;
+                            let condition = ed?.condition_values.length>0?ed?.condition_values?.map((cv:any)=>cv.name):undefined;
+                            let newEnc = {
+                                chance: ed.chance,
+                                level_range: ed.min_level===ed.max_level?String(ed.min_level):`${ed.min_level}-${ed.max_level}`,
+                                method: ed.method.name,
+                                ...(condition && {condition:condition}),
+                            }
+                            encAcc?.forEach((e:any)=> {
+                                if (e.method===newEnc.method && e?.condition?.sort()?.toString()===condition?.sort()?.toString()) {
+                                    let ranges = `${e.level_range}-${newEnc.level_range}`.split("-").sort((a:string,b:string)=>((parseInt(a)??0) - (parseInt(b)??0)));;
+                                    e.chance += newEnc.chance;
+                                    e.level_range = ranges.at(0)===ranges.at(-1)?ranges[0]:`${ranges.at(0)}-${ranges.at(-1)}`;
+                                    hasSame=true;
+                                    return;
+                                }
+                            })
+                            if (!hasSame) {encAcc.push(newEnc);}
+                            return encAcc;
+                        }, []);
+                        if (acc[version]) {
+                            if (acc[version][locId]) {acc[version][locId].concat(...encounters)}
+                            else {acc[version][locId]=encounters;}
                         } else {
-                            acc[version][loc_id] = encounter
+                            acc[version]={[locId]:encounters}
                         }
-                    } else {
-                        acc[version] = { [loc_id]: encounter }
-                    }
-                })
-                return acc;
-            }, {})
-            result(encounters);
+                    })
+                    return acc;
+                }, {})
+            );
         }).catch(err => {
             result(null);
         })

@@ -47,10 +47,10 @@ const Training: React.FC<TrainingProps> = ({ capture_rate, hatch_counter, growth
         return (
             <div id={shortcutID(Shortcuts.Bio)} className={`w-full flex flex-col`}>
                 <div className="w-full flex justify-between">
-                    <div className="text-[1.25rem] text-base-white bg-black/50 px-4 border-b" style={{ borderColor: palette[0] }}>{title}</div>
-                    <div className="text-[1.25rem] text-base-white bg-black/50 px-4 border-b" style={{ borderColor: palette[0] }}>{title2}</div>
+                    <div className="text-[1.125rem] text-base-white bg-black/50 px-4 border-b" style={{ borderColor: palette[0] }}>{title}</div>
+                    <div className="text-[1.125rem] text-base-white bg-black/50 px-4 border-b" style={{ borderColor: palette[0] }}>{title2}</div>
                 </div>
-                <div className="w-full flex justify-between items-center bg-black/15 px-2 text-[1.125rem]">
+                <div className="w-full flex justify-between items-center bg-black/10 px-2 text-base">
                     {children}
                 </div>
             </div>
@@ -79,7 +79,7 @@ const Training: React.FC<TrainingProps> = ({ capture_rate, hatch_counter, growth
             </div>
             <div className="flex justify-end w-full h-[64px]">
                 <div className="w-full flex flex-col h-full">
-                    <div className="shrink-0 text-[1.25rem] px-8 w-full justify-center flex border-b bg-black/50 text-base-white" style={{ borderColor: palette[0] }}>Egg Groups</div>
+                    <div className="shrink-0 text-[1.125rem] px-8 w-full justify-center flex border-b bg-black/50 text-base-white" style={{ borderColor: palette[0] }}>Egg Groups</div>
                     <div className="h-full flex w-full gap-2 p-2 bg-black/15 leading-4 text-base">
                         {
                             egg_groups?.map((eG: string, i: number) => (
@@ -107,7 +107,7 @@ const GenderRate: React.FC<{ female: number, color: string }> = ({ female, color
                     <div className="h-full w-full bg-black text-base-white flex justify-center items-center">Genderless</div> :
                     <div className="w-full h-[24px] flex bg-black">
                         <div className="h-full flex items-center justify-center text-[1.25rem] pl-[2px] pr-2 border-r-2" style={{ background: "#6fa8dca3", borderColor: color }}>
-                            <div className="h-full gap-2 flex items-center justify-center">
+                            <div className="h-full gap-2 flex items-center justify-center text-base-white">
                                 <i className="ri-men-line" />
                                 <span className="text-base">{(8 - female) / 8 * 100}%</span>
                             </div>
@@ -115,7 +115,7 @@ const GenderRate: React.FC<{ female: number, color: string }> = ({ female, color
                         <div className="h-full" style={{ background: "#6fa8dc", width: `${(8 - female) / 8 * 100}%` }} />
                         <div className="h-full" style={{ background: "#d5a6bd", width: `${female / 8 * 100}%` }} />
                         <div className="h-full flex items-center justify-center text-[1.25rem] pl-2 pr-[2px] border-l-2" style={{ background: "#d5a6bda3", borderColor: color }}>
-                            <div className="h-full gap-2 flex items-center justify-center">
+                            <div className="h-full gap-2 flex items-center justify-center text-base-white">
                                 <span className="text-base">{female / 8 * 100}%</span>
                                 <i className="ri-women-line" />
                             </div>

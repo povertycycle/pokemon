@@ -1,6 +1,8 @@
+import { useContext } from "react";
 import { Encounter, LocationEncounters } from "../../interfaces/encounters";
 import { CONDITIONS } from "./conditions";
 import { METHODS } from "./methods";
+import { DetailsContext } from "../contexts";
 
 type LocationProps = {
     data: LocationEncounters,
@@ -8,16 +10,18 @@ type LocationProps = {
 }
 
 const Location: React.FC<LocationProps> = ({ data, locations }) => {
+    const { palette } = useContext(DetailsContext);
+
     return (
-        <div className="w-fit flex flex-col gap-8 px-8 pt-[36px] pb-8 bg-black/25">
+        <div className="w-fit flex flex-col gap-4 pt-[24px] pb-4 bg-black/25">
             {
                 Object.entries(data).map(([loc_id, encounter], i: number) => (
                     <div key={i} className="flex flex-col items-start w-full gap-2">
-                        <span className="text-[1.25rem] underline decoration-[1px]">{locations[loc_id]}</span>
-                        <ul className="w-full list-['-_'] px-4 space-y-8">
+                        <div className="px-4 w-full bg-black/50 text-[1.125rem] border-b" style={{ borderColor: palette[0] }}>{locations[loc_id]}</div>
+                        <ul className="w-full list-['-_'] px-8 space-y-4">
                             {
                                 encounter.map((data: Encounter, k: number) => (
-                                    <li className="tracking-[0.5px] text-[1.125rem] leading-6" key={k}>
+                                    <li className="tracking-[0.5px] text-base leading-4" key={k}>
                                         <span>{METHODS[data.method]}</span>
                                         <div className="flex gap-8">
                                             <span>{data.chance}% chance</span>
@@ -28,7 +32,7 @@ const Location: React.FC<LocationProps> = ({ data, locations }) => {
                                         </div>
                                         {
                                             data.condition && data.condition.length > 0 &&
-                                            <div className="flex flex-col leading-5 text-base mt-2">
+                                            <div className="flex flex-col leading-4 text-base mt-2">
                                                 <span className="italic tracking-[1px]">Req conditions:</span>
                                                 <ul className="list-[upper-roman] px-4">
                                                     {

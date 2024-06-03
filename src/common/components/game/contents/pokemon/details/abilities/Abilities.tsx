@@ -17,7 +17,7 @@ const Abilities: React.FC = () => {
         details ?
             <div id={shortcutID(Shortcuts.Abilities)} className="w-full ml-[-2px] mt-16 flex justify-center" style={{ paddingRight: `${SHORTCUT_WIDTH / 2}px` }}>
                 <div className="flex flex-col border-2" style={{ borderColor: palette[0] }}>
-                    <div className="w-full text-[1.5rem] py-1 flex items-center justify-center bg-black/50 text-base-white" style={{ borderColor: palette[0] }}>
+                    <div className="w-full text-[1.25rem] leading-8 py-1 flex items-center justify-center bg-black/50 text-base-white" style={{ borderColor: palette[0] }}>
                         Abilities
                     </div>
                     <div className="w-full flex gap-1 p-1">
@@ -54,7 +54,7 @@ const Ability: React.FC<{ id: string, pokemon: string }> = ({ id, pokemon }) => 
         data &&
         <div className={`w-full flex flex-col text-base-white gap-1 max-w-[55vw]`}>
             <div className={`flex flex-col items-center justify-center py-1 px-4 h-[56px] relative ${isHidden ? "brightness-[0.85]" : ""}`} style={{ background: `${palette[0]}`, color: colors[0] }}>
-                <span title={data.not_main_series ? "Not in the base game" : undefined} className={`text-[1.25rem] tracking-[1px] ${data.not_main_series ? "cursor-help underline decoration-dotted" : ""}`}>{capitalize(name)}{data.not_main_series ? "*" : ""}</span>
+                <span title={data.not_main_series ? "Not in the base game" : undefined} className={`text-[1.125rem] tracking-[1px] ${data.not_main_series ? "cursor-help underline decoration-dotted" : ""}`}>{capitalize(name)}{data.not_main_series ? "*" : ""}</span>
                 {isHidden && <span className="text-[0.875rem] leading-4">Hidden Ability</span>}
             </div>
             {
@@ -63,7 +63,7 @@ const Ability: React.FC<{ id: string, pokemon: string }> = ({ id, pokemon }) => 
                         <Typewriter text={data.flavor_text ?? "-"} duration={1} />
                     </span>
                     <hr className="h-[2px] w-full shrink-0" style={{ borderColor: palette[0] }} />
-                    <div className={`${styles.overflowWhite} max-h-[160px] flex flex-col gap-2 overflow-y-auto font-mono tracking-[-0.5px] leading-[18px] [word-spacing:2px]`}>
+                    <div className={`${styles.overflowWhite} max-h-[160px] flex flex-col gap-2 text-[0.875rem] overflow-y-auto font-mono tracking-[0px] leading-[18px] [word-spacing:2px]`}>
                         {
                             data?.effect?.match(SENTENCES_REGEX)?.map(((t: string, i: number) => (
                                 <span key={i}>

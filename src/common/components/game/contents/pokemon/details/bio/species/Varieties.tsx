@@ -1,9 +1,8 @@
-import { getVarietySprite } from "@/common/components/game/database/pokemonDB"
-import React, { useContext, useEffect, useState } from "react"
-import { DetailsContext } from "../../contexts";
+import { useSprites } from "@/common/components/game/hooks/useSprites";
 import styles from "@/common/styles/custom.module.scss";
 import { capitalize } from "@/common/utils/capitalize";
-import { useSprites } from "@/common/components/game/hooks/useSprites";
+import React, { useContext } from "react";
+import { DetailsContext } from "../../contexts";
 
 type VarietiesProps = {
     varieties: string[],
@@ -15,7 +14,7 @@ const BASE = 64;
 const MAX = 7;
 
 const Varieties: React.FC<VarietiesProps> = ({ varieties, switchable, description }) => {
-    const { palette, colors } = useContext(DetailsContext);
+    const { palette } = useContext(DetailsContext);
     let base = palette[0];
     let w = (varieties.length > MAX ? (BASE * MAX) : (varieties.length * BASE));
     let h = Math.ceil(varieties.length / MAX) * BASE;
@@ -34,7 +33,7 @@ const Varieties: React.FC<VarietiesProps> = ({ varieties, switchable, descriptio
                     </div>
                 </div>
             </div>
-            <FormDescription switchable={switchable} description={description} color={base} font={colors[0]} />
+            <FormDescription switchable={switchable} description={description} />
         </div>
     )
 }
@@ -65,18 +64,17 @@ const Variety: React.FC<{ varietyId: string, color: string }> = ({ varietyId, co
 
 type FormDescriptionProps = {
     description: string[],
-    switchable: boolean | null,
-    color: string,
-    font: string
+    switchable: boolean | null
 }
 
-const FormDescription: React.FC<FormDescriptionProps> = ({ description, switchable, color, font }) => {
+const FormDescription: React.FC<FormDescriptionProps> = ({ description, switchable }) => {
+    const { palette, colors } = useContext(DetailsContext);
     return (
         <div className="w-full flex justify-end">
             <div className="flex flex-col items-end">
-                <span className="text-base leading-4 px-2">{switchable !== null ? `${switchable ? "Able" : "Unable"} to switch between forms` : "Has no other forms"}</span>
-                <div className={`text-[1.25rem] overflow-hidden transition-[height,margin] ${description.length > 0 ? "h-[32px] mt-2" : "h-0"} pl-4 pr-[12px]`} style={{ color: font, background: color }}>Form Description</div>
-                <div className={`${description.length > 0 ? "h-[72px] w-full border-y-2" : "w-0 h-0 border-[0px]"} transition-[width,height,border] tracking-[1px] overflow-y-auto text-base leading-5 flex flex-col items-end text-end bg-black/15 ${styles.overflowWhite}`} style={{ borderColor: color }}>
+                <span className="text-[0.875rem] leading-4 px-2">{switchable !== null ? `${switchable ? "Able" : "Unable"} to switch between forms` : "Has no other forms"}</span>
+                <div className={`text-[1.125rem]  overflow-hidden transition-[height,margin] ${description.length > 0 ? "mt-4" : "h-0"} pl-4 pr-[12px] bg-black/50 text-base-white`}>Form Description</div>
+                <div className={`${description.length > 0 ? "w-full border-y-2" : "w-0 h-0 border-[0px]"} transition-[width,height,border] tracking-[1px] overflow-y-auto text-base leading-5 flex flex-col items-end text-end bg-black/15 ${styles.overflowWhite}`} style={{ color: colors[1], borderColor: palette[0] }}>
                     {
                         description.map((desc: string, i: number) => (
                             <span className="p-1" key={i}>

@@ -39,7 +39,7 @@ const MoveDetails: React.FC<{ moveVersions: MoveVersions }> = ({ moveVersions })
     return (
         <div id={shortcutID(Shortcuts.Moves)} className="w-full flex flex-col mt-16 z-[1]">
             <GenerationContext.Provider value={{ gen, setGen }}>
-                <div className="w-full text-[1.5rem] py-1 flex items-center justify-center bg-black/50 text-base-white border-y-2 relative" style={{ borderColor: palette[0] }}>
+                <div className="w-full text-[1.25rem] py-1 flex items-center justify-center bg-black/50 text-base-white border-y-2 relative" style={{ borderColor: palette[0] }}>
                     Learnset
                     <Generations versions={versionList} />
                 </div>
@@ -59,11 +59,11 @@ const MoveDetails: React.FC<{ moveVersions: MoveVersions }> = ({ moveVersions })
                                 moveData.length > 0 &&
                                 <div className="w-full flex flex-col mt-8 items-center" key={i}>
                                     <table className="table-auto border-separate border-spacing-x-1 w-fit tracking-[0.5px]">
-                                        <caption className="px-4 py-1 h-[36px] underline leading-8 decoration-[1px] text-[1.25rem]">
+                                        <caption className="px-4 py-2 underline leading-8 decoration-[1px] text-[1.125rem]">
                                             <span>{METHODS[method].title}</span>
                                         </caption>
-                                        <thead className="h-[32px] tracking-[2px]">
-                                            <tr className={`text-[1.125rem] ${styles.table_header}`}>
+                                        <thead className="h-[32px] tracking-[2px] text-base-white">
+                                            <tr className={`text-base ${styles.table_header}`}>
                                                 {method === "level-up" && <th style={{ textAlign: "left", borderColor: palette[0] }}>Lv</th>}
                                                 {method === "machine" && <th style={{ textAlign: "left", borderColor: palette[0] }}>TM</th>}
                                                 <th style={{ textAlign: "left", borderColor: palette[0] }}>Name</th>
@@ -74,10 +74,10 @@ const MoveDetails: React.FC<{ moveVersions: MoveVersions }> = ({ moveVersions })
                                                 <th style={{ borderColor: palette[0] }}>Type</th>
                                             </tr>
                                         </thead>
-                                        <tbody className={`${styles.table_body} transition-height`} style={{ height: `${HEIGHT * moveData.length}px` }}>
+                                        <tbody className={`${styles.table_body} text-base transition-height text-base-white`} style={{ height: `${HEIGHT * moveData.length}px` }}>
                                             {
                                                 moveData.sort((a, b) => ((a?.level ?? parseInt(b.moveId)) - (b?.level ?? parseInt(b.moveId)))).map((data: Data, j: number) => (
-                                                    <Move key={j} data={data} gen={gen} pos={j} {...(method === "machine" && { isMachine: true })} />
+                                                    <Move key={j} data={data} gen={gen} {...(method === "level-up" && { isLevelUp: true })} {...(method === "machine" && { isMachine: true })} />
                                                 ))
                                             }
                                         </tbody>
@@ -97,7 +97,8 @@ const MoveDetails: React.FC<{ moveVersions: MoveVersions }> = ({ moveVersions })
     )
 }
 
-const Move: React.FC<{ data: Data, gen: string | null, isMachine?: boolean, pos: number }> = ({ data, gen, isMachine, pos }) => {
+const Move: React.FC<{ data: Data, gen: string | null, isMachine?: boolean, isLevelUp?: boolean }> = ({ data, gen, isMachine, isLevelUp }) => {
+    const { palette } = useContext(DetailsContext);
     const [moveData, setMoveData] = useState<MoveData | null>(null);
     const [name, setName] = useState<string | null>(null);
 
@@ -112,31 +113,17 @@ const Move: React.FC<{ data: Data, gen: string | null, isMachine?: boolean, pos:
 
     return (
         moveData &&
-        <tr className={`${pos % 2 === 0 ? "bg-black/35" : "bg-black/15"}`} style={{ height: `${HEIGHT}px` }}>
-            {data.level && <td style={{ textAlign: "left" }}>{data.level}</td>}
+        <tr className={`even:bg-black/20 odd:bg-black/35`} style={{ height: `${HEIGHT}px` }}>
+            {isLevelUp && <td style={{ textAlign: "left" }}>{data.level ?? <span title="Gained when evolved to" className="cursor-help text-[1.125rem] underline decoration-dotted">?</span>}</td>}
             {isMachine && <td style={{ textAlign: "left" }}>{moveData.machines.find(m => m.version === gen)?.item.name.toUpperCase()}</td>}
             <td style={{ textAlign: "left" }}>{capitalize(name)}</td>
             <td>{moveData.accuracy ? `${moveData.accuracy}%` : "-"}</td>
             <td>{moveData.pp}</td>
             <td className="text-center">{moveData.power ?? "-"}</td>
-            <td style={{ padding: "4px" }}><div className="flex items-center justify-center rounded-full" style={{ background: CATEGORY_COLOR[moveData.damage_class] }}>{capitalize(moveData.damage_class)}</div></td>
-            <td style={{ padding: "4px" }}><div className="flex items-center justify-center rounded-[4px] px-4" style={{ background: TYPE_COLORS[moveData.type] }}>{moveData.type.toUpperCase()}</div></td>
+            <td style={{ padding: "4px" }}><div className="flex items-center justify-center rounded-full border" style={{ borderColor: palette[0], background: CATEGORY_COLOR[moveData.damage_class] }}>{capitalize(moveData.damage_class)}</div></td>
+            <td style={{ padding: "4px" }}><div className="flex items-center justify-center rounded-[4px] px-4 border" style={{ borderColor: palette[0], background: TYPE_COLORS[moveData.type] }}>{moveData.type.toUpperCase()}</div></td>
         </tr>
     )
 }
-{/* effect_chance?: number,
-    priority: number,
-    effect_entries?:{
-        effect: string,
-        short_effect: string,
-    },
-    flavor_text_entries?: {
-        flavor_text: string,
-        version: string,
-    }[],
-    meta?: {
-        [tag: string]: number | string
-    },
-    target: string,*/}
 
 export default Moves;

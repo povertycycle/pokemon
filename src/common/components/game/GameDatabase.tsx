@@ -65,7 +65,7 @@ const GameDatabase: React.FC = () => {
             <Return />
             {
                 !dbReady ?
-                    <Loading /> :
+                    <Loading progress /> :
                     (
                         error ?
                             <Unavailable url={BASE_API_URL_POKEMON} /> :

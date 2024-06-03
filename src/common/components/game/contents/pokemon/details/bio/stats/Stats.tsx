@@ -5,7 +5,7 @@ import { shortcutID } from "@/common/utils/shortcut";
 import { Shortcuts } from "../../../shortcuts/constants";
 
 const Stats: React.FC = () => {
-    const { details, palette } = useContext(DetailsContext);
+    const { details, palette, colors } = useContext(DetailsContext);
 
     return (
         details &&
@@ -15,11 +15,14 @@ const Stats: React.FC = () => {
                     [
                         "hp", "attack", "defense", "special-attack", "special-defense", "speed"
                     ].map((stat: string, i: number) => (
-                        <StatsDetails key={i} tag={stat} base={details.stats[stat].base_stat} />
+                        <>
+                            {i !== 0 && <hr className="border-t-2 w-full" style={{ borderColor: palette[0] }} />}
+                            <StatsDetails key={i} tag={stat} base={details.stats[stat].base_stat} />
+                        </>
                     ))
                 }
             </div>
-            <div className="flex flex-col text-base py-1 px-2 leading-5 font-mono text-end bg-black/15 text-[1.125rem] tracking-[-0.5px] w-full">
+            <div className="flex flex-col text-[0.875rem] py-1 px-2 leading-4 font-mono text-end bg-black/10 tracking-[-0.5px] w-full" style={{ color: colors[1] }}>
                 <span>Max stats are based on 31 IV, 255 EV, and a favorable nature</span>
                 <span>while Min stats are based on 0 IV, 0 EV, and a disadvantageous nature</span>
             </div>

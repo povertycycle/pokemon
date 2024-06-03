@@ -1,12 +1,12 @@
 import { getMoveName } from "@/common/components/game/database/movesDB";
 import { capitalize } from "@/common/utils/capitalize";
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import { EvolutionMethod } from "../../../interfaces/evolution";
-import { DetailsContext } from "../../contexts";
+import { EvolutionMethod } from "../../interfaces/evolution";
+import { DetailsContext } from "../contexts";
 import ImageSprites from "./ImageSprites";
 import styles from "@/common/styles/custom.module.scss";
 import { isDark } from "@/common/utils/colors";
-import { TYPE_COLORS } from "../../../types/constants";
+import { TYPE_COLORS } from "../../types/constants";
 
 type MethodsProps = {
     data: EvolutionMethod[]
@@ -52,7 +52,7 @@ const Methods: React.FC<MethodsProps> = ({ data }) => {
                                 {i !== 0 && <span className="my-1 text-base leading-4 italic">Or</span>}
                                 <div className="max-h-[224px] text-base leading-4 grow flex flex-col text-base-white justify-center items-center text-center px-1">
                                     <Method methods={methods} />
-                                    <div className="h-full absolute left-[-44px] flex items-center justify-center text-[3rem]">
+                                    <div className="h-full absolute left-[-36px] flex items-center justify-center text-[2rem]">
                                         <i className="ri-arrow-right-line" />
                                     </div>
                                 </div>

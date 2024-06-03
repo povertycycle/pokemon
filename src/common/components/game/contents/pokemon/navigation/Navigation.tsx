@@ -77,7 +77,7 @@ const Navigation = memo(({ pokemons, pokeId, setPokeId }: NavigationProps) => {
     return (
         <div className={`${styles.navAnimation} z-[0] shrink-0 overflow-hidden h-full absolute right-0 top-0`} style={{ width: `${NAV_WIDTH}%` }}>
             <div className="w-full h-full flex flex-col gap-4 relative p-4">
-                <h3 className="text-[1.75rem] leading-6 p-1">Pokémons</h3>
+                <h3 className="text-[1.5rem] leading-6 p-1">Pokémons</h3>
                 <div className="w-full flex flex-col gap-2">
                     <Searchbar search={search} />
                     <div className="w-full flex gap-1 h-[28px] z-[1] relative">

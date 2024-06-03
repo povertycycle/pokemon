@@ -2,9 +2,9 @@ import { getVarietySprite } from "@/common/components/game/database/pokemonDB";
 import { getVariants } from "@/common/components/game/database/speciesDB";
 import { capitalize } from "@/common/utils/capitalize";
 import { useContext, useEffect, useState } from "react";
-import { EggSvg } from "../../../../Icons";
-import { EvolutionChain } from "../../../interfaces/evolution";
-import { DetailsContext } from "../../contexts";
+import { EggSvg } from "../../../Icons";
+import { EvolutionChain } from "../../interfaces/evolution";
+import { DetailsContext } from "../contexts";
 import ImageSprites from "./ImageSprites";
 import Methods from "./Methods";
 
@@ -77,7 +77,7 @@ const Pokemon: React.FC<{ active?: string, name: string, url: string, isBaby: bo
                         <i className="ri-question-mark text-[4rem]" />
                 }
             </div>
-            <div className={`px-1 text-[1.25rem] ${active === name ? "" : "peer-hover:translate-y-[5px]"} transition-transform w-full border-x-2 border-b-2 text-base-white text-center flex flex-col`} style={{ borderColor: palette[0], background: active === name ? palette[0] : "#00000080", color: active === name ? colors[0] : "#f0f0f0" }}>
+            <div className={`px-1 text-[1.125rem] ${active === name ? "" : "peer-hover:translate-y-[5px]"} transition-transform w-full border-x-2 border-b-2 text-base-white text-center flex flex-col`} style={{ borderColor: palette[0], background: active === name ? palette[0] : "#00000080", color: active === name ? colors[0] : "#f0f0f0" }}>
                 {capitalize(name)}
                 {isBaby && <span className="text-[0.875rem]">{`(Baby)`}</span>}
             </div>

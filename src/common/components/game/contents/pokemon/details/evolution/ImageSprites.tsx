@@ -5,7 +5,7 @@ const ImageSprites: React.FC<{ id: string, type: "species" | "item" }> = ({ id, 
     const { name, url } = useSprites(type, id);
 
     return (
-        <div className="w-[56px] flex flex-col text-[1.125rem] leading-6 text-center items-center">
+        <div className="w-[56px] flex flex-col text-base leading-6 text-center items-center">
             <div className="w-full aspect-square rounded-[4px]">
                 {url && <img alt="" src={url} className="w-full h-full" />}
             </div>

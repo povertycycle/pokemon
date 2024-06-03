@@ -22,19 +22,19 @@ const StatsDetails: React.FC<StatsDetailsProps> = ({ tag, base }) => {
         <div className="flex items-center justify-between w-full h-[48px]">
             <div className="h-full flex flex-col items-start justify-center bg-black/50 shrink-0 text-base-white pl-6 pr-4 py-2">
                 <span className="text-[1.25rem] leading-5">{properties.tag}</span>
-                <span className="leading-4 text-base tracking-[0.5px] whitespace-nowrap">Base Value</span>
+                <span className="leading-4 text-[0.875rem] tracking-[0.5px] whitespace-nowrap">Base Value</span>
             </div>
-            <div className="h-full text-[1.75rem] leading-6 w-[60px] flex items-center justify-start pl-2 shrink-0 text-black" style={{ background: properties.colors[2] }}>
+            <div className="h-full text-[1.5rem] leading-6 w-[60px] flex items-center justify-start pl-2 shrink-0 text-black" style={{ background: properties.colors[2] }}>
                 {value}
             </div>
             <div className="h-full w-full flex items-center justify-end px-4 text-base-white relative overflow-hidden" style={{ background: properties.colors[0] }}>
                 <div className="flex flex-col items-end justify-center h-full">
-                    <span className="text-[1.25rem] leading-5 py-[2px]">{MAX_STAT}</span>
-                    <span className="leading-4 text-base tracking-[0.5px]">Max</span>
+                    <span className="drop-shadow-[0_0_1px_black] text-[1.25rem] leading-5 py-[2px]">{MAX_STAT}</span>
+                    <span className="drop-shadow-[0_0_1px_black] leading-4 text-[0.875rem] tracking-[0.5px]">Max</span>
                 </div>
                 <div className="absolute left-0 top-0 flex flex-col transition-width duration-500 items-end justify-center h-full px-4" style={{ background: properties.colors[1], width: `${Math.round(MIN_STAT / MAX_STAT * 100)}%` }}>
-                    <span className="text-[1.25rem] leading-5 py-[2px]">{MIN_STAT}</span>
-                    <span className="leading-4 text-base tracking-[0.5px]">Min</span>
+                    <span className="drop-shadow-[0_0_1px_black] text-[1.25rem] leading-5 py-[2px]">{MIN_STAT}</span>
+                    <span className="drop-shadow-[0_0_1px_black] leading-4 text-[0.875rem] tracking-[0.5px]">Min</span>
                 </div>
                 <div className="absolute transition-width duration-500 left-0 top-0 h-full flex items-center" style={{ background: properties.colors[2], width: `${Math.round(value / MAX_STAT * 100)}%` }} />
             </div>

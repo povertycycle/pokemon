@@ -1,8 +1,8 @@
 import { fetchEvolutionChain } from "@/common/components/game/database/evolutionDB";
 import { useEffect, useState } from "react";
-import { EvolutionChain as Chain } from "../../../interfaces/evolution";
+import { EvolutionChain as Chain } from "../../interfaces/evolution";
 import PokeVariants from "./PokeVariants";
-import { Shortcuts } from "../../../shortcuts/constants";
+import { Shortcuts } from "../../shortcuts/constants";
 import { shortcutID } from "@/common/utils/shortcut";
 
 type EvolutionChainProps = {
