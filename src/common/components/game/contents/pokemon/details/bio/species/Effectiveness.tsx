@@ -26,6 +26,7 @@ const Effectiveness: React.FC<EffectivenessProps> = ({ types }) => {
                             { t: "IMMUNE", b: "bg-black", c: "ri-close-fill", e: "0" },
                             { t: "NORMAL", b: "bg-base-white-dark", c: "ri-subtract-line", e: "1" }
                         ].map((dat, i: number) => (
+                            effectiveness[dat.e] &&
                             <Information key={i} types={effectiveness[dat.e]} {...dat} color={palette[0]} />
                         )) :
                         <div className="px-4 text-[1.25rem]">Unknown Type</div>

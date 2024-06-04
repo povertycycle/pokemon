@@ -10,7 +10,7 @@ const Loading: React.FC<{ progress?: boolean }> = ({ progress }) => {
                 <div className="absolute z-[1] w-[50%] h-[50%] border-[8px] border-black rounded-full bg-base-white" />
             </div>
             {
-                progress && <div id={POKEMON_FETCH_BAR_ID} className="w-[640px] h-[28px] rounded-[8px] border-2 border-black mt-4 flex overflow-hidden">
+                progress && <div id={POKEMON_FETCH_BAR_ID} className="w-[640px] h-[24px] rounded-[8px] border-2 border-black mt-4 flex overflow-hidden">
                     <div className="bg-gradient-to-r from-sp-def-dark from-60% to-black" style={{ width: '0px' }} />
                     <div className="bg-gradient-to-r from-black to-hp-dark" style={{ width: '0px' }} />
                 </div>

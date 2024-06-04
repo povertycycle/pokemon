@@ -4,6 +4,7 @@ import Empty from "../../utils/Empty";
 import Loading from "../../utils/Loading";
 import Display from "./Display";
 import { Pokemon } from "./interfaces/pokemon";
+import styles from "@/common/styles/transitions.module.scss";
 
 const PokemonDatabase: React.FC = () => {
     const [pokemons, setPokemons] = useState<Pokemon[] | null | undefined>();
@@ -15,7 +16,7 @@ const PokemonDatabase: React.FC = () => {
     }, [])
 
     return (
-        <div className="absolute z-[0] w-full h-full overflow-hidden flex items-center justify-center top-0">
+        <div className={`absolute z-[0] w-full h-full overflow-hidden flex items-center justify-center top-0 ${styles.fadeIn}`}>
             {
                 pokemons === undefined ?
                     <Loading /> :

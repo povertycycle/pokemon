@@ -7,7 +7,7 @@ import Loading from "../Loading";
 import { CATEGORY_COLOR, METHODS } from "./constants";
 import { GenerationContext } from "./contexts";
 import Generations from "./Generations";
-import styles from "./index.module.scss";
+import styles from "@/common/styles/table.module.scss";
 import { TYPE_COLORS } from "../../types/constants";
 import { shortcutID } from "@/common/utils/shortcut";
 import { Shortcuts } from "../../shortcuts/constants";

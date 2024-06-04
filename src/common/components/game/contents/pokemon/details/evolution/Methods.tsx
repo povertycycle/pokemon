@@ -65,7 +65,7 @@ const Methods: React.FC<MethodsProps> = ({ data }) => {
 }
 
 const TRIGGER: { [key: string]: string } = {
-    // "level-up": "leveling up",
+    "level-up": "leveling up",
     "trade": "trading",
     "use-item": "using",
     "shed": "an empty slot in party and an extra Poké Ball on hand",
@@ -88,7 +88,7 @@ const Description: React.FC<{ tag: string, value: Values }> = ({ tag, value }) =
         case "turn_upside_down":
             return <span>turning 3DS upside down</span>;
         case "min_level":
-            return <span>at Lv.{value}</span>;
+            return <span>to Lv.{value}</span>;
         case "gender":
             return <span>{String(value) === "1" ? "Female" : (String(value) === "2" ? "Male" : "Unknown gender")} only</span>;
         case "time_of_day":

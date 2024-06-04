@@ -1,0 +1,35 @@
+.table_header {
+    > th {
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: normal;
+        padding: 0 16px;
+        border-width: 1px;
+        background: #00000080;
+    }
+}
+
+.long_table_header {
+    > th {
+        text-align: start;
+        text-transform: uppercase;
+        font-weight: normal;
+        padding: 8px 16px;
+        box-shadow: 0 0 0 2px black;
+        background: #f0f0f0;
+    }
+}
+
+.long_table_body {
+    td {
+        text-align: start;
+        padding: 2px 16px;
+    }
+}
+
+.table_body {
+    td {
+        text-align: center;
+        padding: 0 16px;
+    }
+}

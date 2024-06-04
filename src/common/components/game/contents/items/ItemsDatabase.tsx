@@ -6,12 +6,12 @@ import Empty from "../../utils/Empty";
 import Display from "./Display";
 
 const ItemsDatabase: React.FC = () => {
-    const [items, setItems] = useState<{ id: string, name: string }[] | null | undefined>();
+    const [items, setItems] = useState<ItemData[] | null | undefined>();
 
     useEffect(() => {
-        // getAllItems().then(res => {
-        //     setItems(res);
-        // });
+        getAllItems().then(res => {
+            setItems(res);
+        });
     }, [])
 
     return (

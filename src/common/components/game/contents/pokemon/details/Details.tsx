@@ -57,8 +57,8 @@ const Details: React.FC<{ pokeId: string | null }> = ({ pokeId }) => {
     }, [pokeId]);
 
     return (
-        <div id={DISPLAY_ID} className="h-full flex absolute left-0 top-0 z-[1] transition-width duration-[500ms]" style={{ width: `${100 - NAV_WIDTH}%` }}>
-            <div className="h-full flex flex-col bg-black w-full">
+        <div id={DISPLAY_ID} className="h-full flex absolute left-0 bg-black top-0 z-[1] transition-width duration-[500ms]" style={{ width: `${100 - NAV_WIDTH}%` }}>
+            <div className="h-full flex flex-col bg-sp-def-dark/50 w-full">
                 {
                     !data.main || !data.secondary || !data.species ?
                         <DataCorrupted pokemon={pokeId} data={data} /> :

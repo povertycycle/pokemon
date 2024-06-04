@@ -29,9 +29,13 @@ const DisplayContainer: React.FC<{ tab: Tab | null }> = ({ tab }) => {
     const [sel, setSel] = useState<Tab | null>(null);
 
     useEffect(() => {
-        setTimeout(() => {
+        if (!sel) {
+            setTimeout(() => {
+                setSel(tab);
+            }, 500)
+        } else {
             setSel(tab);
-        }, 500)
+        }
     }, [tab]);
 
     return (

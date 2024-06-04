@@ -234,15 +234,15 @@ export async function processSecondaryData(pokeId: string, moves: string[]): Pro
     })
 }
 
-export async function getVarietySprite(id: string): Promise<{name: string, url: string}> {
-    function fetchVarietySprite(id: string): Promise<{name: string, url: string}> {
+export async function getVarietySprite(id: string): Promise<{name: string, url: string} | null> {
+    function fetchVarietySprite(id: string): Promise<{name:string,url:string}|null> {
         return new Promise(result => {
             fetch(`${BASE_API_URL_POKEMON}/${id}`).then(res => {
                 return errorCheck(res);
             }).then(res => {
                 result({name: res?.name, url: res?.sprites?.front_default});
             }).catch(err => {
-                result({name: "", url: ""})
+                result(null)
             })
         })    
     }
@@ -263,14 +263,15 @@ export async function getVarietySprite(id: string): Promise<{name: string, url: 
                             result({ name: pokedata.result.name, url: spritesTx.result?.others?.base_default });
                         } else {
                             processSecondaryData(id, pokedata.result.moves).then(res => {
-                                if (res) result({ name: pokedata.result.name, url: res.spritesData.others.base_default})
+                                if (res) result({ name: pokedata.result.name, url: res.spritesData.others.base_default});
+                                else result(null)
                             }); 
                         }
                     }
                 }
             } else {
                 fetchVarietySprite(id).then(res => {
-                    result(res)
+                    result(res);
                 });
             }
         }

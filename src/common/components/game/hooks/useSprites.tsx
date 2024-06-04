@@ -17,7 +17,7 @@ export const useSprites = (type: "item" | "species", id?: string) => {
                         return getItemSprite(id);
                 }
             })()?.then(res => {
-                if (name !== res.name) {
+                if (res && name !== res.name) {
                     setName(res.name);
                     setUrl(res.url);
                 }

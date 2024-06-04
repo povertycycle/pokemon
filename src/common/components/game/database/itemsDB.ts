@@ -5,8 +5,30 @@ import { POKEMON_DB, Stores } from "./db";
 import { ItemData } from "../contents/items/constants";
 import { errorCheck } from "@/common/utils/errorCheck";
 import { doBatchProcess } from "./_utils";
+import { capitalize } from "@/common/utils/capitalize";
 
 export const ITEMS_VALIDATOR_KEY = "Xk7dcBfI2GObBbxjApy5US3feJkwWN6V";
+function generateItemData(data: any) {
+    let n=data.names.map((n: any) => ({name: n.name, language: n.language.name}));
+    let m=data?.machines?.map((m: any) => ({machine:trimUrl(m.url), version: m.version_group.name}));
+    let e=data?.effect_entries.map((eE: any) => (eE.language?.name === "en" ? eE?.effect : undefined)).filter(Boolean)[0] ?? null
+    let a=data.attributes.map((a: any) => (a?.name));
+    let f=data?.flavor_text_entries?.filter((fTE:any)=>(fTE.language.name==="en"))?.at(-1)?.text;
+    return {
+        category: data?.category?.name ?? "uncategorized",
+        name: data.name,
+        ...(a.length>0&&{attributes:a}),
+        ...(data.baby_trigger_for?.url&&{baby_trigger_for:trimUrl(data.baby_trigger_for?.url)}),
+        ...(data.cost&&{cost:data.cost}),
+        ...(f&&{flavor_text:f}),
+        ...(e&&{effect:e}),
+        ...(data?.fling_effect?.name&&{fling_effect:data.fling_effect?.name}),
+        ...(data?.fling_power&&{fling_power:data.fling_power}),
+        ...(m.length>0&&{machines:m}),
+        ...(n.length>0&&{names:n}),
+        ...(data?.sprites?.default&&{sprites:data?.sprites?.default})
+    }
+}
 async function validateDatabase(db: IDBDatabase, count: number): Promise<boolean> {
     return new Promise((res, rej) => {
         const validator = db.transaction(Stores.Validator, 'readonly').objectStore(Stores.Validator).get(ITEMS_VALIDATOR_KEY);
@@ -32,34 +54,18 @@ export async function getAllItems(): Promise<any[] | null> {
 
         request.onsuccess = () => {
             let db: IDBDatabase = request.result;
-            const itemList = db.transaction(Stores.Items, 'readonly').objectStore(Stores.Items).getAll();
+            const itemTx =  db.transaction(Stores.Items, 'readwrite').objectStore(Stores.Items);
+            const itemList = itemTx.getAll();
 
             function processData(data: any) {
                 const insert = request.result.transaction(Stores.Items, 'readwrite').objectStore(Stores.Items);
-                let names = data.names.map((n: any) => ({name: n.name, language: n.language.name}));
-                // const itemData = {
-                //     attributes: data.attributes.map((a: any) => (a?.name)),
-                //     category: data.category?.name,
-                //     ...(data.baby_trigger_for?.url && {baby_trigger_for: trimUrl(data.baby_trigger_for?.url)}),
-                //     ...(data.cost && {cost: data.cost}),
-                //     effect_entries: data.effect_entries.map((eE: any) => (eE.language?.name === "en" ? {effect:eE?.effect,short_effect:eE?.short_effect} : undefined)).filter(Boolean)[0] ?? null,
-                //     flavor_text_entries: data.flavor_text_entries.reduce((acc: any, fTE: any) => {
-                //         if (fTE.language?.name === "en") {
-                //             acc.push({ text: fTE.text, version: fTE.version_group.name })
-                //         }
-                //         return acc
-                //     }, []),
-                //     ...(data.fling_effect?.name && {fling_effect: data.fling_effect?.name}),
-                //     ...(data.fling_power && {fling_power: data.fling_power}),
-                //     machines: data.machines?.map((m: any) => ({machine:trimUrl(m.url), version: m.version_group.name})),
-                //     name: data.name,
-                //     names: names.length > 1 ? names : [{name: data.name, language: "en" }],
-                //     ...(data.sprites?.default && { sprites: data.sprites?.default })
-                // }
+                let itemData = generateItemData(data);
+                insert.put(itemData, String(data.id));
             }
 
             itemList.onsuccess = () => {
                 const dbCount = itemList.result.length;
+                let newCount: number;
                 validateDatabase(db, dbCount).then(valid => {
                     if (valid) {
                         result(itemList.result)
@@ -67,48 +73,22 @@ export async function getAllItems(): Promise<any[] | null> {
                         fetch(`${BASE_API_URL_ITEM}`).then(res => {
                             return errorCheck(res);
                         }).then(async res => {
+                            newCount = res.count;
                             return fetch(`${BASE_API_URL_ITEM}?offset=0&limit=${res.count}`).then(res=>{return errorCheck(res);});
                         }).then(async res => {
-                            // doBatchProcess(res.results.map((r: any)=>(r.url)), processData).then(res => {
-                                
-                            // })
-            
-            
-                            
-            
-            
-            
-                            // Promise.all(res.results.slice(0, 1000).map((item: any) => {
-                            //     return fetch(item.url).then(res => {
-                            //         return errorCheck(res);
-                            //     })
-                            // })).then(res => {
-            
-                                
-                                
-                            
+                            let exists = db.transaction(Stores.Items, 'readonly').objectStore(Stores.Items).getAllKeys();
+                            exists.onsuccess = () => {
+                                let k = exists.result; 
+                                doBatchProcess(res.results.map((r: any)=>(r.url)).filter((u:any)=>!k.includes(trimUrl(u))), processData).then(res => {
+                                    if (res) updateValidator(newCount).then(updateRes=>{
+                                        if (updateRes) {
+                                            let items = db.transaction(Stores.Items, 'readonly').objectStore(Stores.Items).getAll();
+                                            items.onsuccess = () => { result(items.result) }
+                                        }
+                                    })
+                                })
+                            }
                         })
-
-
-
-                        // fetchAllItems().then(res => {
-                            // let itemTx = db.transaction(Stores.Items, 'readwrite');
-                            // if (res) {
-                            //     console.log(res);
-                            //     res.forEach(([id, item]) => {
-                            //         let itemData = itemTx.objectStore(Stores.Items).get(id);
-                            //         itemData.onsuccess = () => {
-                            //             if (!itemData.result) {
-                            //                 itemTx.objectStore(Stores.Items).put(item, id);
-                            //             }
-                            //         }
-                            //     });
-                            //     itemTx.oncomplete = () => {
-                            //         updateValidator(Object.keys(res).length)
-                            //     }
-                            // }
-                            // result(res);
-                        // })
                     }
                 });
             }
@@ -118,31 +98,8 @@ export async function getAllItems(): Promise<any[] | null> {
 
 function fetchItemData(id: string): Promise<ItemData | null> {
     return new Promise(result => {
-        fetch(`${BASE_API_URL_ITEM}/${id}`).then(res => {
-            if (!res.ok) throw new Error("Failed to fetch data from API");
-    
-            return res.json();
-        }).then(res => {
-            let names = res.names.map((n: any) => ({name: n.name, language: n.language.name}));
-            const itemData = {
-                attributes: res.attributes.map((a: any) => (a?.name)),
-                ...(res.baby_trigger_for?.url && {baby_trigger_for: trimUrl(res.baby_trigger_for?.url)}),
-                category: res.category?.name,
-                ...(res.cost && {cost: res.cost}),
-                effect_entries: res.effect_entries.map((eE: any) => (eE.language?.name === "en" ? {effect:eE?.effect,short_effect:eE?.short_effect} : undefined)).filter(Boolean)[0] ?? null,
-                flavor_text_entries: res.flavor_text_entries.reduce((acc: any, fTE: any) => {
-                    if (fTE.language?.name === "en") {
-                        acc.push({ text: fTE.text, version: fTE.version_group.name })
-                    }
-                    return acc
-                }, []),
-                ...(res.fling_effect?.name && {fling_effect: res.fling_effect?.name}),
-                ...(res.fling_power && {fling_power: res.fling_power}),
-                machines: res.machines?.map((m: any) => ({machine:trimUrl(m.url), version: m.version_group.name})),
-                name: res.name,
-                names: names.length > 1 ? names : [{name: res.name, language: "en" }],
-                ...(res.sprites?.default && { sprites: res.sprites?.default })
-            }
+        fetch(`${BASE_API_URL_ITEM}/${id}`).then(res => errorCheck(res)).then(res => {
+            let itemData = generateItemData(res);
             result(itemData);
         }).catch(err => {
             result(null)
@@ -150,7 +107,7 @@ function fetchItemData(id: string): Promise<ItemData | null> {
     })    
 }
 
-export async function getItemSprite(id: string): Promise<{name: string, url: string}> {
+export async function getItemSprite(id: string): Promise<{name: string, url: string} | null> {
     return new Promise(result => {
         const request = indexedDB.open(POKEMON_DB);
 
@@ -167,10 +124,12 @@ export async function getItemSprite(id: string): Promise<{name: string, url: str
                     } else {
                         fetchItemData(id).then(res => {
                             db.transaction(Stores.Items, 'readwrite').objectStore(Stores.Items).put(res, id);
-                            if (res) {
-                                result({name: res.names.find(n => (n.language === "en"))?.name ?? res.names[0].name, url: res.sprites ?? "" });
+                            let name = res?.names?.find(n=>n.language==="en")?.name??capitalize(res?.name);
+                            let url = res?.sprites;
+                            if (name && url) {
+                                result({name,url})
                             } else {
-                                result({name: "", url: ""})
+                                result(null);
                             }
                         })
                     }
@@ -178,10 +137,12 @@ export async function getItemSprite(id: string): Promise<{name: string, url: str
 
             } else {
                 fetchItemData(id).then(res => {
-                    if (res) {
-                        result({name: res.names.find(n => (n.language === "en"))?.name ?? res.names[0].name, url: res.sprites ?? "" });
+                    let name = res?.names?.find(n=>n.language==="en")?.name??capitalize(res?.name);
+                    let url = res?.sprites;
+                    if (name && url) {
+                        result({name,url})
                     } else {
-                        result({name: "", url: ""})
+                        result(null);
                     }
                 });
             }

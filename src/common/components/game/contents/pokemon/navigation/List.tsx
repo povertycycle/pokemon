@@ -21,7 +21,7 @@ function displayPokemonName(name: string, species: string) {
 
 const List: React.FC<{ pokemons: Pokemon[], pokeId: string | null, setPokeId: Dispatch<SetStateAction<string | null>> }> = ({ pokeId, setPokeId, pokemons }) => {
     return (
-        <div id={CONTAINER_ID} className={`${styles.overflow} h-0 bg-base-white grow w-full flex flex-col gap-1 text-[0.875rem] leading-4 overflow-y-scroll overflow-x-hidden shadow-[inset_0_0_4px_black] rounded-tl-[16px] rounded-bl-[4px] rounded-r-[4px]`}>
+        <div id={CONTAINER_ID} className={`${styles.overflowGreen} h-0 bg-base-white grow w-full flex flex-col gap-1 text-[0.875rem] leading-4 overflow-y-scroll overflow-x-hidden shadow-[inset_0_0_4px_black] rounded-tl-[16px] rounded-bl-[4px] rounded-r-[4px]`}>
             {
                 pokemons.map((p: Pokemon, i: number) => (
                     <Option key={i} p={p} pokeId={pokeId} setPokeId={setPokeId} />
