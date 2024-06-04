@@ -14,14 +14,14 @@ type PokeVariantsProps = {
 
 const PokeVariants: React.FC<PokeVariantsProps> = ({ data }) => {
     const { details, palette } = useContext(DetailsContext);
-    const [pokemons, setPokemons] = useState<{ name: string, url: string }[]>([]);
+    const [pokemons, setPokemons] = useState<({ name: string, url: string })[]>([]);
     const isBaby = data.is_baby;
 
     useEffect(() => {
         if (data.species) {
             getVariants(data.species).then(res => {
                 Promise.all(res.map(variant => getVarietySprite(variant))).then(res => {
-                    setPokemons(res);
+                    setPokemons(res.filter(r => r != null && r != undefined) as { name: string, url: string }[]);
                 })
             });
         }
