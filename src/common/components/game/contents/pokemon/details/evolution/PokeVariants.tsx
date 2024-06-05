@@ -7,6 +7,7 @@ import { EvolutionChain } from "../../interfaces/evolution";
 import { DetailsContext } from "../contexts";
 import ImageSprites from "./ImageSprites";
 import Methods from "./Methods";
+import Image from "next/image";
 
 type PokeVariantsProps = {
     data: EvolutionChain
@@ -73,7 +74,7 @@ const Pokemon: React.FC<{ active?: string, name: string, url: string, isBaby: bo
             <div className={`peer w-full flex items-center justify-center aspect-square bg-black/15 transition-transform border-2 ${active === name ? "" : "cursor-pointer hover:scale-[1.05]"}`} onClick={toPokemon} style={{ borderColor: palette[0] }}>
                 {
                     url ?
-                        <img className="w-full h-full" alt="" src={url} /> :
+                        <Image loading="lazy" width={128} height={128} className="w-full h-full" alt="" src={url} /> :
                         <i className="ri-question-mark text-[4rem]" />
                 }
             </div>

@@ -6,6 +6,8 @@ import table from "@/common/styles/table.module.scss";
 import Details from "./Details";
 import Searchbar from "./navigation/Searchbar";
 import HeadFilter from "./navigation/HeadFilter";
+import Image from "next/image";
+import GenFilter from "./navigation/GenFilter";
 
 type DisplayProps = {
     items: ItemData[]
@@ -49,6 +51,7 @@ const Navigation = memo(({ items, item, setItem }: NavigationProps) => {
         <div className="w-[80%] h-full pl-12 pr-4 pt-12 pb-4 flex flex-col bg-base-white">
             <div className="w-fit flex max-w-full border-2 border-black">
                 <Searchbar search={search} />
+                <GenFilter />
             </div>
             <div className={`mt-2 h-full w-full overflow-y-scroll flex justify-end pr-4 ${styles.overflowPurple}`}>
                 <table className="border-separate w-full h-fit">
@@ -59,11 +62,11 @@ const Navigation = memo(({ items, item, setItem }: NavigationProps) => {
                                 <tr key={i}>
                                     <td className="flex gap-4 items-center" style={{ paddingLeft: "8px", paddingRight: "16px" }}>
                                         <div className="w-[48px] h-[48px] flex items-center justify-center">
-                                            {item?.sprites ? <img alt="" className="w-full h-full" src={item.sprites} /> : <i className="ri-question-mark text-[1.5rem]" />}
+                                            {item?.sprites ? <Image width={48} height={48} loading="lazy" alt="" className="w-full h-full" src={item.sprites} /> : <i className="ri-question-mark text-[1.5rem]" />}
                                         </div>
                                         <span className="whitespace-nowrap">{item?.names?.find(i => i.language === "en")?.name ?? capitalize(item.name)}</span>
                                     </td>
-                                    <td>{CATEGORIES[item.category].name}</td>
+                                    <td className="whitespace-nowrap">{CATEGORIES[item.category].name}</td>
                                     <td style={{ whiteSpace: "nowrap" }}>{CATEGORIES[item.category].pocket}</td>
                                     <td style={{ lineHeight: "18px" }}>{item.flavor_text ?? "- - -"}</td>
                                 </tr>

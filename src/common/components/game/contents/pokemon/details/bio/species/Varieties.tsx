@@ -3,6 +3,7 @@ import styles from "@/common/styles/custom.module.scss";
 import { capitalize } from "@/common/utils/capitalize";
 import React, { useContext } from "react";
 import { DetailsContext } from "../../contexts";
+import Image from "next/image";
 
 type VarietiesProps = {
     varieties: string[],
@@ -55,7 +56,7 @@ const Variety: React.FC<{ varietyId: string, color: string }> = ({ varietyId, co
             onClick={goToPokemon} style={{ background: isCurrent ? color : "", width: `${BASE}px`, height: `${BASE}px` }}>
             {
                 url ?
-                    <img alt="" src={url} className="relative z-[1] w-full h-full" /> :
+                    <Image width={BASE} height={BASE} alt="" src={url} className="relative z-[1] w-full h-full" /> :
                     <span style={{ fontSize: `${BASE * 0.625}px` }} className="text-white">?</span>
             }
         </div>

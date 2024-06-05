@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { Fragment, useContext } from "react";
 import StatsDetails from "./StatsDetails";
 import { DetailsContext } from "../../contexts";
 import { shortcutID } from "@/common/utils/shortcut";
@@ -15,10 +15,10 @@ const Stats: React.FC = () => {
                     [
                         "hp", "attack", "defense", "special-attack", "special-defense", "speed"
                     ].map((stat: string, i: number) => (
-                        <>
+                        <Fragment key={i}>
                             {i !== 0 && <hr className="border-t-2 w-full" style={{ borderColor: palette[0] }} />}
-                            <StatsDetails key={i} tag={stat} base={details.stats[stat].base_stat} />
-                        </>
+                            <StatsDetails tag={stat} base={details.stats[stat].base_stat} />
+                        </Fragment>
                     ))
                 }
             </div>

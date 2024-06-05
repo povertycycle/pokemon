@@ -4,6 +4,7 @@ import { DetailsContext } from "../../contexts";
 import styles from "./animation.module.scss";
 import Cries from "./Cries";
 import Selector from "./Selector";
+import Image from "next/image";
 
 type ImagesProps = {
     options: Sprites,
@@ -38,7 +39,7 @@ const Images: React.FC<ImagesProps> = ({ options, gen }) => {
                 {
                     !url ?
                         <div className="w-full h-full text-[8rem] flex items-center justify-center font-bold"><i className="ri-question-mark" /></div> :
-                        <img width="100%" height="100%" loading="lazy" className={`max-w-full max-h-full min-h-[128px] min-w-[128px] relative z-[1]`} alt="" src={url} onLoad={animateNewPokemon} />
+                        <Image width={128} height={128} loading="lazy" className={`w-full h-full max-w-full max-h-full min-h-[128px] min-w-[128px] relative z-[1]`} alt="" src={url} onLoad={animateNewPokemon} />
                 }
                 <Cries audioRef={audioRef} />
             </div>

@@ -14,6 +14,7 @@ function generateItemData(data: any) {
     let e=data?.effect_entries.map((eE: any) => (eE.language?.name === "en" ? eE?.effect : undefined)).filter(Boolean)[0] ?? null
     let a=data.attributes.map((a: any) => (a?.name));
     let f=data?.flavor_text_entries?.filter((fTE:any)=>(fTE.language.name==="en"))?.at(-1)?.text;
+    let g=data?.flavor_text_entries?.reduce((acc:string[],fTE:any)=>{let v=fTE?.version_group?.name;if(!acc.includes(v))acc.push(v);return acc;},[])
     return {
         category: data?.category?.name ?? "uncategorized",
         name: data.name,
@@ -26,7 +27,8 @@ function generateItemData(data: any) {
         ...(data?.fling_power&&{fling_power:data.fling_power}),
         ...(m.length>0&&{machines:m}),
         ...(n.length>0&&{names:n}),
-        ...(data?.sprites?.default&&{sprites:data?.sprites?.default})
+        ...(data?.sprites?.default&&{sprites:data?.sprites?.default}),
+        ...(g.length>0&&{games:g})
     }
 }
 async function validateDatabase(db: IDBDatabase, count: number): Promise<boolean> {

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { DetailsContext } from "../../contexts"
 import { useSprites } from "@/common/components/game/hooks/useSprites"
 import { capitalize } from "@/common/utils/capitalize"
+import Image from "next/image"
 
 type HeldItemsProps = {
     data: string[]
@@ -31,7 +32,7 @@ const Item: React.FC<{ id: string }> = ({ id }) => {
         <div className="h-[64px] aspect-square flex items-center justify-center" title={capitalize(name)}>
             {
                 url ?
-                    <img alt="" src={url} className="w-full h-full" /> :
+                    <Image width={64} height={64} alt="" src={url} className="w-full h-full" /> :
                     <i className="ri-question-mark text-[2rem]" />
             }
         </div>

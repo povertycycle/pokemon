@@ -31,7 +31,7 @@
 .overflowPurple {
     &::-webkit-scrollbar {
         overflow: hidden;
-        width: 24px;
+        width: 12px;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -39,7 +39,7 @@
         border-radius: 6px;
         background: #4b0478;
         background-clip: content-box;
-        border: 6px solid transparent;
+        border: 4px solid transparent;
     }
 }
 

@@ -16,6 +16,7 @@ export type ItemData = {
     machines?: {machine: string, version: string}[],
     names?: {name: string, language: string}[],
     sprites?: string,
+    games?: string[],
 }
 
 export enum OrderType {
@@ -102,7 +103,7 @@ export const CATEGORIES: {[tag:string]: {name:string,pocket:string}} = {
     },
     "event-items": {
         "name": "Event items",
-        "pocket": "Key Items"
+        "pocket": "Key Items" 
     },
     "gameplay": {
         "name": "Gameplay",
@@ -241,3 +242,7 @@ export const CATEGORIES: {[tag:string]: {name:string,pocket:string}} = {
         "pocket": "Items"
     }
 }
+
+export const POCKETS = [
+    "Key Items", "Items", "Battle Items", "Berries", "Mail", "Medicine", "Poké Balls", "TMs and HMs"
+]
