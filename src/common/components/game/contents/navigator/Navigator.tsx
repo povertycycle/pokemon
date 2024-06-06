@@ -39,7 +39,7 @@ const Navigator: React.FC = () => {
             <div className={`fixed z-[1] left-0 top-0 text-[1.25rem]`}>
                 {
                     Object.entries(Tab).map((entries: [string, Tab], i: number) => (
-                        <div className={`${styles.entryAnimation} ${tab && tab !== entries[1] ? "brightness-75 hover:brightness-90" : "brightness-100"} group/selector absolute flex items-center transition-all duration-300 cursor-pointer ${!tab ? "overflow-hidden border-2" : "left-[-40px] hover:left-[0]"}`} style={{
+                        <div className={`${styles.entryAnimation} ${tab && tab !== entries[1] ? "brightness-[75%] hover:brightness-[85%]" : "brightness-100"} group/selector absolute flex items-center transition-all duration-300 cursor-pointer ${!tab ? "overflow-hidden border-2" : "left-[-40px] hover:left-[0]"}`} style={{
                             width: !tab ? `${100 / COLUMNS}vw` : `${SIZE}px`,
                             height: !tab ? `${100 / ROWS}vh` : `${SIZE}px`,
                             top: !tab ? `${Math.floor(i / COLUMNS) * 100 / ROWS}vh` : `${(SIZE + 8) * i}px`,

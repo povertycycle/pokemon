@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { getVarietySprite } from "../database/pokemonDB";
 import { getItemSprite } from "../database/itemsDB";
 
-export const useSprites = (type: "item" | "species", id?: string) => {
+export const useSprites = (type: "item" | "species", id?: string | null) => {
     const [name, setName] = useState<string | null>(null);
     const [url, setUrl] = useState<string | null>(null);
 

@@ -10,11 +10,12 @@ import { capitalize } from "@/common/utils/capitalize";
 export const ITEMS_VALIDATOR_KEY = "Xk7dcBfI2GObBbxjApy5US3feJkwWN6V";
 function generateItemData(data: any) {
     let n=data.names.map((n: any) => ({name: n.name, language: n.language.name}));
-    let m=data?.machines?.map((m: any) => ({machine:trimUrl(m.url), version: m.version_group.name}));
     let e=data?.effect_entries.map((eE: any) => (eE.language?.name === "en" ? eE?.effect : undefined)).filter(Boolean)[0] ?? null
     let a=data.attributes.map((a: any) => (a?.name));
     let f=data?.flavor_text_entries?.filter((fTE:any)=>(fTE.language.name==="en"))?.at(-1)?.text;
-    let g=data?.flavor_text_entries?.reduce((acc:string[],fTE:any)=>{let v=fTE?.version_group?.name;if(!acc.includes(v))acc.push(v);return acc;},[])
+    let g=data?.flavor_text_entries?.reduce((acc:string[],fTE:any)=>{let v=fTE?.version_group?.name;if(!acc.includes(v))acc.push(v);return acc;},[]);
+    (data?.machines?.map((m: any)=>(m.version_group.name))).forEach((v:any)=>{if(!g.includes(v))g.push(v);})
+    
     return {
         category: data?.category?.name ?? "uncategorized",
         name: data.name,
@@ -25,7 +26,6 @@ function generateItemData(data: any) {
         ...(e&&{effect:e}),
         ...(data?.fling_effect?.name&&{fling_effect:data.fling_effect?.name}),
         ...(data?.fling_power&&{fling_power:data.fling_power}),
-        ...(m.length>0&&{machines:m}),
         ...(n.length>0&&{names:n}),
         ...(data?.sprites?.default&&{sprites:data?.sprites?.default}),
         ...(g.length>0&&{games:g})

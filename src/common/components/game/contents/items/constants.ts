@@ -13,7 +13,6 @@ export type ItemData = {
     flavor_text: string,
     fling_effect?: string,
     fling_power?: number,
-    machines?: {machine: string, version: string}[],
     names?: {name: string, language: string}[],
     sprites?: string,
     games?: string[],
@@ -246,3 +245,33 @@ export const CATEGORIES: {[tag:string]: {name:string,pocket:string}} = {
 export const POCKETS = [
     "Key Items", "Items", "Battle Items", "Berries", "Mail", "Medicine", "Poké Balls", "TMs and HMs"
 ]
+
+export const VERSIONS = [
+    "red-blue",
+    "yellow",
+    "gold-silver",
+    "crystal",
+    "ruby-sapphire",
+    "emerald",
+    "firered-leafgreen",
+    "diamond-pearl",
+    "platinum",
+    "heartgold-soulsilver",
+    "black-white",
+    "colosseum",
+    "xd",
+    "black-2-white-2",
+    "x-y",
+    "omega-ruby-alpha-sapphire",
+    "sun-moon",
+    "ultra-sun-ultra-moon",
+    "lets-go-pikachu-lets-go-eevee",
+    "sword-shield",
+    "the-isle-of-armor",
+    "the-crown-tundra",
+    "brilliant-diamond-and-shining-pearl",
+    "legends-arceus",
+    "scarlet-violet",
+    "the-teal-mask",
+    "the-indigo-disk"
+];

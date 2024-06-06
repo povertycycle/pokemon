@@ -3,51 +3,36 @@ import { capitalize } from "@/common/utils/capitalize";
 import { useState } from "react";
 import { useDropdown } from "../../../hooks/useDropdown";
 import { CATEGORIES, POCKETS } from "../constants";
-import CateogrySearch from "./HeadSearch";
 import HeadSearch from "./HeadSearch";
 
 type Filter = "category" | "pocket";
-const FILTER_DATA: { [key in Filter]: {
-    list: string[], child: number, compare: (a: string, b: string | null) => boolean
-} } = {
-    "category": {
-        list: Object.entries(CATEGORIES).map((c => (c[1].name))),
-        child: 1,
-        compare: (value: string, name: string | null) => (!!name && !name.toLowerCase().includes(value.toLowerCase()))
-    },
-    "pocket": {
-        list: POCKETS,
-        child: 2,
-        compare: (value: string, name: string | null) => (!!name && name.toLowerCase() !== value.toLowerCase())
-    }
-};
-
-const HeadCellFilter: React.FC<{ listId: string, id: string, type: Filter }> = ({ listId, id, type }) => {
+const HeadCellFilter: React.FC<{ listId: string, id: string, type: Filter, filter: (value: string | null) => void }> = ({ listId, id, type, filter }) => {
     const HEIGHT = 28;
-    let { list, child, compare } = FILTER_DATA[type];
+    let list = (() => {
+        switch (type) {
+            default:
+            case "category":
+                return Object.entries(CATEGORIES).map((c => ({ title: c[1].name, value: c[0] })));
+            case "pocket":
+                return POCKETS.map(p => ({ title: p, value: p.toLowerCase().replaceAll(" ", "-") }));
+        }
+    })();
     const { ref, menu, toggle, closeMenu } = useDropdown();
     const [active, setActive] = useState<string | null>(null);
 
-    function filterCategory(value: string | null) {
+    function doFilter(value: string | null) {
         if (value !== active) {
             setActive(value);
             closeMenu();
-            document.getElementById(listId)?.childNodes.forEach(tr => {
-                let disp = "";
-                if (value) {
-                    let name = (tr.childNodes[child])?.textContent;
-                    if (compare(value, name)) disp = "none"
-                }
-                (tr as HTMLTableRowElement).style.display = disp;
-            })
+            filter(value);
         }
     }
 
     return (
         <th className="relative" style={{ background: active ? "#4b0478" : "", color: active ? "#f0f0f0" : "#4b0478" }}>
-            <span className={`relative z-[1] whitespace-nowrap pr-8 flex gap-2 ${active ? "text-base-white" : "text-x-dark"}`}>
+            <span className={`relative z-[1] whitespace-nowrap flex gap-2 ${active ? "text-base-white" : "text-x-dark"}`}>
                 {active ?? capitalize(type)}
-                {active && <i onClick={() => { filterCategory(null) }} className="ri-close-line cursor-pointer hover:text-base-white-dark" />}
+                {active && <i onClick={() => { doFilter(null) }} className="ri-close-line cursor-pointer hover:text-base-white-dark" />}
             </span>
             <div ref={ref} className="z-[0] left-0 absolute w-full flex justify-end top-[50%] translate-y-[-50%] pr-1">
                 <i onClick={toggle} className="ri-arrow-down-s-fill hover:text-base-white-dark cursor-pointer text-[1.5rem]" />
@@ -57,10 +42,10 @@ const HeadCellFilter: React.FC<{ listId: string, id: string, type: Filter }> = (
                             <HeadSearch title={capitalize(type)} id={id} />
                             <div id={id} className={`w-full flex flex-col h-0 grow overflow-y-scroll ${styles.overflowPurple}`} style={{ color: "#4b0478" }}>
                                 {
-                                    list.map((c, i) => {
+                                    list.map(({ title, value }, i) => {
                                         return (
-                                            <div key={i} onClick={() => { filterCategory(c) }} className="shrink-0 px-[12px] cursor-pointer hover:bg-x-dark/25 flex items-center whitespace-nowrap normal-case" style={{ height: `${HEIGHT}px` }}>
-                                                {c}
+                                            <div key={i} onClick={() => { doFilter(value) }} className="shrink-0 px-[12px] cursor-pointer hover:bg-x-dark/25 flex items-center whitespace-nowrap normal-case" style={{ height: `${HEIGHT}px` }}>
+                                                {title}
                                             </div>
                                         )
                                     })

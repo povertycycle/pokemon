@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { EggSvg } from "../../../Icons";
 import { EvolutionChain } from "../../interfaces/evolution";
 import { DetailsContext } from "../contexts";
-import ImageSprites from "./ImageSprites";
+import ImageSprites from "../../../_utils/ImageSprites";
 import Methods from "./Methods";
 import Image from "next/image";
 

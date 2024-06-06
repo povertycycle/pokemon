@@ -3,7 +3,7 @@ import { capitalize } from "@/common/utils/capitalize";
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import { EvolutionMethod } from "../../interfaces/evolution";
 import { DetailsContext } from "../contexts";
-import ImageSprites from "./ImageSprites";
+import ImageSprites from "../../../_utils/ImageSprites";
 import styles from "@/common/styles/custom.module.scss";
 import { isDark } from "@/common/utils/colors";
 import { TYPE_COLORS } from "../../types/constants";

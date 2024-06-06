@@ -2,7 +2,7 @@ import { useSprites } from "@/common/components/game/hooks/useSprites";
 import { capitalize } from "@/common/utils/capitalize";
 import Image from "next/image";
 
-const ImageSprites: React.FC<{ id: string, type: "species" | "item" }> = ({ id, type }) => {
+const ImageSprites: React.FC<{ id: string | null, type: "species" | "item" }> = ({ id, type }) => {
     const { name, url } = useSprites(type, id);
 
     return (

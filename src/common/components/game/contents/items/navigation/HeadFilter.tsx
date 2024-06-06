@@ -4,7 +4,9 @@ import { OrderType } from "../constants";
 import HeadCellFilter from "./HeadCellFilter";
 
 type HeadFilterProps = {
-    listId: string,
+    listId: string;
+    filterCategory: (value: string | null) => void;
+    filterPocket: (value: string | null) => void;
 }
 
 const COMPARATOR: { [key: string]: (a: Element, b: Element) => number } = {
@@ -12,7 +14,7 @@ const COMPARATOR: { [key: string]: (a: Element, b: Element) => number } = {
     "name-2": (a: Element, b: Element) => ((a.firstChild?.lastChild?.textContent || "") > (b.firstChild?.lastChild?.textContent || "") ? 1 : -1),
 }
 
-const HeadFilter: React.FC<HeadFilterProps> = ({ listId }) => {
+const HeadFilter: React.FC<HeadFilterProps> = ({ listId, filterCategory, filterPocket }) => {
     const [nameOrder, setNameOrder] = useState<OrderType>(OrderType.ASC);
 
     const doSortName = () => {
@@ -35,10 +37,10 @@ const HeadFilter: React.FC<HeadFilterProps> = ({ listId }) => {
 
     return (
         <thead>
-            <tr className={`text-[1.25rem] sticky top-[2px] text-x-dark ${table.long_table_header}`}>
+            <tr className={`z-[1] text-[1.25rem] sticky top-[2px] text-x-dark ${table.long_table_header}`}>
                 <th className="relative">Item <i onClick={doSortName} className={`hover:text-base-white-dark absolute top-[50%] translate-y-[-50%] right-[8px] ${nameOrder === OrderType.ASC ? "ri-sort-alphabet-asc" : "ri-sort-alphabet-desc"} cursor-pointer text-[1.5rem] leading-4`} /></th>
-                <HeadCellFilter listId={listId} id={"0wkoObmmUOV072uUwgkOwztHoeSxTsab"} type="category" />
-                <HeadCellFilter listId={listId} id={"2KOzingyH1lbYVZUEN3dDZgZBe8jn9EM"} type="pocket" />
+                <HeadCellFilter filter={filterCategory} listId={listId} id={"0wkoObmmUOV072uUwgkOwztHoeSxTsab"} type="category" />
+                <HeadCellFilter filter={filterPocket} listId={listId} id={"2KOzingyH1lbYVZUEN3dDZgZBe8jn9EM"} type="pocket" />
                 <th>Description</th>
             </tr>
         </thead>
