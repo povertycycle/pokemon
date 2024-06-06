@@ -19,10 +19,10 @@ type DetailsProps = {
 
 const Details: React.FC<DetailsProps> = ({ item }) => {
     return (
-        <div className="w-[20%] h-full bg-x-dark pl-2 py-2">
+        <div className="w-[20%] h-full bg-x-dark pl-1 py-1">
             {
                 !item ?
-                    <div className="text-base-white w-full h-full flex items-center justify-center text-[2rem]">
+                    <div className="text-base-white w-full h-full flex items-center justify-center text-[2rem] bg-black/35">
                         Select an item
                     </div> :
                     <div className="flex flex-col w-full gap-1 h-full">
@@ -72,7 +72,7 @@ const Details: React.FC<DetailsProps> = ({ item }) => {
                                 !!item.effect &&
                                 <>
                                     <hr className="border-t border-x-dark" />
-                                    <p className="leading-5 my-2 flex flex-col">
+                                    <p className="leading-4 my-2 px-1 flex flex-col gap-1">
                                         {item.effect.match(SENTENCES_REGEX)?.map(((t: string, i: number) => (
                                             <span key={i}>
                                                 <Typewriter text={t} duration={1.5} />
