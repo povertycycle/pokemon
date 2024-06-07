@@ -125,9 +125,12 @@ export async function getItemSprite(id: string): Promise<{name: string, url: str
                         result({name: itemData.result.names.find((n: any) => (n.language === "en"))?.name ?? itemData.result.names[0].name, url: itemData.result.sprites });
                     } else {
                         fetchItemData(id).then(res => {
-                            db.transaction(Stores.Items, 'readwrite').objectStore(Stores.Items).put(res, id);
                             let name = res?.names?.find(n=>n.language==="en")?.name??capitalize(res?.name);
                             let url = res?.sprites;
+                            if (res) {
+                                db.transaction(Stores.Items, 'readwrite').objectStore(Stores.Items).put(res, id);
+                                
+                            }
                             if (name && url) {
                                 result({name,url})
                             } else {
@@ -146,6 +149,42 @@ export async function getItemSprite(id: string): Promise<{name: string, url: str
                     } else {
                         result(null);
                     }
+                });
+            }
+        }
+    })
+}
+
+
+export async function getItemData(id: string): Promise<ItemData | null> {
+    return new Promise(result => {
+        const request = indexedDB.open(POKEMON_DB);
+
+        request.onsuccess = () => {
+            let db: IDBDatabase = request.result;
+            const itemsTx = db.transaction(Stores.Items, 'readonly');
+
+            if (cacheIsAllowed()) {
+                const itemData = itemsTx.objectStore(Stores.Items).get(id);
+                
+                itemData.onsuccess = () => {
+                    if (itemData.result) {
+                        result(itemData.result);
+                    } else {
+                        fetchItemData(id).then(res => {
+                            if (res) {
+                                db.transaction(Stores.Items, 'readwrite').objectStore(Stores.Items).put(res, id);
+                                result(res)
+                            } else {
+                                result(null);
+                            }
+                        })
+                    }
+                }
+
+            } else {
+                fetchItemData(id).then(res => {
+                    result(res);
                 });
             }
         }

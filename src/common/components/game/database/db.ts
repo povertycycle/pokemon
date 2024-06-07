@@ -11,11 +11,12 @@ export enum Stores {
     Items = "items",
     Encounters = "encounters",
     Locations = "locations",
+    Berries = "berries",
     Validator = "validator",
 }
 
 export const initDB = (): Promise<boolean> => {
-    const version = 5;
+    const version = 6;
 
     return new Promise(res => {
         const request = indexedDB.open(POKEMON_DB, version);

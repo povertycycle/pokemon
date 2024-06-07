@@ -8,7 +8,7 @@ import Typewriter from "../../../utils/Typewriter"
 import ImageSprites from "../../_utils/ImageSprites"
 import { CATEGORIES, ItemData } from "../constants"
 import { ATTRIBUTES, FLING_EFFECT, LANGUAGES } from "./constants"
-import { PokeDollars } from "./PokeDollars"
+import { PokeDollars } from "../../_utils/PokeDollars"
 import { getGameName } from "../../pokemon/details/_utils/getGameName";
 import styles from "@/common/styles/custom.module.scss";
 import { getGameColors } from "../../pokemon/details/_utils/getGameColors"
@@ -22,7 +22,7 @@ const Details: React.FC<DetailsProps> = ({ item }) => {
         <div className="w-[20%] h-full bg-x-dark pl-1 py-1">
             {
                 !item ?
-                    <div className="text-base-white w-full h-full flex items-center justify-center text-[2rem] bg-black/35">
+                    <div className="text-base-white w-full h-full flex items-center justify-center text-[2rem] bg-black/50">
                         Select an item
                     </div> :
                     <div className="flex flex-col w-full gap-1 h-full">

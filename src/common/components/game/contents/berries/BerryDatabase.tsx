@@ -1,33 +1,33 @@
 import { useEffect, useState } from "react";
-import { ItemData } from "./constants";
-import { getAllItems } from "../../database/itemsDB";
 import Loading from "../../utils/Loading";
 import Empty from "../../utils/Empty";
-import Display from "./Display";
 import styles from "@/common/styles/transitions.module.scss";
+import { getAllBerries } from "../../database/berriesDB";
+import { BerryData } from "./constants";
+import Display from "./Display";
 
-const ItemsDatabase: React.FC = () => {
-    const [items, setItems] = useState<ItemData[] | null | undefined>();
+const BerryDatabase: React.FC = () => {
+    const [berries, setBerries] = useState<BerryData[] | null | undefined>();
 
     useEffect(() => {
-        getAllItems().then(res => {
-            setItems(res);
-        });
+        getAllBerries().then(res => {
+            setBerries(res);
+        })
     }, [])
 
     return (
         <div className={`absolute z-[0] w-full h-full overflow-hidden flex items-center justify-center top-0 ${styles.fadeIn}`}>
             {
-                items === undefined ?
+                berries === undefined ?
                     <Loading /> :
                     (
-                        items === null || Object(items).length === 0 ?
+                        berries === null || Object().length === 0 ?
                             <Empty /> :
-                            <Display items={items} />
+                            <Display berries={berries} />
                     )
             }
         </div>
     )
 }
 
-export default ItemsDatabase;
+export default BerryDatabase;
