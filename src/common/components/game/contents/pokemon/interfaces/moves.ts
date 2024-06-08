@@ -9,26 +9,17 @@ export type MoveVersions = {
 }
 
 export type MoveData = {
-    accuracy?: number,
-    effect_chance?: number,
+    damage_class: string,
+    flavor_text: string,
+    type: string,
+    target: string,
     pp: number,
     priority: number,
     power?: number,
-    damage_class: string,
+    accuracy?: number,
     effect?: string,
-    short_effect?: string,
-    flavor_text_entries?: {
-        flavor_text: string,
-        version: string,
-    }[],
-    machines: {
-        id: string,
-        item: {name: string, id: string}
-        version: string,
-    }[],    
-    meta?: {
-        [tag: string]: number | string
-    },
-    target: string,
-    type: string
+    machines?: { machine: string, version: string, }[],
+    games?: string[]
 }
+
+export type PokeMove = { name: string, data: MoveData, pokemons: string[] }

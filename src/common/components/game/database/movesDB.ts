@@ -1,70 +1,58 @@
-import { trimUrl } from "@/common/utils/trimUrl";
-import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_MACHINES, BASE_API_URL_MOVES } from "../constants";
-import { MoveData } from "../contents/pokemon/interfaces/moves";
-import { POKEMON_DB, Stores } from "./db";
 import { errorCheck } from "@/common/utils/errorCheck";
+import { cacheIsAllowed } from "../../home/cache/utils";
+import { BASE_API_URL_MOVES } from "../constants";
+import { MoveData, PokeMove } from "../contents/pokemon/interfaces/moves";
+import { POKEMON_DB, Stores } from "./db";
+import { trimUrl } from "@/common/utils/trimUrl";
+import { doBatchProcess } from "./_utils";
 
-function fetchMoveData(id: string): Promise<{ name: string, data: MoveData | null }> {
+interface Generation extends PokeMove {
+    id: string;
+}
+
+function generateMoveData(data: any): Promise<Generation | null> {
+    return new Promise(result => {
+        let e=data.effect_entries.find((e:any)=>e.language.name==="en")?.effect;
+        let f=(data?.flavor_text_entries?.filter((fTE:any)=>(fTE.language.name==="en"))?.at(-1)?.flavor_text??"- - -");
+        let g=Object.keys((data?.flavor_text_entries?.reduce((acc:any,c:any)=>{acc[c.version_group.name]=0;return acc;},{})));
+        Promise.all((data?.machines?.map((m:any)=>fetch(m.machine.url).then(res=>errorCheck(res))))).then(res=>(res.map(r=>({machine:r.item.name,version:r.version_group.name})))).then(res=>{
+            result({
+                id: String(data?.id??"-1"),
+                name: data?.name??"-",
+                data: {
+                    ...(data.accuracy && { accuracy: data.accuracy }),
+                    ...(e && {effect: e}),
+                    ...(data.power && { power: data.power }), 
+                    ...((res && res.length>0) && { machines: res }),
+                    ...(g.length>1 && { games: g }),
+                    damage_class: data?.damage_class.name,
+                    flavor_text: f, 
+                    type: data?.type.name,
+                    target: data?.target.name,
+                    pp: data.pp,
+                    priority: data.priority,
+                },
+                pokemons: data.learned_by_pokemon.map((lbp:any)=>(trimUrl(lbp.url))),
+            })
+        }).catch(err=>{result(null)});
+    })
+}
+
+function fetchMoveData(id: string): Promise<PokeMove | null> {
     return new Promise(result => {
         fetch(`${BASE_API_URL_MOVES}/${id}`).then(res => {
             return errorCheck(res);
         }).then(res => {
-            let eE = res.effect_entries.find((e: any) => e.language.name === "en");            
-            let moveName = res.name;
-            let moveData = {
-                ...(res.accuracy && { accuracy: res.accuracy }),
-                ...(res.effect_chance && { effect_chance: res.effect_chance }),
-                pp: res.pp,
-                priority: res.priority,
-                ...(res.power && { power: res.power }), 
-                damage_class: res?.damage_class.name,
-                ...(eE && { effect: eE?.effect, short_effect: eE?.short_effect }),
-                flavor_text_entries: res.flavor_text_entries?.reduce((acc: any, fTE: any) => {
-                    if (fTE.language.name === "en") {
-                        acc.push({
-                            flavor_text: fTE.flavor_text,
-                            version: fTE.version_group.name
-                        })
-                    }
-                    return acc;
-                }, []),
-                ...(res.meta && {
-                    meta: Object.entries(res.meta).reduce((acc: any, [tag, value]: any) => {
-                        if (typeof value === "object") {
-                            if (value?.name) {
-                                acc[tag] = value.name
-                            }
-                        } else {
-                            if (value) {
-                                acc[tag] = value
-                            }
-                        }
-
-                        return acc;
-                    }, {})
-                }),
-                target: res?.target.name,
-                type: res?.type.name
-            }
-            
-            Promise.all(res?.machines?.map((m: any) => fetch(m.machine.url).then(res => { if (res.ok) return res.json(); else throw new Error("Failed to get TM data.") }))).then(res => {
-                moveData.machines = res?.map(moveResponse => ({
-                    id: moveResponse?.id,
-                    item: { name: moveResponse?.item?.name, id: trimUrl(moveResponse?.item?.url) },
-                    version: moveResponse?.version_group?.name
-                }))
-                result({ name: moveName, data: moveData });
-            }).catch(err => {
-                throw new Error(err);
-            })
+            generateMoveData(res).then(res=>{
+                result(res);
+            });
         }).catch(err => {
-            result({ name: "", data: null });
+            result(null);
         })
     })
 }
 
-export function getMoveData(id: string): Promise<{ name: string, data: MoveData | null }> {
+export function getMoveData(id: string): Promise<PokeMove | null> {
     return new Promise(result => {
         const request = indexedDB.open(POKEMON_DB);
 
@@ -74,16 +62,18 @@ export function getMoveData(id: string): Promise<{ name: string, data: MoveData 
 
             if (cacheIsAllowed()) {
                 const moveData = moveTx.objectStore(Stores.Moves).get(id);
-                
+
                 moveData.onsuccess = () => {
                     if (moveData.result?.data) {
-                        result({ name: moveData.result.name ,data: moveData.result?.data });
+                        result({ name: moveData.result.name, data: moveData.result.data, pokemons: Object.keys(moveData.result.pokemons) });
                     } else {
                         fetchMoveData(id).then(res => {
-                            db.transaction(Stores.Moves, 'readwrite').objectStore(Stores.Moves).put({
-                                ...moveData.result,
-                                data: res.data
-                            }, id);
+                            if (res) {
+                                db.transaction(Stores.Moves, 'readwrite').objectStore(Stores.Moves).put({
+                                    ...moveData.result,
+                                    data: res.data
+                                }, id);
+                            }
                             result(res);
                         })
                     }
@@ -94,6 +84,75 @@ export function getMoveData(id: string): Promise<{ name: string, data: MoveData 
                 });
             }
         }
+    })
+}
+
+export function getMovesData(): Promise<(PokeMove | null)[]> {
+    return new Promise(result => {
+        const request = indexedDB.open(POKEMON_DB);
+
+        request.onsuccess = () => {
+            let db: IDBDatabase = request.result;
+            const moveTx = db.transaction(Stores.Moves, 'readonly');
+            const keys = moveTx.objectStore(Stores.Moves).getAllKeys();
+
+            function processData(data: any) {
+                generateMoveData(data).then(res=>{
+                    if (res) {
+                        const tx = db.transaction(Stores.Moves, 'readwrite');
+                        let exDat = tx.objectStore(Stores.Moves).get(res.id);
+                        exDat.onsuccess = () => {
+                            const insert = tx.objectStore(Stores.Moves);
+                            insert.put({
+                                ...exDat.result,
+                                data: res.data                                
+                            }, String(data.id));
+                        }
+                    }
+                });
+            }
+
+            keys.onsuccess = () => {
+                let kList = keys.result;
+                let existingData: PokeMove[] = [];
+                Promise.all(kList.map(k=>new Promise(mRes=>{
+                    let mData = moveTx.objectStore(Stores.Moves).get(k);
+                    mData.onsuccess=()=>{
+                        if (!!!mData.result.data) {
+                            mRes(`${BASE_API_URL_MOVES}/${k}`);
+                        } else {
+                            existingData.push({ name: mData.result.name, data: mData.result.data, pokemons: Object.keys(mData.result.pokemons) })
+                            mRes(undefined);
+                        }
+                    }
+                }))).then(res=>{
+                    let urls = (res as any[]).filter(Boolean);
+                    if (urls.length === 0) {
+                        result(existingData);
+                    } else {
+                        let acc: Promise<Generation | null>[] = [];
+                        let processor = (data: any) => {
+                            acc.push(generateMoveData(data));
+                        }
+                        if (cacheIsAllowed()) {
+                            processor = processData;
+                        } 
+                        doBatchProcess(urls, processor).then(res => {
+                            if (cacheIsAllowed()) {
+                                let moves = db.transaction(Stores.Moves, 'readonly').objectStore(Stores.Moves).getAll();
+                                moves.onsuccess = () => {
+                                    result(moves.result.map(r=>({name:r.name,data:r.data,pokemons:Object.keys(r.pokemons)})))
+                                }
+                            } else {
+                                Promise.all(acc).then(res => {
+                                    result(res)
+                                })
+                            }
+                        })
+                    }
+                });                
+            }
+        } 
     })
 }
 

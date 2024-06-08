@@ -3,8 +3,8 @@ import { getVarietySprite } from "../database/pokemonDB";
 import { getItemSprite } from "../database/itemsDB";
 
 export const useSprites = (type: "item" | "species", id?: string | null) => {
-    const [name, setName] = useState<string | null>(null);
-    const [url, setUrl] = useState<string | null>(null);
+    const [name, setName] = useState<string | null | undefined>();
+    const [url, setUrl] = useState<string | null | undefined>();
 
     useEffect(() => {
         if (id) {
@@ -17,9 +17,9 @@ export const useSprites = (type: "item" | "species", id?: string | null) => {
                         return getItemSprite(id);
                 }
             })()?.then(res => {
-                if (res && name !== res.name) {
-                    setName(res.name);
-                    setUrl(res.url);
+                if (name !== res?.name) {
+                    setName(res?.name ?? null);
+                    setUrl(res?.url ?? null);
                 }
             })
         }

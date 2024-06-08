@@ -5,7 +5,7 @@ import PokemonDatabase from "./pokemon/PokemonDatabase";
 import EvolutionDatabase from "../evolution/EvolutionDatabase";
 import EncounterDatabase from "../encounter/EncounterDatabase";
 import MachineDatabase from "../machine/MachineDatabase";
-import MovesDatabase from "../moves/MovesDatabase";
+import MovesDatabase from "./moves/MovesDatabase";
 import ItemsDatabase from "./items/ItemsDatabase";
 import BerryDatabase from "./berries/BerryDatabase";
 import LocationDatabase from "../location/LocationDatabase";

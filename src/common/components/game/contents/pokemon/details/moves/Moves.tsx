@@ -1,17 +1,18 @@
+import { API_HOME } from "@/common/components/game/constants";
 import { getMoveData } from "@/common/components/game/database/movesDB";
+import styles from "@/common/styles/table.module.scss";
 import { capitalize } from "@/common/utils/capitalize";
+import { shortcutID } from "@/common/utils/shortcut";
 import React, { useContext, useEffect, useState } from "react";
 import { MoveData, MoveVersions, VersionDetails } from "../../interfaces/moves";
+import { Shortcuts } from "../../shortcuts/constants";
+import { TYPE_COLORS } from "../../types/constants";
 import { DetailsContext } from "../contexts";
 import Loading from "../Loading";
-import { CATEGORY_COLOR, METHODS } from "./constants";
+import { METHODS } from "./constants";
 import { GenerationContext } from "./contexts";
 import Generations from "./Generations";
-import styles from "@/common/styles/table.module.scss";
-import { TYPE_COLORS } from "../../types/constants";
-import { shortcutID } from "@/common/utils/shortcut";
-import { Shortcuts } from "../../shortcuts/constants";
-import { API_HOME } from "@/common/components/game/constants";
+import { CATEGORY_COLOR } from "../../../_utils/constants";
 
 type MovesProps = {
     moveVersions: MoveVersions;
@@ -104,8 +105,10 @@ const Move: React.FC<{ data: Data, gen: string | null, isMachine?: boolean, isLe
 
     useEffect(() => {
         getMoveData(data.moveId).then(res => {
-            setMoveData(res.data);
-            setName(res.name);
+            if (res) {
+                setMoveData(res.data);
+                setName(res.name);
+            }
         }).catch(err => {
             // ERROR;
         })
@@ -115,7 +118,7 @@ const Move: React.FC<{ data: Data, gen: string | null, isMachine?: boolean, isLe
         moveData &&
         <tr className={`even:bg-black/20 odd:bg-black/35`} style={{ height: `${HEIGHT}px` }}>
             {isLevelUp && <td style={{ textAlign: "left" }}>{data.level ?? <span title="Gained when evolved to" className="cursor-help text-[1.125rem] underline decoration-dotted">?</span>}</td>}
-            {isMachine && <td style={{ textAlign: "left" }}>{moveData.machines.find(m => m.version === gen)?.item.name.toUpperCase()}</td>}
+            {isMachine && <td style={{ textAlign: "left" }}>{moveData.machines?.find(m => m.version === gen)?.machine.toUpperCase()}</td>}
             <td style={{ textAlign: "left" }}>{capitalize(name)}</td>
             <td>{moveData.accuracy ? `${moveData.accuracy}%` : "-"}</td>
             <td>{moveData.pp}</td>

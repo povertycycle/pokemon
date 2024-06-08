@@ -179,52 +179,41 @@ export async function processSecondaryData(pokeId: string, moves: string[]): Pro
 
             if (cacheIsAllowed()) {
                 const movesTx = db.transaction(Stores.Moves, 'readonly');
-
-                Promise.all(
-                    moves.map(m => new Promise(result => {
-                        const moveData = movesTx.objectStore(Stores.Moves).get(m)
-                        moveData.onsuccess = () => {
-                            if (moveData.result.pokemons[pokeId].length > 0) {
-                                result([m, moveData.result.pokemons[pokeId]])
-                            } else {
-                                result(undefined);
-                            }
-                        }
-                    }))
-                ).then(res => {
-                    const spritesData = db.transaction(Stores.Sprites, 'readonly').objectStore(Stores.Sprites).get(pokeId);
-                    spritesData.onsuccess = () => {
-                        if (res.filter(Boolean).length === moves.length && spritesData.result) {
-                            let moveVersions = Object.fromEntries(res as [string, VersionDetails[]][])
-                            result({ moveVersions, spritesData: spritesData.result });
+                Promise.all(moves.map(m=>new Promise(moveRes=>{const md=movesTx.objectStore(Stores.Moves).get(m);
+                    md.onsuccess=()=>{if(md.result.pokemons[pokeId]?.length>0){moveRes([m,md.result.pokemons[pokeId]])}else{moveRes(undefined);}}
+                }))).then(res=>{
+                    let mvd:{[id:string]:VersionDetails[]};
+                    if (res.filter(Boolean).length===moves.length){mvd=Object.fromEntries(res as [string, VersionDetails[]][]);}
+                    const sd = db.transaction(Stores.Sprites, 'readonly').objectStore(Stores.Sprites).get(pokeId);
+                    sd.onsuccess = () => {
+                        if (!!mvd && sd.result) {
+                            result({ moveVersions: mvd, spritesData: sd.result });
                         } else {
                             fetchSecondaryData(pokeId).then(res => {
                                 if (res) {
                                     const { moveVersions, spritesData } = res;
-                                    const insertTx = db.transaction(Stores.Moves, 'readwrite');
-                                    const store = insertTx.objectStore(Stores.Moves);
-                                    Object.entries(moveVersions).forEach(([moveId, versionDetails]) => {
-                                        const moveData = store.get(moveId);
-                                        moveData.onsuccess = () => {
-                                            const data = moveData.result;
-                                            data.pokemons[pokeId] = versionDetails;
-                                            store.put(data, moveId);
+                                    const iTx = db.transaction(Stores.Moves, 'readwrite');
+                                    const str = iTx.objectStore(Stores.Moves);
+                                    Object.entries(moveVersions).forEach(([mId, vd]) => {
+                                        const md = str.get(mId);
+                                        md.onsuccess = () => {
+                                            const exd = md.result;
+                                            exd.pokemons[pokeId] = vd;
+                                            str.put(exd, mId);
                                         }
-
                                     })
 
-                                    insertTx.oncomplete = () => {
-                                        const insertSprites = db.transaction(Stores.Sprites, 'readwrite').objectStore(Stores.Sprites).put(spritesData, pokeId); 
-                                        insertSprites.onsuccess  = () => {
-                                            result(res);
-                                        }
+                                    const sTx = db.transaction(Stores.Sprites, 'readwrite').objectStore(Stores.Sprites).put(spritesData, pokeId); 
+                                    sTx.onsuccess  = () => {
+                                        result(res);
                                     }
                                 }
                                 result(res);
-                            })
+                            }) 
                         }
                     }
                 })
+
             } else {
                 fetchSecondaryData(pokeId).then(res => {
                     result(res)

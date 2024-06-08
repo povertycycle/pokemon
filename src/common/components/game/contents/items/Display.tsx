@@ -7,7 +7,7 @@ import Details from "./details/Details";
 import Searchbar from "./navigation/Searchbar";
 import HeadFilter from "./navigation/HeadFilter";
 import Image from "next/image";
-import GenFilter from "./navigation/GenFilter";
+import GenFilter from "../_utils/GenFilter";
 import { standardize } from "@/common/utils/normalize";
 
 type DisplayProps = {
@@ -87,7 +87,7 @@ const Navigation = memo(({ items, setItem }: NavigationProps) => {
                             items.sort((a, b) => (a.name > b.name ? 1 : -1)).map((data: ItemData, i: number) => (
                                 <tr key={i} data-gen={data?.games?.map(g => g.split("-").map(s => s.charAt(0)).join("")).join(";") ?? ""}
                                     data-category={data.category} data-pocket={CATEGORIES[data.category].pocket.toLowerCase().replaceAll(" ", "-")}
-                                    className="group/item-row hover:bg-base-white-dark/25 transition-transform cursor-pointer hover:translate-x-[8px]"
+                                    className="hover:bg-base-white-dark/25 transition-transform cursor-pointer hover:translate-x-[8px]"
                                     onClick={() => { setItem(prev => prev?.name === data?.name ? prev : data) }}>
                                     <td className="cursor-pointer flex gap-4 items-center" style={{ paddingLeft: "8px", paddingRight: "16px" }}>
                                         <div className="w-[48px] h-[48px] flex items-center justify-center">

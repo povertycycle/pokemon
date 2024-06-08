@@ -1,8 +1,8 @@
 import { SyntheticEvent, useState } from "react";
-import { useDropdown } from "../../../hooks/useDropdown";
-import { getGameColors } from "../../pokemon/details/_utils/getGameColors";
-import { getGameName } from "../../pokemon/details/_utils/getGameName";
-import { VERSIONS } from "../constants";
+import { useDropdown } from "../../hooks/useDropdown";
+import { getGameColors } from "../pokemon/details/_utils/getGameColors";
+import { getGameName } from "../pokemon/details/_utils/getGameName";
+import { VERSIONS } from "./constants";
 
 type GenFilterProps = {
     filter: (gen: string | null) => void
@@ -20,7 +20,7 @@ const GenFilter: React.FC<GenFilterProps> = ({ filter }) => {
     }
 
     return (
-        <div ref={ref} className="text-[1.25rem] h-[48px] flex flex-col">
+        <div ref={ref} className="text-[1.25rem] h-[48px] flex flex-col z-[1]">
             <div onClick={toggle} className="relative group/selector flex items-center justify-center cursor-pointer transition-width text-base-white border h-[48px] shrink-0" style={{ background: `${gen ? getGameColors(gen) : "#4b0478"}` }}>
                 <span className="drop-shadow-[0_0_2px_black] flex gap-4">
                     {gen ? getGameName(gen) : "Select Generation"}

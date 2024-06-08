@@ -8,12 +8,12 @@ const Icons: { [key in Tab]: React.ReactElement } = {
     [Tab.Pokemon]: <PokemonTabIcon />,
     [Tab.Items]: <ItemTabIcon />,
     [Tab.Berries]: <BerryTabIcon />,
+
+
+
     [Tab.Moves]: <MovesTabIcon />,
     [Tab.Evolution]: <EvolutionTabIcon />,
     [Tab.Machines]: <MachineTabIcon />,
-
-
-
     [Tab.X]: <UnknownTabIcon />,
     [Tab.Y]: <UnknownTabIcon />
 }
