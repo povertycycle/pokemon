@@ -17,7 +17,7 @@ const Stats: React.FC = () => {
                     ].map((stat: string, i: number) => (
                         <Fragment key={i}>
                             {i !== 0 && <hr className="border-t-2 w-full" style={{ borderColor: palette[0] }} />}
-                            <StatsDetails tag={stat} base={details.stats[stat].base_stat} />
+                            {/* <StatsDetails tag={stat} base={details.stats[stat].base_stat} /> */}
                         </Fragment>
                     ))
                 }

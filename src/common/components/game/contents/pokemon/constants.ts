@@ -1,6 +1,3 @@
-export const NAV_WIDTH = 20;
-export const SHORTCUT_WIDTH = 36;
-export const DISPLAY_ID = "Hd3WH54nB4fsopLZLi0UgAEdXLgOSKmR";
 export const CONTAINER_ID = "Pvpkew5r1AM6tiDutcTI86CWYQGXFZFN";
 export const SCROLL_ID = "VolrUP91lqi5IfesMHjHM2NfxlSBfUJc";
 

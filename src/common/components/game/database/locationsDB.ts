@@ -1,14 +1,9 @@
-import { trimUrl } from "@/common/utils/trimUrl";
-import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_LOCATIONS } from "../constants";
-import { POKEMON_DB, Stores } from "./db";
-import { EncounterData } from "../contents/pokemon/interfaces/encounters";
 import { capitalize } from "@/common/utils/capitalize";
 import { errorCheck } from "@/common/utils/errorCheck";
-
-type Encounters = {
-    [pokeId: string]: EncounterData[]
-}
+import { trimUrl } from "@/common/utils/trimUrl";
+import { cacheIsAllowed } from "../../home/cache/utils";
+import { BASE_API_URL_LOCATIONS } from "../../../../constants/urls";
+import { POKEMON_DB, Stores } from "../../../../database/main-db";
 
 type LocationData = {
     location: string,

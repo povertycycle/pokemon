@@ -4,7 +4,6 @@ import { Shortcuts } from "../shortcuts/constants";
 import { getGameColors } from "./_utils/getGameColors";
 import { getGameName } from "./_utils/getGameName";
 import { DetailsContext } from "./contexts";
-import { SENTENCES_REGEX } from "@/common/components/game/constants";
 
 type FlavorTextsProps = {
     entries: {
@@ -30,9 +29,9 @@ const FlavorTexts: React.FC<FlavorTextsProps> = ({ entries }) => {
                                 <span className="text-start">{"\u201C"}</span>
                                 <div className="flex flex-col text-base leading-5">
                                     {
-                                        text?.match(SENTENCES_REGEX)?.map(((t: string, j: number) => (
-                                            <span key={j}>{t.replace("\u000c", " ")}</span>
-                                        )))
+                                        // text?.match(SENTENCES_REGEX)?.map(((t: string, j: number) => (
+                                        //     <span key={j}>{t.replace("\u000c", " ")}</span>
+                                        // )))
                                     }
                                 </div>
                                 <span className="text-end">{"\u201D"}</span>

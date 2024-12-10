@@ -1,10 +1,9 @@
 import { capitalize } from "@/common/utils/capitalize"
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import { SENTENCES_REGEX } from "../../../constants"
 import { fetchEvolutionChain } from "../../../database/evolutionDB"
 import { getVariants } from "../../../database/speciesDB"
-import Typewriter from "../../../utils/Typewriter"
+import Typewriter from "../../../../_utils/Typewriter"
 import ImageSprites from "../../_utils/ImageSprites"
 import { CATEGORIES, ItemData } from "../constants"
 import { ATTRIBUTES, FLING_EFFECT, LANGUAGES } from "./constants"
@@ -69,17 +68,17 @@ const Details: React.FC<DetailsProps> = ({ item }) => {
                                 </>
                             }
                             {
-                                !!item.effect &&
-                                <>
-                                    <hr className="border-t border-x-dark" />
-                                    <p className="leading-4 my-2 px-1 flex flex-col gap-1">
-                                        {item.effect.match(SENTENCES_REGEX)?.map(((t: string, i: number) => (
-                                            <span key={i}>
-                                                <Typewriter text={t} duration={1.5} />
-                                            </span>
-                                        )))}
-                                    </p>
-                                </>
+                                // !!item.effect &&
+                                // <>
+                                //     <hr className="border-t border-x-dark" />
+                                //     <p className="leading-4 my-2 px-1 flex flex-col gap-1">
+                                //         {item.effect.match(SENTENCES_REGEX)?.map(((t: string, i: number) => (
+                                //             <span key={i}>
+                                //                 <Typewriter text={t} duration={1.5} />
+                                //             </span>
+                                //         )))}
+                                //     </p>
+                                // </>
                             }
                             {
                                 !!item.baby_trigger_for &&

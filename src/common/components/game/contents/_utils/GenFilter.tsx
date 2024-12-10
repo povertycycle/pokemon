@@ -1,5 +1,4 @@
 import { SyntheticEvent, useState } from "react";
-import { useDropdown } from "../../hooks/useDropdown";
 import { getGameColors } from "../pokemon/details/_utils/getGameColors";
 import { getGameName } from "../pokemon/details/_utils/getGameName";
 import { VERSIONS } from "./constants";
@@ -11,7 +10,7 @@ type GenFilterProps = {
 const GenFilter: React.FC<GenFilterProps> = ({ filter }) => {
     const HEIGHT = 28;
     const [gen, setGen] = useState<string | null>(null);
-    const { menu, toggle, closeMenu, ref } = useDropdown();
+    // const { menu, toggle, closeMenu, ref } = useDropdown();
 
     function clear(e: SyntheticEvent) {
         e.stopPropagation();
@@ -20,8 +19,8 @@ const GenFilter: React.FC<GenFilterProps> = ({ filter }) => {
     }
 
     return (
-        <div ref={ref} className="text-[1.25rem] h-[48px] flex flex-col z-[1]">
-            <div onClick={toggle} className="relative group/selector flex items-center justify-center cursor-pointer transition-width text-base-white border h-[48px] shrink-0" style={{ background: `${gen ? getGameColors(gen) : "#4b0478"}` }}>
+        <div className="text-[1.25rem] h-[48px] flex flex-col z-[1]">
+            {/* <div onClick={toggle} className="relative group/selector flex items-center justify-center cursor-pointer transition-width text-base-white border h-[48px] shrink-0" style={{ background: `${gen ? getGameColors(gen) : "#4b0478"}` }}>
                 <span className="drop-shadow-[0_0_2px_black] flex gap-4">
                     {gen ? getGameName(gen) : "Select Generation"}
                     {!!gen && <i className="ri-close-line cursor-pointer hover:text-base-white-dark" onClick={clear} />}
@@ -47,7 +46,7 @@ const GenFilter: React.FC<GenFilterProps> = ({ filter }) => {
                         })
                     }
                 </div>
-            }
+            } */}
         </div>
     )
 }

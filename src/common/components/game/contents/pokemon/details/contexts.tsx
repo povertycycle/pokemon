@@ -1,8 +1,8 @@
+import { PokemonData } from "@/common/interfaces/pokemon";
 import { createContext } from "react";
-import { Pokemon } from "../interfaces/pokemon";
 
 type DetailsContextProps = {
-    details: Pokemon | undefined | null,
+    details: PokemonData | undefined | null,
     palette: string[],
     colors: string[],
 }

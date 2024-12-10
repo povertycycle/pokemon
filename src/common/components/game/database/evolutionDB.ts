@@ -1,8 +1,8 @@
 import { trimUrl } from "@/common/utils/trimUrl";
 import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_EVOLUTION } from "../constants";
+import { BASE_API_URL_EVOLUTION } from "../../../../constants/urls";
 import { EvolutionChain } from "../contents/pokemon/interfaces/evolution";
-import { POKEMON_DB, Stores } from "./db";
+import { POKEMON_DB, Stores } from "../../../../database/main-db";
 import { errorCheck } from "@/common/utils/errorCheck";
 
 const namedKeys = ["trigger", "party_type", "known_move_type", "location"];

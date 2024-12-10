@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { SCROLL_ID, SHORTCUT_WIDTH } from "../constants";
+import { SCROLL_ID } from "../constants";
 import { KEYS, Shortcuts } from "./constants";
 import { shortcutID } from "@/common/utils/shortcut";
 import { DetailsContext } from "../details/contexts";
@@ -23,7 +23,7 @@ const ScrollNavigator: React.FC = () => {
 
     return (
         <div className="z-[100] h-screen absolute right-[-16px] top-0 shrink-0 py-16">
-            <div className="h-full relative flex flex-col items-end justify-between" style={{ width: `${SHORTCUT_WIDTH}px` }}>
+            <div className="h-full relative flex flex-col items-end justify-between" >
                 {
                     KEYS.map((key: Shortcuts, i: number) => {
                         const activateShortcut = () => {
@@ -34,7 +34,7 @@ const ScrollNavigator: React.FC = () => {
                         }
 
                         return (
-                            <div key={i} onClick={activateShortcut} className={`z-[1] group/shortcut flex items-center justify-end px-4 ${active !== key ? "cursor-pointer " : ""} shadow-[inset_0_0_4px_2px_#0000004a] overflow-hidden transition-width border-2 rounded-full shrink-0 overflow-hidden`} style={{ height: `${SHORTCUT_WIDTH}px`, minWidth: `${SHORTCUT_WIDTH}px`, background: palette[1], borderColor: palette[0] }}>
+                            <div key={i} onClick={activateShortcut} className={`z-[1] group/shortcut flex items-center justify-end px-4 ${active !== key ? "cursor-pointer " : ""} shadow-[inset_0_0_4px_2px_#0000004a] overflow-hidden transition-width border-2 rounded-full shrink-0 overflow-hidden`}>
                                 <span className={`${active !== key ? "whitespace-nowrap group-hover/shortcut:tracking-[0px] group-hover/shortcut:opacity-100" : ""} tracking-[-20px] opacity-0 transition-[letter-spacing,opacity] text-[1.125rem]`}>{`${key}\u2000`}</span>
                             </div>
                         )
@@ -43,7 +43,7 @@ const ScrollNavigator: React.FC = () => {
                 <div className="w-full h-full absolute z-[0] flex justify-center mr-1">
                     <div className="w-[2px] h-full" style={{ background: palette[0] }} />
                 </div>
-                <div className="absolute z-[2] aspect-square rounded-full mr-[8px] mt-[8px] transition-[top]" style={{ height: `${SHORTCUT_WIDTH - 16}px`, top: `calc((100% - ${SHORTCUT_WIDTH}px) / ${KEYS.length - 1} * ${pos})`, background: palette[0] }} />
+                <div className="absolute z-[2] aspect-square rounded-full mr-[8px] mt-[8px] transition-[top]" />
             </div>
         </div>
     )

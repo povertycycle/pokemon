@@ -42,7 +42,7 @@ const Varieties: React.FC<VarietiesProps> = ({ varieties, switchable, descriptio
 const Variety: React.FC<{ varietyId: string, color: string }> = ({ varietyId, color }) => {
     const { details } = useContext(DetailsContext);
     const { name, url } = useSprites("species", varietyId);
-    const isCurrent = details?.id === varietyId;
+    const isCurrent = false;
 
     const goToPokemon = () => {
         if (!isCurrent) {

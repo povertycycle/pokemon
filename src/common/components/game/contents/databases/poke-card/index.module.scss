@@ -1,0 +1,12 @@
+.cardRender{
+    animation: card-render 0.5s ease-in-out;
+}
+
+@keyframes card-render {
+    0% {
+        scale: 0;
+    }
+    100% {
+        scale: 1;
+    }
+}

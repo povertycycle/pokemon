@@ -6,7 +6,7 @@ import { DetailsContext } from "../contexts";
 import ImageSprites from "../../../_utils/ImageSprites";
 import styles from "@/common/styles/custom.module.scss";
 import { isDark } from "@/common/utils/colors";
-import { TYPE_COLORS } from "../../types/constants";
+import { TYPE_COLORS } from "../../../../../../../constants/types";
 
 type MethodsProps = {
     data: EvolutionMethod[]

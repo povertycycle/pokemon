@@ -1,10 +1,10 @@
 import { trimUrl } from "@/common/utils/trimUrl";
 import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_ITEM } from "../constants";
-import { POKEMON_DB, Stores } from "./db";
+import { BASE_API_URL_ITEM } from "../../../../constants/urls";
+import { POKEMON_DB, Stores } from "../../../../database/main-db";
 import { ItemData } from "../contents/items/constants";
 import { errorCheck } from "@/common/utils/errorCheck";
-import { doBatchProcess } from "./_utils";
+import { doBatchProcess } from "../../../../database/_utils";
 import { capitalize } from "@/common/utils/capitalize";
 
 export const ITEMS_VALIDATOR_KEY = "Xk7dcBfI2GObBbxjApy5US3feJkwWN6V";

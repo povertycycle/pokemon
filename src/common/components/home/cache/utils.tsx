@@ -1,4 +1,4 @@
-import { CACHE_PERMISSION_ID, CACHE_STATUS } from "../../constants"
+import { CACHE_PERMISSION_ID, CACHE_STATUS } from "../../../../constants/main"
 
 export const cacheIsAllowed = () => {
     return true;

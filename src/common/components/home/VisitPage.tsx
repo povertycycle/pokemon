@@ -1,12 +1,12 @@
-const VisitPage: React.FC<{ inside: boolean }> = ({ inside }) => {
+const VisitPage: React.FC = () => {
     const PROFILE = "https://povertycycle.github.io/povertycycle/";
 
     return (
-        <a href={PROFILE} target="_blank" className={`${inside ? "top-[calc(100%-0.25rem-36px)]" : "top-[0.25rem]"} left-[0.25rem] z-[5] h-[36px] w-[256px] sm:w-[36px] sm:hover:w-[256px] bg-base-red-dark text-base-white border-base-white border-2 rounded-[4px] absolute transition-[top,width] overflow-hidden flex gap-2 duration-500`}>
-            <div className="h-full aspect-square flex items-center justify-center max-sm:mt-[-2px] text-[2rem] leading-6">
+        <a href={PROFILE} target="_blank" className={`bottom-0 rounded-tr-[6px] left-0 z-[5] sm:max-w-[36px] sm:hover:max-w-[296px] transtiion-[max-width] bg-base-red-dark text-base-white absolute overflow-hidden flex duration-400`}>
+            <div className="h-full aspect-square flex items-center justify-center text-[1.25rem] sm:text-[2rem] leading-6">
                 <i className="ri-corner-up-left-fill" />
             </div>
-            <span className="flex items-center justify-start h-full w-full text-[1.5rem] whitespace-nowrap">
+            <span className="flex items-center justify-start h-full w-full text-[0.875rem] sm:text-[1.5rem] whitespace-nowrap px-2">
                 Visit My Page
             </span>
         </a>

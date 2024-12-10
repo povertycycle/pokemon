@@ -4,7 +4,6 @@ import { capitalize } from "@/common/utils/capitalize";
 import styles from "@/common/styles/custom.module.scss";
 import table from "@/common/styles/table.module.scss";
 import Details from "./details/Details";
-import Searchbar from "./navigation/Searchbar";
 import HeadFilter from "./navigation/HeadFilter";
 import Image from "next/image";
 import GenFilter from "../_utils/GenFilter";
@@ -76,7 +75,7 @@ const Navigation = memo(({ items, setItem }: NavigationProps) => {
     return (
         <div className="w-[80%] h-full pl-12 pr-4 pt-12 pb-4 flex flex-col bg-base-white">
             <div className="w-full flex justify-between z-[2] pr-[28px]">
-                <Searchbar search={search} />
+                {/* <Searchbar search={search} /> */}
                 <GenFilter filter={filterGen} />
             </div>
             <div className={`mt-2 h-full w-full overflow-y-scroll flex justify-end pr-4 ${styles.overflowPurple}`}>

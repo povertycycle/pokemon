@@ -1,12 +1,3 @@
-import { SpeciesData } from "../interface";
-import { Pokemon, SecondaryData } from "../interfaces/pokemon";
-
-export type PokePayload = {
-    main?: Pokemon | null,
-    secondary?: SecondaryData | null;
-    species?: SpeciesData | null;
-}
-
 export const GAME_COLORS : {[key: string]: string[]} = {
     "red": ["#c43600"],
     "blue": ["#0079e1"],
@@ -61,17 +52,4 @@ export const VERSION_COLORS: { [key: string]: string[] } = {
     "iv": [...GAME_COLORS["diamond"], ...GAME_COLORS["heartgold"], ...GAME_COLORS["pearl"], ...GAME_COLORS["soulsilver"], ...GAME_COLORS["platinum"]],
     "vii": [...GAME_COLORS["sun"], ...GAME_COLORS["moon"], ...GAME_COLORS["ultra-sun"], ...GAME_COLORS["ultra-moon"], ...GAME_COLORS["lets-go-pikachu"], ...GAME_COLORS["lets-go-eevee"]],
     "viii": [...GAME_COLORS["sword"], ...GAME_COLORS["shield"], ...GAME_COLORS["the-isle-of-armor"], ...GAME_COLORS["the-crown-tundra"], ...GAME_COLORS["brilliant-diamond"], ...GAME_COLORS["shining-pearl"], ...GAME_COLORS["legends-arceus"]],
-}
-
-export enum Tab {
-    Pokemon = "Pokemon",
-    Items = "Items",
-    Berries = "Berries",
-    Moves = "Moves",
-    Evolution = "Evolution",
-    Machines = "Machines",
-
-
-    X = "?????",
-    Y = '???'
 }

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { DetailsContext } from "../../contexts";
-import Typewriter from "@/common/components/game/utils/Typewriter";
+import Typewriter from "@/common/components/_utils/Typewriter";
 
 type MythLegendProps = {
     genera: string,

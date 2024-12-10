@@ -1,5 +1,5 @@
+import { Tab } from "@/constants/enums";
 import { Dispatch, SetStateAction, createContext } from "react";
-import { Tab } from "./contents/pokemon/details/constants";
 
 type DatabaseContextProps = {
     tab: Tab | null,

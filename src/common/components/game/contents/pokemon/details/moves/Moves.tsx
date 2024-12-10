@@ -1,4 +1,4 @@
-import { API_HOME } from "@/common/components/game/constants";
+import { API_HOME } from "@/constants/urls";
 import { getMoveData } from "@/common/components/game/database/movesDB";
 import styles from "@/common/styles/table.module.scss";
 import { capitalize } from "@/common/utils/capitalize";
@@ -6,9 +6,8 @@ import { shortcutID } from "@/common/utils/shortcut";
 import React, { useContext, useEffect, useState } from "react";
 import { MoveData, MoveVersions, VersionDetails } from "../../interfaces/moves";
 import { Shortcuts } from "../../shortcuts/constants";
-import { TYPE_COLORS } from "../../types/constants";
+import { TYPE_COLORS } from "../../../../../../../constants/types";
 import { DetailsContext } from "../contexts";
-import Loading from "../Loading";
 import { METHODS } from "./constants";
 import { GenerationContext } from "./contexts";
 import Generations from "./Generations";
@@ -20,7 +19,7 @@ type MovesProps = {
 
 const Moves: React.FC<MovesProps> = ({ moveVersions }) => {
     const { details } = useContext(DetailsContext);
-    return (details && moveVersions ? <MoveDetails moveVersions={moveVersions} /> : <Loading />)
+    return (details && moveVersions ? <MoveDetails moveVersions={moveVersions} /> : <></>)
 }
 
 type Data = {

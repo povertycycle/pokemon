@@ -9,3 +9,5 @@ export type AbilityDetails = {
     is_hidden: boolean,
     data: AbilityData
 }
+
+export type AbilityName = Omit<AbilityDetails, "data">;

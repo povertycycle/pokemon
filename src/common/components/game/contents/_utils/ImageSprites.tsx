@@ -1,7 +1,7 @@
+import Loading from "@/common/components/_utils/Loading";
 import { useSprites } from "@/common/components/game/hooks/useSprites";
 import { capitalize } from "@/common/utils/capitalize";
 import Image from "next/image";
-import Loading from "../../utils/Loading";
 
 const ImageSprites: React.FC<{ id: string | null, type: "species" | "item", minified?: boolean }> = ({ id, type, minified }) => {
     const { name, url } = useSprites(type, id);
@@ -12,7 +12,7 @@ const ImageSprites: React.FC<{ id: string | null, type: "species" | "item", mini
                 {
                     url === undefined ?
                         <div className="w-full h-full">
-                            <Loading size={56} />
+                            <Loading />
                         </div> :
                         (
                             !!url ?

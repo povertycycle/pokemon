@@ -3,7 +3,7 @@ import { DetailsContext } from "../details/contexts";
 import { capitalize } from "@/common/utils/capitalize";
 import { shortcutID } from "@/common/utils/shortcut";
 import { Shortcuts } from "../shortcuts/constants";
-import { API_HOME } from "../../../constants";
+import { API_HOME } from "../../../../../../constants/urls";
 
 const BugReporting: React.FC = () => {
     const { details, palette, colors } = useContext(DetailsContext);

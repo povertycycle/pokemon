@@ -1,7 +1,6 @@
 import styles from "@/common/styles/custom.module.scss";
 import { capitalize } from "@/common/utils/capitalize";
 import { useState } from "react";
-import { useDropdown } from "../../../hooks/useDropdown";
 import { CATEGORIES, POCKETS } from "../constants";
 import HeadSearch from "./HeadSearch";
 
@@ -17,13 +16,12 @@ const HeadCellFilter: React.FC<{ listId: string, id: string, type: Filter, filte
                 return POCKETS.map(p => ({ title: p, value: p.toLowerCase().replaceAll(" ", "-") }));
         }
     })();
-    const { ref, menu, toggle, closeMenu } = useDropdown();
     const [active, setActive] = useState<string | null>(null);
 
     function doFilter(value: string | null) {
         if (value !== active) {
             setActive(value);
-            closeMenu();
+            // closeMenu();
             filter(value);
         }
     }
@@ -34,7 +32,7 @@ const HeadCellFilter: React.FC<{ listId: string, id: string, type: Filter, filte
                 {active ?? capitalize(type)}
                 {active && <i onClick={() => { doFilter(null) }} className="ri-close-line cursor-pointer hover:text-base-white-dark" />}
             </span>
-            <div ref={ref} className="z-[0] left-0 absolute w-full flex justify-end top-[50%] translate-y-[-50%] pr-1">
+            {/* <div ref={ref} className="z-[0] left-0 absolute w-full flex justify-end top-[50%] translate-y-[-50%] pr-1">
                 <i onClick={toggle} className="ri-arrow-down-s-fill hover:text-base-white-dark cursor-pointer text-[1.5rem]" />
                 {
                     <div className={`${menu ? "h-[256px]" : "h-0"} top-full min-w-[256px] absolute left-[50%] translate-x-[-50%] mt-4 transition-height overflow-hidden`}>
@@ -54,7 +52,7 @@ const HeadCellFilter: React.FC<{ listId: string, id: string, type: Filter, filte
                         </div>
                     </div>
                 }
-            </div>
+            </div> */}
         </th>
     )
 }

@@ -3,15 +3,15 @@ import table from "@/common/styles/table.module.scss";
 import styles from "@/common/styles/transitions.module.scss";
 import React, { useEffect, useState } from "react";
 import { getMovesData } from "../../database/movesDB";
-import Empty from "../../utils/Empty";
-import Loading from "../../utils/Loading";
+import Empty from "../databases/poke-card/Empty";
 import GenFilter from "../_utils/GenFilter";
 import { PokeMove } from "../pokemon/interfaces/moves";
-import { TYPE_COLORS } from "../pokemon/types/constants";
+import { TYPE_COLORS } from "../../../../../constants/types";
 import { TABLE_ID } from "./constants";
 import { GameContext } from "./context";
 import TRowMove from "./TRowMove";
 import TypeScroller from "./TypeScroller";
+import Loading from "@/common/components/_utils/Loading";
 
 const ORDER = Object.keys(TYPE_COLORS);
 

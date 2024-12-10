@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BAD_NATURE, GOOD_NATURE, MAX_EV, MAX_IV, MIN_EV, MIN_IV, Properties, STATS_PROPERTIES } from "./constants";
+import { BAD_NATURE, GOOD_NATURE, MAX_EV, MAX_IV, MIN_EV, MIN_IV, Properties, STATS_PROPERTIES } from "@/constants/stats";
 import { calculateStats } from "./utils";
 
 type StatsDetailsProps = {

@@ -1,8 +1,8 @@
 import { errorCheck } from "@/common/utils/errorCheck";
 import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_ABILITY } from "../constants";
-import { AbilityDetails } from "../contents/pokemon/interfaces/ability";
-import { POKEMON_DB, Stores } from "./db";
+import { BASE_API_URL_ABILITY } from "../../../../constants/urls";
+import { AbilityDetails, AbilityName } from "../contents/pokemon/interfaces/ability";
+import { POKEMON_DB, Stores } from "../../../../database/main-db";
 
 function fetchAbilityData(id: string, pokemon: string): Promise<AbilityDetails | null> {
     return new Promise(result => {
@@ -59,6 +59,28 @@ export function getAbilityData(id: string, pokemon: string, pokeId: string): Pro
                 }).catch(err => {
                     result(null)
                 });
+            }
+        }
+    })
+}
+
+
+export function getAbilityName(id: string, pokeId: string): Promise<AbilityName> {
+    return new Promise(result => {
+        const request = indexedDB.open(POKEMON_DB);
+
+        request.onsuccess = () => {
+            let db: IDBDatabase = request.result;
+            const abilityTx = db.transaction(Stores.Ability, 'readonly');
+
+            if (cacheIsAllowed()) {
+                const abilityData = abilityTx.objectStore(Stores.Ability).get(id);
+                
+                abilityData.onsuccess = () => {
+                    result({ name: abilityData.result.name, is_hidden: abilityData.result.pokemons.find((p: any) => (p.id === pokeId))?.is_hidden ?? false });
+                }
+            } else {
+                result({ name: "error", is_hidden: false });
             }
         }
     })

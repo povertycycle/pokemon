@@ -2,6 +2,7 @@
 const nextConfig = {
     output: 'export',
     images: {
+        minimumCacheTTL: 300,
         remotePatterns: [
             {
                 protocol: 'https',
@@ -10,7 +11,7 @@ const nextConfig = {
                 pathname: '/PokeAPI/**',
             },
         ],
-        unoptimized: true
+        unoptimized: true,
     }
 }
 

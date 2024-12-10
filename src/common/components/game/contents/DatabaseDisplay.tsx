@@ -1,70 +1,27 @@
-import { DatabaseContext } from "../contexts";
+import { Tab } from "@/constants/enums";
+import { TAB_STATES } from "@/constants/main";
+import { useState } from "react";
+import DisplayContainer from "./displayer/DisplayContainer";
 import Navigator from "./navigator/Navigator";
-import { useState, useEffect } from "react";
-import PokemonDatabase from "./pokemon/PokemonDatabase";
-import EvolutionDatabase from "../evolution/EvolutionDatabase";
-import EncounterDatabase from "../encounter/EncounterDatabase";
-import MachineDatabase from "../machine/MachineDatabase";
-import MovesDatabase from "./moves/MovesDatabase";
-import ItemsDatabase from "./items/ItemsDatabase";
-import BerryDatabase from "./berries/BerryDatabase";
-import LocationDatabase from "../location/LocationDatabase";
-import GameDatabase from "../game/GameDatabase";
-import { Tab } from "./pokemon/details/constants";
+import styles from "@/common/styles/transitions.module.scss";
 
-const DatabaseDisplay: React.FC = () => {
-    const [tab, setTab] = useState<Tab | null>(null);
-
-    return (
-        <div className="w-full h-full relative z-[1] flex">
-            <DatabaseContext.Provider value={{ tab, setTab }}>
-                <Navigator />
-                <DisplayContainer tab={tab} />
-            </DatabaseContext.Provider>
-        </div>
-    )
+type DatabaseDisplayProps = {
+    returnToMain: () => void;
+    tabState?: string | null;
 }
 
-const DisplayContainer: React.FC<{ tab: Tab | null }> = ({ tab }) => {
-    const [sel, setSel] = useState<Tab | null>(null);
+const DatabaseDisplay: React.FC<DatabaseDisplayProps> = ({ returnToMain, tabState }) => {
+    const [tab, setTab] = useState<Tab | null>(tabState ? TAB_STATES[tabState] : null);
 
-    useEffect(() => {
-        if (!sel) {
-            setTimeout(() => {
-                setSel(tab);
-            }, 500)
-        } else {
-            setSel(tab);
-        }
-    }, [tab]);
+    const returnToSelection = () => {
+        setTab(null);
+    }
 
     return (
-        (() => {
-            switch (sel) {
-                case Tab.Pokemon:
-                    return <PokemonDatabase />;
-                case Tab.Items:
-                    return <ItemsDatabase />;
-                case Tab.Berries:
-                    return <BerryDatabase />;
-
-
-
-
-                case Tab.Evolution:
-                    return <EvolutionDatabase />;
-                case Tab.Machines:
-                    return <MachineDatabase />;
-                case Tab.Moves:
-                    return <MovesDatabase />;
-                case Tab.X:
-                    return <LocationDatabase />;
-                case Tab.Y:
-                    return <GameDatabase />;
-                default:
-                    return null;
-            }
-        })()
+        <div className={`${styles.fadeIn} w-full h-full relative z-[1] flex bg-base-white`}>
+            <Navigator tab={tab} setTab={setTab} returnToMain={returnToMain} />
+            <DisplayContainer tab={tab} returnToSelection={returnToSelection} />
+        </div>
     )
 }
 

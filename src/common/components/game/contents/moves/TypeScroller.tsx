@@ -1,5 +1,5 @@
 import { isDark } from "@/common/utils/colors";
-import { TYPE_COLORS } from "../pokemon/types/constants";
+import { TYPE_COLORS } from "../../../../../constants/types";
 import { TABLE_ID } from "./constants";
 
 const TypeScroller: React.FC = () => {

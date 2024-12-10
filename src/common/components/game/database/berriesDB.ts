@@ -1,7 +1,7 @@
 import { errorCheck } from "@/common/utils/errorCheck";
-import { BASE_API_URL_BERRIES } from "../constants";
-import { POKEMON_DB, Stores } from "./db";
-import { doBatchProcess } from "./_utils";
+import { BASE_API_URL_BERRIES } from "../../../../constants/urls";
+import { POKEMON_DB, Stores } from "../../../../database/main-db";
+import { doBatchProcess } from "../../../../database/_utils";
 import { trimUrl } from "@/common/utils/trimUrl";
 
 export const BERRIES_VALIDATOR_KEY = "ckFdN0Zi8q6ju12pL84bQZ9NWTceoRQE";

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { ItemData } from "./constants";
 import { getAllItems } from "../../database/itemsDB";
-import Loading from "../../utils/Loading";
-import Empty from "../../utils/Empty";
+import Empty from "../databases/poke-card/Empty";
 import Display from "./Display";
 import styles from "@/common/styles/transitions.module.scss";
+import Loading from "@/common/components/_utils/Loading";
 
 const ItemsDatabase: React.FC = () => {
     const [items, setItems] = useState<ItemData[] | null | undefined>();

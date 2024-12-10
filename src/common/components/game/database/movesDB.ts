@@ -1,16 +1,12 @@
 import { errorCheck } from "@/common/utils/errorCheck";
 import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_MOVES } from "../constants";
+import { BASE_API_URL_MOVES } from "../../../../constants/urls";
 import { MoveData, PokeMove } from "../contents/pokemon/interfaces/moves";
-import { POKEMON_DB, Stores } from "./db";
+import { POKEMON_DB, Stores } from "../../../../database/main-db";
 import { trimUrl } from "@/common/utils/trimUrl";
-import { doBatchProcess } from "./_utils";
+import { doBatchProcess } from "../../../../database/_utils";
 
-interface Generation extends PokeMove {
-    id: string;
-}
-
-function generateMoveData(data: any): Promise<Generation | null> {
+function generateMoveData(data: any): Promise<any | null> {
     return new Promise(result => {
         let e=data.effect_entries.find((e:any)=>e.language.name==="en")?.effect;
         let f=(data?.flavor_text_entries?.filter((fTE:any)=>(fTE.language.name==="en"))?.at(-1)?.flavor_text??"- - -");
@@ -130,7 +126,7 @@ export function getMovesData(): Promise<(PokeMove | null)[]> {
                     if (urls.length === 0) {
                         result(existingData);
                     } else {
-                        let acc: Promise<Generation | null>[] = [];
+                        let acc: Promise<any | null>[] = [];
                         let processor = (data: any) => {
                             acc.push(generateMoveData(data));
                         }

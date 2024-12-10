@@ -1,21 +1,17 @@
-import { getAbilityData } from "@/common/components/game/database/abilityDB";
 import styles from "@/common/styles/custom.module.scss";
 import { capitalize } from "@/common/utils/capitalize";
-import { useContext, useEffect, useState } from "react";
-import Typewriter from "../../../../utils/Typewriter";
-import { DetailsContext } from "../contexts";
-import { SENTENCES_REGEX } from "@/common/components/game/constants";
-import Loading from "../Loading";
-import { SHORTCUT_WIDTH } from "../../constants";
 import { shortcutID } from "@/common/utils/shortcut";
-import { Shortcuts } from "../../shortcuts/constants";
+import { useContext, useEffect, useState } from "react";
+import Typewriter from "../../../../../_utils/Typewriter";
 import { AbilityData } from "../../interfaces/ability";
+import { Shortcuts } from "../../shortcuts/constants";
+import { DetailsContext } from "../contexts";
 
 const Abilities: React.FC = () => {
     const { details, palette } = useContext(DetailsContext);
     return (
         details ?
-            <div id={shortcutID(Shortcuts.Abilities)} className="w-full ml-[-2px] mt-16 flex justify-center" style={{ paddingRight: `${SHORTCUT_WIDTH / 2}px` }}>
+            <div id={shortcutID(Shortcuts.Abilities)} className="w-full ml-[-2px] mt-16 flex justify-center">
                 <div className="flex flex-col border-2" style={{ borderColor: palette[0] }}>
                     <div className="w-full text-[1.25rem] leading-8 py-1 flex items-center justify-center bg-black/50 text-base-white" style={{ borderColor: palette[0] }}>
                         Abilities
@@ -30,7 +26,7 @@ const Abilities: React.FC = () => {
                     </div>
                 </div>
             </div> :
-            <Loading />
+            <></>
     )
 }
 
@@ -41,13 +37,13 @@ const Ability: React.FC<{ id: string, pokemon: string }> = ({ id, pokemon }) => 
     const [isHidden, setIsHidden] = useState<boolean | null>(false);
 
     useEffect(() => {
-        getAbilityData(id, pokemon, details?.id ?? "-1").then(res => {
-            if (res) {
-                setName(res.name);
-                setData(res.data);
-                setIsHidden(res.is_hidden);
-            }
-        })
+        // getAbilityData(id, pokemon, details?.id ?? "-1").then(res => {
+        //     if (res) {
+        //         setName(res.name);
+        //         setData(res.data);
+        //         setIsHidden(res.is_hidden);
+        //     }
+        // })
     }, [id]);
 
     return (
@@ -65,11 +61,11 @@ const Ability: React.FC<{ id: string, pokemon: string }> = ({ id, pokemon }) => 
                     <hr className="h-[2px] w-full shrink-0" style={{ borderColor: palette[0] }} />
                     <div className={`${styles.overflowWhite} max-h-[160px] flex flex-col gap-2 text-[0.875rem] overflow-y-auto font-mono tracking-[0px] leading-[18px] [word-spacing:2px]`}>
                         {
-                            data?.effect?.match(SENTENCES_REGEX)?.map(((t: string, i: number) => (
-                                <span key={i}>
-                                    <Typewriter text={t} duration={1.5} />
-                                </span>
-                            )))
+                            // data?.effect?.match(SENTENCES_REGEX)?.map(((t: string, i: number) => (
+                            //     <span key={i}>
+                            //         <Typewriter text={t} duration={1.5} />
+                            //     </span>
+                            // )))
                         }
                     </div>
                 </div>

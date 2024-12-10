@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import Loading from "../../utils/Loading";
-import Empty from "../../utils/Empty";
+import Empty from "../databases/poke-card/Empty";
 import styles from "@/common/styles/transitions.module.scss";
 import { getAllBerries } from "../../database/berriesDB";
 import { BerryData } from "./constants";
 import Display from "./Display";
+import Loading from "@/common/components/_utils/Loading";
 
 const BerryDatabase: React.FC = () => {
     const [berries, setBerries] = useState<BerryData[] | null | undefined>();

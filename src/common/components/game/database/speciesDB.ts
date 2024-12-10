@@ -1,11 +1,10 @@
 import { trimUrl } from "@/common/utils/trimUrl";
 import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_SPECIES } from "../constants";
-import { SpeciesData } from "../contents/pokemon/interface";
-import { POKEMON_DB, Stores } from "./db";
+import { BASE_API_URL_SPECIES } from "../../../../constants/urls";
+import { POKEMON_DB, Stores } from "../../../../database/main-db";
 import { errorCheck } from "@/common/utils/errorCheck";
 
-function fetchSpeciesData(species: string): Promise<SpeciesData | null> {
+function fetchSpeciesData(species: string): Promise<any | null> {
     return new Promise(result => {
         fetch(`${BASE_API_URL_SPECIES}/${species}`).then(res => {
             return errorCheck(res);
@@ -53,7 +52,7 @@ function fetchSpeciesData(species: string): Promise<SpeciesData | null> {
     })
 }
 
-export function fetchSpeciesDetails(species: string): Promise<SpeciesData | null> {
+export function fetchSpeciesDetails(species: string): Promise<any | null> {
     return new Promise(result => {
         const request = indexedDB.open(POKEMON_DB);
 

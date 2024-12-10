@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { getVarietySprite } from "../database/pokemonDB";
 import { getItemSprite } from "../database/itemsDB";
 
 export const useSprites = (type: "item" | "species", id?: string | null) => {
@@ -12,7 +11,7 @@ export const useSprites = (type: "item" | "species", id?: string | null) => {
                 switch (type) {
                     default:
                     case "species":
-                        return getVarietySprite(id);
+                    // return getVarietySprite(id);
                     case "item":
                         return getItemSprite(id);
                 }

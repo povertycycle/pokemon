@@ -1,5 +1,5 @@
 import React, { useContext } from "react"
-import { TYPE_COLORS, TYPE_EFFECTIVENESS } from "../../../types/constants"
+import { TYPE_COLORS, TYPE_EFFECTIVENESS } from "../../../../../../../../constants/types"
 import { DetailsContext } from "../../contexts"
 import { shortcutID } from "@/common/utils/shortcut"
 import { Shortcuts } from "../../../shortcuts/constants"

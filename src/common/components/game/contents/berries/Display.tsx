@@ -3,13 +3,12 @@ import { capitalize } from "@/common/utils/capitalize"
 import { generateBackground, isDark } from "@/common/utils/colors"
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import { SENTENCES_REGEX } from "../../constants"
 import { getItemData } from "../../database/itemsDB"
-import Typewriter from "../../utils/Typewriter"
+import Typewriter from "../../../_utils/Typewriter"
 import { PokeDollars } from "../_utils/PokeDollars"
 import { ItemData } from "../items/constants"
 import { BerryData } from "./constants"
-import { TYPE_COLORS } from "../pokemon/types/constants"
+import { TYPE_COLORS } from "../../../../../constants/types"
 
 const FLAVORS: { [key: string]: string } = {
     "spicy":
@@ -121,13 +120,13 @@ const Berry: React.FC<{ data: BerryData }> = ({ data }) => {
                 </div>
                 <ul className="list-disc leading-4 px-8 py-8 flex flex-col gap-4 tracking-[0.5px] border-t grow" style={{ borderColor: palette[0] }}>
                     {
-                        item?.effect ?
-                            item.effect.match(SENTENCES_REGEX)?.map(((t: string, i: number) => (
-                                <li key={i}>
-                                    <Typewriter text={t} duration={1.5} />
-                                </li>
-                            ))) :
-                            <li>- - -</li>
+                        // item?.effect ?
+                        //     item.effect.match(SENTENCES_REGEX)?.map(((t: string, i: number) => (
+                        //         <li key={i}>
+                        //             <Typewriter text={t} duration={1.5} />
+                        //         </li>
+                        //     ))) :
+                        //     <li>- - -</li>
                     }
                 </ul>
             </div>

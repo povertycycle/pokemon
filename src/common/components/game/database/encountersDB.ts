@@ -1,17 +1,16 @@
 import { trimUrl } from "@/common/utils/trimUrl";
 import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_POKEMON } from "../constants";
-import { POKEMON_DB, Stores } from "./db";
-import { EncounterData } from "../contents/pokemon/interfaces/encounters";
+import { BASE_API_URL_POKEMON } from "../../../../constants/urls";
+import { POKEMON_DB, Stores } from "../../../../database/main-db";
 import { errorCheck } from "@/common/utils/errorCheck";
 
-function fetchEncounterData(id: string): Promise<EncounterData | null> {
+function fetchEncounterData(id: string): Promise<any | null> {
     return new Promise(result => {
         fetch(`${BASE_API_URL_POKEMON}/${id}/encounters`).then(res => {
             return errorCheck(res);
         }).then(res => {
             result(
-                (res as any[])?.reduce((acc: EncounterData, enc: any) => {
+                (res as any[])?.reduce((acc: any, enc: any) => {
                     let locId = trimUrl(enc?.location_area?.url);
                     enc?.version_details?.forEach((gameData: any) => {
                         let version = gameData?.version?.name;
@@ -52,7 +51,7 @@ function fetchEncounterData(id: string): Promise<EncounterData | null> {
     })
 }
 
-export function getEncounterData(id: string): Promise<EncounterData | null> {
+export function getEncounterData(id: string): Promise<any | null> {
     return new Promise(result => {
         const request = indexedDB.open(POKEMON_DB);
 

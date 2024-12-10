@@ -1,4 +1,3 @@
-import { getVarietySprite } from "@/common/components/game/database/pokemonDB";
 import { getVariants } from "@/common/components/game/database/speciesDB";
 import { capitalize } from "@/common/utils/capitalize";
 import { useContext, useEffect, useState } from "react";
@@ -19,13 +18,13 @@ const PokeVariants: React.FC<PokeVariantsProps> = ({ data }) => {
     const isBaby = data.is_baby;
 
     useEffect(() => {
-        if (data.species) {
-            getVariants(data.species).then(res => {
-                Promise.all(res.map(variant => getVarietySprite(variant))).then(res => {
-                    setPokemons(res.filter(r => r != null && r != undefined) as { name: string, url: string }[]);
-                })
-            });
-        }
+        // if (data.species) {
+        //     getVariants(data.species).then(res => {
+        //         Promise.all(res.map(variant => getVarietySprite(variant))).then(res => {
+        //             setPokemons(res.filter(r => r != null && r != undefined) as { name: string, url: string }[]);
+        //         })
+        //     });
+        // }
     }, [data.species]);
 
     return (
