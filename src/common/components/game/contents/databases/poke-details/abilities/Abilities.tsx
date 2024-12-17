@@ -7,6 +7,7 @@ import { useContext, useState } from "react";
 import { PaletteContext } from "../_utils";
 import { SENTENCES_REGEX } from "@/common/constants/regex";
 import Typewriter from "@/common/components/_utils/Typewriter";
+import Spinner from "../../../_utils/Spinner";
 
 type AbilitiesProps = {
     abilities: string[];
@@ -47,7 +48,7 @@ const Data: React.FC<{ ability: string; pokeId: number; }> = ({ ability, pokeId 
         <div ref={ref} className="w-full h-full flex flex-col justify-between">
             {
                 data === undefined ?
-                    <Image className="w-[48px] sm:w-[64px] aspect-square" src={"/img/spinner.svg"} alt="" width={48} height={48} /> :
+                    <Spinner /> :
                     (
                         !!data ?
                             <Ability data={data} name={capitalize(ability)} /> :

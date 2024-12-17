@@ -13,6 +13,7 @@ import Effectiveness from "./stats/Effectiveness";
 import Stats from "./stats/Stats";
 import HeldItems from "./species/HeldItems";
 import Abilities from "./abilities/Abilities";
+import Spinner from "../../_utils/Spinner";
 
 type PokemonProps = {
     data: PokemonData;
@@ -25,7 +26,7 @@ const Pokemon: React.FC<PokemonProps> = ({ data }) => {
         !!palette ?
             <Display data={data} palette={palette} /> :
             <div className="w-full h-[96px] flex items-center justify-center m-auto">
-                <Image className="text-white w-[48px] sm:w-[64px] aspect-square" src={"/img/spinner.svg"} alt="" width={48} height={48} />
+                <Spinner />
             </div>
     )
 }

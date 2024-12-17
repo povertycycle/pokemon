@@ -7,6 +7,7 @@ import Image from "next/image";
 import React from "react";
 import styles from "./index.module.scss";
 import Link from "next/link";
+import Spinner from "../../_utils/Spinner";
 
 type PokemonProps = {
     pokemon: PokemonCard;
@@ -21,7 +22,7 @@ const Pokemon: React.FC<PokemonProps> = ({ pokemon }) => {
                 !!palette ?
                     <Card pokemon={pokemon} palette={palette} /> :
                     <div className="w-full h-[96px] flex items-center justify-center">
-                        <Image className="text-white w-[48px] sm:w-[64px] aspect-square" src={"/img/spinner.svg"} alt="" width={48} height={48} />
+                        <Spinner />
                     </div>
             }
         </div>

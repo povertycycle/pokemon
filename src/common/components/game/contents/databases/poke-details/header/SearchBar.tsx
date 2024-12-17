@@ -8,6 +8,7 @@ import { getAllPokemons } from "@/database/pokemon-db";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import Spinner from "../../../_utils/Spinner";
 
 const SearchBar: React.FC = () => {
     const pools = useRef<PokemonCard[]>([]);
@@ -91,7 +92,7 @@ const PokeMiniCard: React.FC<{ data: PokemonCard }> = ({ data }) => {
             {
                 !!!palette ?
                     <div className="w-full h-[96px] flex items-center justify-center">
-                        <Image className="w-[48px] sm:w-[64px] aspect-square" src={"/img/spinner.svg"} alt="" width={48} height={48} />
+                        <Spinner />
                     </div> :
                     <Link target="_blank" href={`/pokemon?id=${data.id}`} className={`border-b border-black overflow-hidden h-full w-full bg-black relative`}>
                         <div className="w-full h-full absolute top-0 left-0 z-[0]" style={{ background: `linear-gradient(90deg,${palette.at(1)}80,${palette.at(0)}80)` }} />
