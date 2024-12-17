@@ -6,12 +6,15 @@ import { getPokemonData } from "@/database/pokemon-db";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Pokemon from "./poke-details/Pokemon";
+import { useSearchParams } from "next/navigation";
 
 type PokemonFinderProps = {
 }
 
 const PokemonFinder: React.FC<PokemonFinderProps> = () => {
-    const { id } = useRouter().query;
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const id = searchParams?.get("id")
     const [data, setData] = useState<PokemonData | null>();
 
     useEffect(() => {
@@ -21,6 +24,8 @@ const PokemonFinder: React.FC<PokemonFinderProps> = () => {
             }).catch(err => {
                 setData(null);
             });
+        } else {
+            router.push("/")
         }
     }, [id])
 

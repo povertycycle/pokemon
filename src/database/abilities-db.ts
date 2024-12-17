@@ -1,10 +1,3 @@
-// import { errorCheck } from "@/common/utils/errorCheck";
-// import { cacheIsAllowed } from "../../home/cache/utils";
-// import { BASE_API_URL_ABILITY } from "../../../constants/urls";
-// import { AbilityDetails, AbilityName } from "../contents/pokemon/interfaces/ability";
-// import { Stores } from "@/common/constants/enums";
-// import { POKEMON_DB } from "@/common/constants/main";
-
 import { cacheIsAllowed } from "@/common/components/home/cache/utils";
 import { Stores } from "@/common/constants/enums";
 import { POKEMON_DB } from "@/common/constants/main";

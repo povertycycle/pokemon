@@ -31,7 +31,7 @@ export default Pokemon;
 
 const Card: React.FC<{ pokemon: PokemonCard, palette: string[] }> = ({ pokemon, palette }) => {
     return (
-        <a href={`/pokemon/${pokemon.id}`} className={`${styles.cardRender} max-sm:border-b max-sm:border-black overflow-hidden h-full w-full bg-black relative sm:rounded-[6px] md:rounded-[8px]`}>
+        <a href={`/pokemon?id=${pokemon.id}`} className={`${styles.cardRender} max-sm:border-b max-sm:border-black overflow-hidden h-full w-full bg-black relative sm:rounded-[6px] md:rounded-[8px]`}>
             <div className="w-full h-full absolute top-0 left-0 z-[0]" style={{ background: `linear-gradient(90deg,${palette.at(1)}80,${palette.at(0)}80)` }} />
             <div className="w-full h-full absolute top-0 left-0 z-[1] flex items-center justify-end bg-gradient-to-r from-black/35">
                 <Image className="aspect-square w-[128px] sm:w-[296px] object-cover" src={pokemon.mainSprites.default} alt="" width={128} height={128} />

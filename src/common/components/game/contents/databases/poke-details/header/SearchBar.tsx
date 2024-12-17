@@ -92,7 +92,7 @@ const PokeMiniCard: React.FC<{ data: PokemonCard }> = ({ data }) => {
                     <div className="w-full h-[96px] flex items-center justify-center">
                         <Image className="w-[48px] sm:w-[64px] aspect-square" src={"/img/spinner.svg"} alt="" width={48} height={48} />
                     </div> :
-                    <a target="_blank" href={`/pokemon/${data.id}`} className={`border-b border-black overflow-hidden h-full w-full bg-black relative`}>
+                    <a target="_blank" href={`/pokemon?id=${data.id}`} className={`border-b border-black overflow-hidden h-full w-full bg-black relative`}>
                         <div className="w-full h-full absolute top-0 left-0 z-[0]" style={{ background: `linear-gradient(90deg,${palette.at(1)}80,${palette.at(0)}80)` }} />
                         <div className="w-full h-full absolute top-0 left-0 z-[1] flex items-center justify-end bg-gradient-to-r from-black/35">
                             <Image className="aspect-square w-[128px] object-cover" src={data.mainSprites.default} alt="" width={128} height={128} />
