@@ -5,7 +5,7 @@ import { validateItemDatabase } from "./items-db";
 
 
 export const initDB = (): Promise<boolean> => {
-    const version = 6;
+    const version = 7;
 
     return new Promise(res => {
         const request = indexedDB.open(POKEMON_DB, version);
