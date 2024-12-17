@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // basePath: '/pokemon',
+    basePath: '/pokemon',
     output: 'export',
     images: {
         minimumCacheTTL: 300,
