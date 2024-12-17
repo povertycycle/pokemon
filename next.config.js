@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // basePath: '/pokemon',
-    // assetPrefix: '/pokemon/',
+    basePath: '/pokemon',
+    assetPrefix: '/pokemon/',
     output: 'export',
     images: {
         minimumCacheTTL: 300,

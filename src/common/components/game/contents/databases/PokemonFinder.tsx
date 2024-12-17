@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Pokemon from "./poke-details/Pokemon";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 type PokemonFinderProps = {
 }
@@ -50,7 +51,7 @@ const DataNotFound: React.FC = () => {
     return (
         <div className="w-full h-full flex flex-col items-center justify-center bg-black text-white">
             <span className="text-[]">Pokemon data corrupted!</span>
-            <span>Please contact the developer <a href={GITHUB} target="_blank" className="">here</a>.</span>
+            <span>Please contact the developer <Link href={GITHUB} target="_blank" className="">here</Link>.</span>
         </div>
     )
 }

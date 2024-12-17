@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { PaletteContext } from "../_utils";
 import { capitalize } from "@/common/utils/string";
 import { GITHUB } from "@/common/constants/constants";
+import Link from "next/link";
 
 type BugReportingProps = {
     name: string;
@@ -54,10 +55,10 @@ const Hyperlink: React.FC<HyperlinkProps> = ({ href, children }) => {
     const { palette } = useContext(PaletteContext);
 
     return (
-        <a onClick={(e: any) => { e.stopPropagation() }} href={href} target="_blank" className="group/link border-b border-white relative pb-[2px] text-[1rem] sm:text-[1.25rem]">
+        <Link onClick={(e: any) => { e.stopPropagation() }} href={href} target="_blank" className="group/link border-b border-white relative pb-[2px] text-[1rem] sm:text-[1.25rem]">
             <div className="sm:group-hover/link:w-full w-0 transition-width absolute left-0 border-t" style={{ borderColor: palette[0] }} />
             {children ?? href}
-        </a>
+        </Link>
     )
 }
 

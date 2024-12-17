@@ -2,6 +2,7 @@ import { TAB_COLORS } from "@/common/constants/colors";
 import { Tab } from "@/common/constants/enums";
 import React, { useState } from "react";
 import NaviTab from "../game/contents/navigator/_utils";
+import Link from "next/link";
 
 type ShortcutsProps = {
     source: Tab;
@@ -31,13 +32,13 @@ const Shortcuts: React.FC<ShortcutsProps> = ({ source, title }) => {
                     <div className="sm:py-4 sm:h-full w-full flex sm:justify-end max-sm:flex-col gap-4 max-sm:px-4 max-sm:py-6">
                         {
                             Object.values(Tab).filter(t => t !== source).map((tab, i) => (
-                                <a href={tab === Tab.Return ? `/${source.toLowerCase()}` : `/${tab.toLowerCase()}`} className="sm:border sm:border-black max-sm:w-full sm:h-full sm:aspect-square max-sm:p-1 overflow-hidden rounded-[4px] sm:bg-white cursor-pointer sm:hover:scale-[1.5] max-sm:text-white relative" key={i}>
+                                <Link href={tab === Tab.Return ? `/${source.toLowerCase()}` : `/${tab.toLowerCase()}`} className="sm:border sm:border-black max-sm:w-full sm:h-full sm:aspect-square max-sm:p-1 overflow-hidden rounded-[4px] sm:bg-white cursor-pointer sm:hover:scale-[1.5] max-sm:text-white relative" key={i}>
                                     <div className="z-[0] overflow-hidden absolute left-0 top-0 w-full h-full sm:opacity-25" style={{ background: TAB_COLORS[tab] }} />
                                     <div title={tab} className="w-full h-full relative z-[1] flex items-center justify-center gap-2 text-[1.25rem] sm:text-[1.5rem]">
                                         <NaviTab tab={tab} size={24} />
                                         <span className="sm:hidden text-[1rem]">{tab}</span>
                                     </div>
-                                </a>
+                                </Link>
                             ))
                         }
                     </div>
