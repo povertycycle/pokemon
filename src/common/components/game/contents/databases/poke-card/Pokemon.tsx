@@ -1,8 +1,8 @@
 import Typewriter from "@/common/components/_utils/Typewriter";
 import { usePalette } from "@/common/hooks/usePalette";
 import { PokemonCard } from "@/common/interfaces/pokemon";
-import { capitalize } from "@/common/utils/capitalize";
-import { TYPE_COLORS } from "@/constants/types";
+import { capitalize } from "@/common/utils/string";
+import { TYPE_COLORS } from "@/common/constants/colors";
 import Image from "next/image";
 import React from "react";
 import styles from "./index.module.scss";
@@ -31,13 +31,13 @@ export default Pokemon;
 
 const Card: React.FC<{ pokemon: PokemonCard, palette: string[] }> = ({ pokemon, palette }) => {
     return (
-        <a target="_blank" href={`/pokemon/${pokemon.id}`} className={`${styles.cardRender} overflow-hidden h-full w-full bg-black relative rounded-[4px] sm:rounded-[6px] md:rounded-[8px]`}>
+        <a href={`/pokemon/${pokemon.id}`} className={`${styles.cardRender} max-sm:border-b max-sm:border-black overflow-hidden h-full w-full bg-black relative sm:rounded-[6px] md:rounded-[8px]`}>
             <div className="w-full h-full absolute top-0 left-0 z-[0]" style={{ background: `linear-gradient(90deg,${palette.at(1)}80,${palette.at(0)}80)` }} />
             <div className="w-full h-full absolute top-0 left-0 z-[1] flex items-center justify-end bg-gradient-to-r from-black/35">
                 <Image className="aspect-square w-[128px] sm:w-[296px] object-cover" src={pokemon.mainSprites.default} alt="" width={128} height={128} />
             </div>
-            <div className={`text-white h-full py-1 px-2 sm:py-2 sm:px-4 flex flex-col justify-end z-[2] relative w-full max-sm:bg-black/25 sm:bg-black/50 sm:hover:bg-black/0 cursor-pointer`}>
-                <div className="absolute flex top-0 left-0 text-[0.75rem] sm:text-[1.125rem] rounded-br-[4px] md:rounded-br-[6px] overflow-hidden max-w-full">
+            <div className={`text-white h-full py-1 px-2 sm:py-2 sm:px-4 flex flex-col justify-end z-[2] relative w-full sm:hover:bg-black/0 bg-black/25 cursor-pointer`}>
+                <div className="absolute flex top-0 left-0 text-[0.75rem] sm:text-[1rem] rounded-br-[4px] md:rounded-br-[6px] overflow-hidden max-w-full">
                     {
                         pokemon.types.map((t: string, i: number) => (
                             <div key={i} className={`w-[78px] sm:w-[128px] flex items-center justify-center`} style={{ background: TYPE_COLORS[t] }}>

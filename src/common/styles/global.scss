@@ -3,21 +3,81 @@
 @tailwind utilities;
 
 @layer base {
-    *, ::before, ::after {
+    *,
+    ::before,
+    ::after {
         box-sizing: border-box;
         border-style: solid;
     }
 }
 
-// Fonts only for personal uses. 
-@font-face { font-family: vcr-mono; src: url(../../fonts/vcr_osd_mono.ttf); }
-@font-face { font-family: pokemon-gb; src: url(../../fonts/pokemon_gb.ttf); }
+@layer components {
+    .hidden-scroll::-webkit-scrollbar {
+        height: 0;
+        width: 0;
+    }
+    .form__scrollbar--custom {
+        @media screen and (min-width: 640px) {
+            &::-webkit-scrollbar {
+                overflow: hidden;
+                width: 6px;
+            }
+            &::-webkit-scrollbar-track {
+                background-color: #d3d3d3;
+                border-radius: 20px;
+            }
+            &::-webkit-scrollbar-thumb {
+                cursor: pointer;
+                background-clip: content-box;
+                border-radius: 20px;
+                background: #a3a3a3;
+
+                &:hover {
+                    background: #808080;
+                }
+            }
+            &[scroll-color="green"]::-webkit-scrollbar-thumb {
+                background: #71aa54;
+
+                &:hover {
+                    background: #4e8234;
+                }
+            }
+        }
+    }
+}
+
+// Fonts only for personal uses.
+@font-face {
+    font-family: vcr-mono;
+    src: url(../../fonts/vcr_osd_mono.ttf);
+}
+@font-face {
+    font-family: Tektur;
+    src: url(../../fonts/Tektur.ttf);
+}
 
 // Initalizer for custom default sizing.
-html, body, body > header { height: 100%; margin: 0; padding: 0; }
-body { 
-    overflow: hidden; 
-    background-color: black; 
-    scroll-behavior: smooth; 
+html,
+body,
+body > header {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+body {
+    overflow: hidden;
+    background-color: black;
+    scroll-behavior: smooth;
     touch-action: none;
+}
+
+@media only screen and (max-width: 640px) {
+    [data-mobiletext] > span {
+        display: none;
+    }
+
+    [data-mobiletext]::before {
+        content: attr(data-mobiletext);
+    }
 }

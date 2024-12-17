@@ -1,4 +1,4 @@
-import { POKEMON_FETCH_BAR_ID } from "@/constants/constants";
+import { POKEMON_FETCH_BAR_ID } from "@/common/constants/constants";
 import styles from "./animation.module.scss";
 
 const Loading: React.FC<{ progress?: boolean, size?: number }> = ({ progress, size }) => {
@@ -12,8 +12,8 @@ const Loading: React.FC<{ progress?: boolean, size?: number }> = ({ progress, si
             <span className="text-center my-4 sm:text-[1.5rem]">Initializing necessary data</span>
             {
                 progress && <div id={POKEMON_FETCH_BAR_ID} className="bg-gradient-to-r from-base-white-dark to-base-white-soft w-full max-w-[640px] h-[24px] rounded-[4px] sm:rounded-[6px] flex overflow-hidden">
-                    <div className="bg-sp-def-dark" style={{ width: '0px' }} />
-                    <div className="bg-hp-dark" style={{ width: '0px' }} />
+                    <div className="bg-[#4E8234]" style={{ width: '0px' }} />
+                    <div className="bg-[#A60000]" style={{ width: '0px' }} />
                 </div>
             }
         </div>

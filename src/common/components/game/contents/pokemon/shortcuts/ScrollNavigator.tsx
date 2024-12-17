@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import { SCROLL_ID } from "../constants";
 import { KEYS, Shortcuts } from "./constants";
 import { shortcutID } from "@/common/utils/shortcut";
-import { DetailsContext } from "../details/contexts";
 
 function scrollToTarget(id: string) {
     let element = document.getElementById(id);
@@ -17,7 +16,6 @@ function scrollToTarget(id: string) {
 
 
 const ScrollNavigator: React.FC = () => {
-    const { palette } = useContext(DetailsContext);
     const [active, setActive] = useState<string>(Shortcuts.Sprites);
     let pos = (KEYS.indexOf(active as Shortcuts) ?? 0);
 
@@ -41,7 +39,7 @@ const ScrollNavigator: React.FC = () => {
                     })
                 }
                 <div className="w-full h-full absolute z-[0] flex justify-center mr-1">
-                    <div className="w-[2px] h-full" style={{ background: palette[0] }} />
+                    {/* <div className="w-[2px] h-full" style={{ background: palette[0] }} /> */}
                 </div>
                 <div className="absolute z-[2] aspect-square rounded-full mr-[8px] mt-[8px] transition-[top]" />
             </div>

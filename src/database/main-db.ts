@@ -1,20 +1,8 @@
+import { STORE_KEYS, Stores } from "@/common/constants/enums";
+import { POKEMON_DB } from "@/common/constants/main";
+import { validatePokemonDatabase } from "./pokemon-db";
+import { validateItemDatabase } from "./items-db";
 
-export const POKEMON_DB = "pokemon-game-local-db";
-
-export enum Stores {
-    Pokemon = "pokemon",
-    Validator = "validator",
-    PokeDetails = "details",
-    
-    Species = "species",
-    Evolution = "evolution",
-    Ability = "ability",
-    Moves = "moves",
-    Items = "items",
-    Encounters = "encounters",
-    Locations = "locations",
-    Berries = "berries",
-}
 
 export const initDB = (): Promise<boolean> => {
     const version = 6;
@@ -46,37 +34,72 @@ export const initDB = (): Promise<boolean> => {
     })
 };
 
-export const POKEMON_VALIDATOR_KEY = "PkOq3NuqNXXxgpZZofHHlOc6JcDNKLne";
-export async function validateDatabase(db: IDBDatabase, count: number): Promise<boolean> {
+function validateStore(store: Stores): Promise<string | null> {
+    const STORE_VALIDATORS: Record<string, () => Promise<string | null>> = {
+        [Stores.Pokemon]: validatePokemonDatabase,
+        [Stores.Items]: validateItemDatabase,
+    }
     return new Promise((res, rej) => {
-        const validator = db.transaction(Stores.Validator, 'readonly').objectStore(Stores.Validator).get(POKEMON_VALIDATOR_KEY);
+        const request = indexedDB.open(POKEMON_DB);
 
-        validator.onsuccess = () => {
-            res(count === validator.result?.count);
+        request.onsuccess = () => {
+            const db: IDBDatabase = request.result;
+            const valdiation = db.transaction(Stores.Validator, 'readonly').objectStore(Stores.Validator).get(STORE_KEYS[store]);
+
+            valdiation.onsuccess = () => {
+                const data = db.transaction(store, 'readonly').objectStore(store).getAllKeys();
+                data.onsuccess = () => {
+                    if (data.result.length !== valdiation.result?.count) {
+                        res(STORE_VALIDATORS[store] ? STORE_VALIDATORS[store]() : "Invalid Store");
+                    } else {
+                        res(null);
+                    }
+                }
+                data.onerror = () => {
+                    rej(data.error?.message);
+                }
+            }
+            valdiation.onerror = () => {
+                rej(valdiation.error?.message);
+            }
         }
-
-        validator.onerror = () => {
-            rej("Failed to validate database...")
+        request.onerror = () => {
+            rej(request.error?.message);
         }
     })
 }
 
-export async function updateValidator(newCount: number): Promise<{count: number, lastFetched: Date} | null> {
-    return new Promise(res => {
+export async function validateGameDatabase(): Promise<string | null> {
+    return Promise.all(
+        [
+            Stores.Pokemon,
+            Stores.Items,
+        ].map(store => validateStore(store))
+    ).then(res => {
+        return res.find(r => !!r) ?? null;
+    })
+}
+
+export async function updateValidator(newCount: number, target: Stores): Promise<string | null> {
+    return new Promise((res, rej) => {
         const request = indexedDB.open(POKEMON_DB);
 
         request.onsuccess = () => {
             let db: IDBDatabase = request.result;
-            let validated = {count: newCount, lastFetched: new Date()}
-            const validatorTx = db.transaction(Stores.Validator, 'readwrite').objectStore(Stores.Validator).put(validated, POKEMON_VALIDATOR_KEY);
-    
+            let validated = { count: newCount, lastFetched: new Date() }
+            const validatorTx = db.transaction(Stores.Validator, 'readwrite').objectStore(Stores.Validator).put(
+                validated,
+                STORE_KEYS[target]
+            );
+
             validatorTx.onsuccess = () => {
-                res(validated);
+                res(null);
             }
 
             validatorTx.onerror = () => {
-                res(null);
+                rej(validatorTx.error?.message);
             }
         }
     })
 }
+

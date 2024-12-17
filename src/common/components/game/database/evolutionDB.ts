@@ -1,9 +1,10 @@
-import { trimUrl } from "@/common/utils/trimUrl";
 import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_EVOLUTION } from "../../../../constants/urls";
+import { BASE_API_URL_EVOLUTION } from "../../../constants/urls";
 import { EvolutionChain } from "../contents/pokemon/interfaces/evolution";
-import { POKEMON_DB, Stores } from "../../../../database/main-db";
 import { errorCheck } from "@/common/utils/errorCheck";
+import { trimUrl } from "@/common/utils/string";
+import { Stores } from "@/common/constants/enums";
+import { POKEMON_DB } from "@/common/constants/main";
 
 const namedKeys = ["trigger", "party_type", "known_move_type", "location"];
 
@@ -11,11 +12,11 @@ function getChainData(chains: any[], acc: EvolutionChain[][], baby_item?: string
     if (chains.length <= 0) return acc;
 
     let newAcc = acc.concat([chains.map(c => ({
-        ...(c.is_baby && {is_baby: baby_item === "-1" ? "" : baby_item}),
+        ...(c.is_baby && { is_baby: baby_item === "-1" ? "" : baby_item }),
         species: c.species.name,
         ...(c.evolution_details.length > 0 ? {
             evolution_details: c.evolution_details.map((d: any) => (
-                Object.entries(d as {[key: string]: any}).reduce((acc: {[key: string]: string | boolean | number}, [key, value]) => {
+                Object.entries(d as { [key: string]: any }).reduce((acc: { [key: string]: string | boolean | number }, [key, value]) => {
                     if (value) {
                         if (namedKeys.includes(key)) {
                             acc[key] = value.name
@@ -53,10 +54,10 @@ export function fetchEvolutionChain(chain: string): Promise<EvolutionChain[][]> 
         request.onsuccess = () => {
             let db: IDBDatabase = request.result;
             const evolTx = db.transaction(Stores.Evolution, 'readonly');
-            
+
             if (cacheIsAllowed()) {
                 const evolutionData = evolTx.objectStore(Stores.Evolution).get(chain);
-                
+
                 evolutionData.onsuccess = () => {
                     if (evolutionData.result) {
                         result(evolutionData.result);

@@ -1,8 +1,9 @@
-import { trimUrl } from "@/common/utils/trimUrl";
 import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_SPECIES } from "../../../../constants/urls";
-import { POKEMON_DB, Stores } from "../../../../database/main-db";
+import { BASE_API_URL_SPECIES } from "../../../constants/urls";
 import { errorCheck } from "@/common/utils/errorCheck";
+import { trimUrl } from "@/common/utils/string";
+import { Stores } from "@/common/constants/enums";
+import { POKEMON_DB } from "@/common/constants/main";
 
 function fetchSpeciesData(species: string): Promise<any | null> {
     return new Promise(result => {
@@ -17,7 +18,7 @@ function fetchSpeciesData(species: string): Promise<any | null> {
                 evolution_chain: trimUrl(res.evolution_chain.url),
                 flavor_text_entries: res.flavor_text_entries.reduce((acc: any, fTE: any) => {
                     if (fTE.language.name === "en") {
-                        acc.push({version: fTE.version.name, text: fTE.flavor_text})
+                        acc.push({ version: fTE.version.name, text: fTE.flavor_text })
                     }
                     return acc;
                 }, []),
@@ -62,7 +63,7 @@ export function fetchSpeciesDetails(species: string): Promise<any | null> {
 
             if (cacheIsAllowed()) {
                 const speciesData = speciesTx.objectStore(Stores.Species).get(species);
-                
+
                 speciesData.onsuccess = () => {
                     if (speciesData.result) {
                         result(speciesData.result);
@@ -92,7 +93,7 @@ export async function getVariants(species: string): Promise<string[]> {
 
             if (cacheIsAllowed()) {
                 const speciesData = speciesTx.objectStore(Stores.Species).get(species);
-                
+
                 speciesData.onsuccess = () => {
                     if (speciesData.result) {
                         result(speciesData.result.varieties);

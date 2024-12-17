@@ -1,24 +1,22 @@
 import { getMoveName } from "@/common/components/game/database/movesDB";
-import { capitalize } from "@/common/utils/capitalize";
+import { capitalize } from "@/common/utils/string";
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import { EvolutionMethod } from "../../interfaces/evolution";
-import { DetailsContext } from "../contexts";
 import ImageSprites from "../../../_utils/ImageSprites";
 import styles from "@/common/styles/custom.module.scss";
 import { isDark } from "@/common/utils/colors";
-import { TYPE_COLORS } from "../../../../../../../constants/types";
+import { TYPE_COLORS } from "@/common/constants/colors";
 
 type MethodsProps = {
     data: EvolutionMethod[]
 };
 
 const Methods: React.FC<MethodsProps> = ({ data }) => {
-    const { palette } = useContext(DetailsContext);
     function isSame(a: EvolutionMethod, b: EvolutionMethod) { let ks1 = Object.keys(a).sort(); let ks2 = Object.keys(b).sort(); if (ks1.length !== ks2.length) return false; for (let i = 0; i < ks1.length; i++) { if (ks1[i] !== ks2[i]) { return false; } } return true; }
 
     return (
         <div className="flex flex-col leading-5 text-[1.125rem] grow gap-1 w-[256px] justify-start relative">
-            <div className={`w-full flex flex-col h-0 grow items-center border-y-2 bg-black/15 overflow-y-auto ${styles.overflowWhite}`} style={{ borderColor: palette[0] }}>
+            <div className={`w-full flex flex-col h-0 grow items-center border-y-2 bg-black/15 overflow-y-auto ${styles.overflowWhite}`} style={{}}>
                 {
                     structuredClone(data).reduce((acc: EvolutionMethod[], c: EvolutionMethod) => {
                         if (acc.length === 0) acc = [c];

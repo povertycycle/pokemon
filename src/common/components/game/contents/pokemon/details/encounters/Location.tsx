@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { DetailsContext } from "../contexts";
 
 type LocationProps = {
     data: any,
@@ -7,14 +6,12 @@ type LocationProps = {
 }
 
 const Location: React.FC<LocationProps> = ({ data, locations }) => {
-    const { palette } = useContext(DetailsContext);
-
     return (
         <div className="w-fit flex flex-col gap-4 pt-[24px] pb-4 bg-black/25">
             {
                 Object.entries(data).map(([loc_id, encounter], i: number) => (
                     <div key={i} className="flex flex-col items-start w-full gap-2">
-                        <div className="px-4 w-full bg-black/50 text-[1.125rem] border-b" style={{ borderColor: palette[0] }}>{locations[loc_id]}</div>
+                        {/* <div className="px-4 w-full bg-black/50 text-[1.125rem] border-b" style={{ borderColor: palette[0] }}>{locations[loc_id]}</div> */}
                         <ul className="w-full list-['-_'] px-8 space-y-4">
                             {
                                 // encounter.map((data: any, k: number) => (

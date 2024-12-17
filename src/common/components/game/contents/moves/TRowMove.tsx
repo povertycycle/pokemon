@@ -1,4 +1,4 @@
-import { capitalize } from "@/common/utils/capitalize";
+import { capitalize } from "@/common/utils/string";
 import { useContext, useState } from "react";
 import { CATEGORY_COLOR } from "../_utils/constants";
 import { PokeMove } from "../pokemon/interfaces/moves";

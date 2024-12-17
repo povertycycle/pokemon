@@ -6,12 +6,12 @@ import { getMovesData } from "../../database/movesDB";
 import Empty from "../databases/poke-card/Empty";
 import GenFilter from "../_utils/GenFilter";
 import { PokeMove } from "../pokemon/interfaces/moves";
-import { TYPE_COLORS } from "../../../../../constants/types";
 import { TABLE_ID } from "./constants";
 import { GameContext } from "./context";
 import TRowMove from "./TRowMove";
 import TypeScroller from "./TypeScroller";
 import Loading from "@/common/components/_utils/Loading";
+import { TYPE_COLORS } from "@/common/constants/colors";
 
 const ORDER = Object.keys(TYPE_COLORS);
 

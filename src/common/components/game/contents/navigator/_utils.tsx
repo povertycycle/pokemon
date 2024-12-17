@@ -1,4 +1,4 @@
-import { Tab } from "@/constants/enums"
+import { Tab } from "@/common/constants/enums"
 import { BerryTab, CalculatorTab, EvolutionTab, ItemsTab, MachineTab, MovesTab, PokemonTab } from "./Tabs";
 
 type NaviTabProps = {

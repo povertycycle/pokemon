@@ -12,6 +12,11 @@ export type PokemonCard = {
     types: string[];
 }
 
+export type Sprites = {
+    game: string;
+    url: string | null;
+};
+
 export type Stats = {
     [key: string]: {
         baseStat: number;
@@ -25,15 +30,19 @@ type PalParkEncounter = {
     rate: number;
 }
 
-export type Sprites = {
-    others: {
-        [key: string]: string;
-    };
-    versions: {
-        [gen: string]: {
-            [game: string]: string;
-        }
-    }
+export interface PokeMetaData {
+    cries: string;
+    baseExperience: number;
+    height: number;
+    weight: number;
+    details: {
+        baseHappiness: number;
+        captureRate: number;
+        growthRate?: string | null;
+        eggGroups: string[];
+        genderRate: number;
+        hatchCounter: number;
+    } | null;
 }
 
 export interface PokemonDetails {
@@ -55,27 +64,14 @@ export interface PokemonDetails {
     encounters: {
         palPark: PalParkEncounter[];
     }
-    metaData: {
-        cries: string;
-        baseExperience: number;
-        height: number;
-        weight: number;
-        details: {
-            baseHappiness: number;
-            captureRate: number;
-            growthRate: string;
-            eggGroups: string[];
-            genderRate: number;
-            hatchCounter: number;
-        } | null;
-    }
+    metaData: PokeMetaData;
     heldItemIDs: string[];
     moves: {
         [name: string]: {
             [method: string]: string[];
         }
     };
-    sprites: Sprites;
+    sprites: Sprites[];
     stats: Stats;
 }
 

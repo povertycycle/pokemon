@@ -1,4 +1,4 @@
-import { capitalize } from "@/common/utils/capitalize"
+import { capitalize } from "@/common/utils/string"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { fetchEvolutionChain } from "../../../database/evolutionDB"
@@ -10,7 +10,6 @@ import { ATTRIBUTES, FLING_EFFECT, LANGUAGES } from "./constants"
 import { PokeDollars } from "../../_utils/PokeDollars"
 import { getGameName } from "../../pokemon/details/_utils/getGameName";
 import styles from "@/common/styles/custom.module.scss";
-import { getGameColors } from "../../pokemon/details/_utils/getGameColors"
 
 type DetailsProps = {
     item: ItemData | null
@@ -110,7 +109,7 @@ const Details: React.FC<DetailsProps> = ({ item }) => {
                                     <div className={`w-[calc(100%+2px)] flex flex-col grow overflow-y-scroll h-0 ${styles.overflowPurple}`}>
                                         {
                                             item.games.map((g, i) => (
-                                                <div className="w-full text-center text-base-white" key={i} style={{ background: getGameColors(g) }}>
+                                                <div className="w-full text-center text-base-white">
                                                     <span className="drop-shadow-[0_0_1px_black]">{getGameName(g)}</span>
                                                 </div>
                                             ))

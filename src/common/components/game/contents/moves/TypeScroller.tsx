@@ -1,6 +1,6 @@
 import { isDark } from "@/common/utils/colors";
-import { TYPE_COLORS } from "../../../../../constants/types";
 import { TABLE_ID } from "./constants";
+import { TYPE_COLORS } from "@/common/constants/colors";
 
 const TypeScroller: React.FC = () => {
     return (

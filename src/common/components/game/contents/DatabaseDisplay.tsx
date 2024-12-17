@@ -1,5 +1,5 @@
-import { Tab } from "@/constants/enums";
-import { TAB_STATES } from "@/constants/main";
+import { Tab } from "@/common/constants/enums";
+import { TAB_STATES } from "@/common/constants/main";
 import { useState } from "react";
 import DisplayContainer from "./displayer/DisplayContainer";
 import Navigator from "./navigator/Navigator";

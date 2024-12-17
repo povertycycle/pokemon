@@ -1,14 +1,14 @@
 import Loading from "@/common/components/_utils/Loading";
-import Unavailable from "@/common/components/game/Unavailable";
+import Unavailable from "@/common/components/Unavailable";
 import { useBuildIDB } from "@/common/hooks/useBuildIDB";
 import "@/common/styles/global.scss";
-import { BASE_API_URL_POKEMON } from "@/constants/urls";
+import { BASE_API_URL_POKEMON } from "@/common/constants/urls";
 import type { AppProps } from 'next/app'
 import Head from "next/head";
 import styles from "@/common/styles/transitions.module.scss";
 
 export default function App({ Component, pageProps }: AppProps) {
-    const { dbReady, error } = useBuildIDB();
+    const { error } = useBuildIDB();
 
     return (
         <>
@@ -20,14 +20,14 @@ export default function App({ Component, pageProps }: AppProps) {
                 <meta name="keywords" content="pokemon,database,tcg,stylistic,simple,lightweight" />
             </Head>
             {
-                !dbReady ?
+                error === undefined ?
                     <div className={`${styles.fadeIn} w-screen h-dvh sm:h-screen text-white flex flex-col font-default items-center justify-center`}>
                         <Loading progress />
                     </div> :
                     (
-                        error ?
+                        !!error ?
                             <div className="w-screen h-dvh sm:h-screen text-white font-default">
-                                <Unavailable url={BASE_API_URL_POKEMON} />
+                                <Unavailable error={error} url={BASE_API_URL_POKEMON} />
                             </div> :
                             <Component {...pageProps} />
                     )

@@ -1,13 +1,14 @@
-import { UIEvent } from "react";
+import { RefObject, UIEvent } from "react";
 
 type FetchScrollerProps = {
+    ref: RefObject<HTMLDivElement>;
     hasNext: boolean;
     fetchNext: () => void;
     endOfLine?: React.ReactNode;
     children: React.ReactNode;
 }
 
-const FetchScroller: React.FC<FetchScrollerProps> = ({ hasNext, fetchNext, endOfLine, children }) => {
+const FetchScroller: React.FC<FetchScrollerProps> = ({ ref, hasNext, fetchNext, endOfLine, children }) => {
     function handleFetch(e: UIEvent<HTMLDivElement>) {
         const THRESHOLD_HEIGHT = 128;
         const elem = (e.target as HTMLDivElement);
@@ -17,7 +18,7 @@ const FetchScroller: React.FC<FetchScrollerProps> = ({ hasNext, fetchNext, endOf
     }
 
     return (
-        <div onScroll={hasNext ? handleFetch : undefined} className={`w-full h-full overflow-y-scroll flex flex-col items-center`}>
+        <div ref={ref} onScroll={hasNext ? handleFetch : undefined} className={`w-full h-full overflow-y-scroll flex flex-col items-center`}>
             {children}
             {
                 hasNext ?

@@ -1,9 +1,9 @@
-import { capitalize } from "@/common/utils/capitalize";
+import { capitalize, trimUrl } from "@/common/utils/string";
 import { errorCheck } from "@/common/utils/errorCheck";
-import { trimUrl } from "@/common/utils/trimUrl";
 import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_LOCATIONS } from "../../../../constants/urls";
-import { POKEMON_DB, Stores } from "../../../../database/main-db";
+import { BASE_API_URL_LOCATIONS } from "../../../constants/urls";
+import { Stores } from "@/common/constants/enums";
+import { POKEMON_DB } from "@/common/constants/main";
 
 type LocationData = {
     location: string,
@@ -39,7 +39,7 @@ export function getLocationData(id: string): Promise<string | null> {
 
             if (cacheIsAllowed()) {
                 const locData = locTx.objectStore(Stores.Locations).get(id);
-                
+
                 locData.onsuccess = () => {
                     if (locData.result) {
                         result(locData.result.name);
@@ -63,7 +63,7 @@ export function getLocationData(id: string): Promise<string | null> {
     })
 }
 
-export function processAllLocations(ids: string[]): Promise<{ [id: string]: string} | null> {
+export function processAllLocations(ids: string[]): Promise<{ [id: string]: string } | null> {
     return new Promise(result => {
         const request = indexedDB.open(POKEMON_DB);
 

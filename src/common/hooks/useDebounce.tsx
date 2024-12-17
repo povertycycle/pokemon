@@ -1,7 +1,7 @@
 import { SyntheticEvent, useEffect, useState } from "react";
 
-const useDebouncedInput = (callback: (s: string) => void) => {
-    const [input, setInput] = useState<string | null>(null);
+const useDebouncedInput = (callback: (s: string) => void, defaultValue?: string | null) => {
+    const [input, setInput] = useState<string | null>(defaultValue ?? null);
 
     useEffect(() => {
         if (input === null) return;

@@ -11,7 +11,7 @@ const nextConfig = {
                 pathname: '/PokeAPI/**',
             },
         ],
-        unoptimized: true,
+        unoptimized: true
     }
 }
 

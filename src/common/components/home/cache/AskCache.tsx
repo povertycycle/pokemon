@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CACHE_PERMISSION_ID, CACHE_STATUS, DISABLE_CACHE_QUERY, QUERY_STATUS } from "../../../../constants/main";
+import { CACHE_PERMISSION_ID, CACHE_STATUS, DISABLE_CACHE_QUERY, QUERY_STATUS } from "../../../constants/main";
 import { createPortal } from "react-dom";
 
 const AskCache: React.FC = () => {

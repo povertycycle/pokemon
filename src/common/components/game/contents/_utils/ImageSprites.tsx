@@ -1,14 +1,12 @@
 import Loading from "@/common/components/_utils/Loading";
-import { useSprites } from "@/common/components/game/hooks/useSprites";
-import { capitalize } from "@/common/utils/capitalize";
+import { capitalize } from "@/common/utils/string";
 import Image from "next/image";
 
 const ImageSprites: React.FC<{ id: string | null, type: "species" | "item", minified?: boolean }> = ({ id, type, minified }) => {
-    const { name, url } = useSprites(type, id);
 
     return (
         <div className="w-[56px] flex flex-col text-base leading-6 text-center items-center">
-            <div title={!!minified ? capitalize(name) : undefined} className="w-full aspect-square rounded-[4px] flex items-center justify-center">
+            {/* <div title={!!minified ? capitalize(name) : undefined} className="w-full aspect-square rounded-[4px] flex items-center justify-center">
                 {
                     url === undefined ?
                         <div className="w-full h-full">
@@ -22,7 +20,7 @@ const ImageSprites: React.FC<{ id: string | null, type: "species" | "item", mini
 
                 }
             </div>
-            {!!!minified && <span className="text-[0.875rem] whitespace-nowrap">{capitalize(name)}</span>}
+            {!!!minified && <span className="text-[0.875rem] whitespace-nowrap">{capitalize(name)}</span>} */}
         </div>
     )
 }

@@ -1,7 +1,7 @@
 import "remixicon/fonts/remixicon.css";
 import Loading from "@/common/components/_utils/Loading";
 import { PokemonData } from "@/common/interfaces/pokemon";
-import { GITHUB } from "@/constants/constants";
+import { GITHUB } from "@/common/constants/constants";
 import { getPokemonData } from "@/database/pokemon-db";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -25,7 +25,7 @@ const PokemonFinder: React.FC<PokemonFinderProps> = () => {
     }, [id])
 
     return (
-        <div className="w-scren h-dvh sm:h-screen overflow-y-auto flex flex-col font-default">
+        <div className="w-screen h-dvh sm:h-screen max-h-dvh sm:max-h-screen overflow-y-auto flex flex-col font-default bg-black">
             {
                 data === undefined ?
                     <Loading /> :

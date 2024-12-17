@@ -77,7 +77,7 @@ export interface PokeAPISpecies {
     capture_rate: number;
     growth_rate: {
         name: string
-    };
+    } | null;
     egg_groups: {
         name: string;
     }[];
@@ -91,17 +91,17 @@ export interface PokeAPISpecies {
     }[];
     habitat: {
         name: string;
-    }
+    } | null;
     shape: {
         name: string;
-    }
+    } | null
     is_baby: boolean;
     is_legendary: boolean;
     is_mythical: boolean;
     evolution_chain: {
         url: string
     }
-    flavor_text_entries:  {
+    flavor_text_entries: {
         flavor_text: string
         language: {
             name: string;
@@ -123,7 +123,7 @@ export interface PokeAPISpecies {
     }[];
     forms_switchable: boolean;
     pal_park_encounters: {
-        area: {   
+        area: {
             name: string;
         }
         base_score: number;
@@ -131,5 +131,25 @@ export interface PokeAPISpecies {
     }[];
 }
 
-  
-  
+export interface PokeAPIAbilityData {
+    effect_entries?: {
+        effect: string;
+        language: {
+            name: string;
+        }
+        short_effect: string;
+    }[] | null;
+    flavor_text_entries?: {
+        flavor_text: string;
+        language: {
+            name: string;
+        }
+    }[] | null
+    id: number;
+    pokemon: {
+        is_hidden: boolean;
+        pokemon: {
+            url: string;
+        };
+    }[];
+}

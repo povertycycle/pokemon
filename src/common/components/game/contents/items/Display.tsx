@@ -1,6 +1,6 @@
 import { Dispatch, memo, SetStateAction, useRef, useState } from "react";
 import { CATEGORIES, ItemData, OrderType } from "./constants";
-import { capitalize } from "@/common/utils/capitalize";
+import { capitalize } from "@/common/utils/string";
 import styles from "@/common/styles/custom.module.scss";
 import table from "@/common/styles/table.module.scss";
 import Details from "./details/Details";

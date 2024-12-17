@@ -1,8 +1,9 @@
-import { trimUrl } from "@/common/utils/trimUrl";
 import { cacheIsAllowed } from "../../home/cache/utils";
-import { BASE_API_URL_POKEMON } from "../../../../constants/urls";
-import { POKEMON_DB, Stores } from "../../../../database/main-db";
+import { BASE_API_URL_POKEMON } from "../../../constants/urls";
 import { errorCheck } from "@/common/utils/errorCheck";
+import { trimUrl } from "@/common/utils/string";
+import { Stores } from "@/common/constants/enums";
+import { POKEMON_DB } from "@/common/constants/main";
 
 function fetchEncounterData(id: string): Promise<any | null> {
     return new Promise(result => {
@@ -14,32 +15,32 @@ function fetchEncounterData(id: string): Promise<any | null> {
                     let locId = trimUrl(enc?.location_area?.url);
                     enc?.version_details?.forEach((gameData: any) => {
                         let version = gameData?.version?.name;
-                        let encounters = gameData?.encounter_details?.reduce((encAcc:any,ed:any)=> {
+                        let encounters = gameData?.encounter_details?.reduce((encAcc: any, ed: any) => {
                             let hasSame = false;
-                            let condition = ed?.condition_values.length>0?ed?.condition_values?.map((cv:any)=>cv.name):undefined;
+                            let condition = ed?.condition_values.length > 0 ? ed?.condition_values?.map((cv: any) => cv.name) : undefined;
                             let newEnc = {
                                 chance: ed.chance,
-                                level_range: ed.min_level===ed.max_level?String(ed.min_level):`${ed.min_level}-${ed.max_level}`,
+                                level_range: ed.min_level === ed.max_level ? String(ed.min_level) : `${ed.min_level}-${ed.max_level}`,
                                 method: ed.method.name,
-                                ...(condition && {condition:condition}),
+                                ...(condition && { condition: condition }),
                             }
-                            encAcc?.forEach((e:any)=> {
-                                if (e.method===newEnc.method && e?.condition?.sort()?.toString()===condition?.sort()?.toString()) {
-                                    let ranges = `${e.level_range}-${newEnc.level_range}`.split("-").sort((a:string,b:string)=>((parseInt(a)??0) - (parseInt(b)??0)));;
+                            encAcc?.forEach((e: any) => {
+                                if (e.method === newEnc.method && e?.condition?.sort()?.toString() === condition?.sort()?.toString()) {
+                                    let ranges = `${e.level_range}-${newEnc.level_range}`.split("-").sort((a: string, b: string) => ((parseInt(a) ?? 0) - (parseInt(b) ?? 0)));;
                                     e.chance += newEnc.chance;
-                                    e.level_range = ranges.at(0)===ranges.at(-1)?ranges[0]:`${ranges.at(0)}-${ranges.at(-1)}`;
-                                    hasSame=true;
+                                    e.level_range = ranges.at(0) === ranges.at(-1) ? ranges[0] : `${ranges.at(0)}-${ranges.at(-1)}`;
+                                    hasSame = true;
                                     return;
                                 }
                             })
-                            if (!hasSame) {encAcc.push(newEnc);}
+                            if (!hasSame) { encAcc.push(newEnc); }
                             return encAcc;
                         }, []);
                         if (acc[version]) {
-                            if (acc[version][locId]) {acc[version][locId].concat(...encounters)}
-                            else {acc[version][locId]=encounters;}
+                            if (acc[version][locId]) { acc[version][locId].concat(...encounters) }
+                            else { acc[version][locId] = encounters; }
                         } else {
-                            acc[version]={[locId]:encounters}
+                            acc[version] = { [locId]: encounters }
                         }
                     })
                     return acc;
@@ -61,7 +62,7 @@ export function getEncounterData(id: string): Promise<any | null> {
 
             if (cacheIsAllowed()) {
                 const encData = encTx.objectStore(Stores.Encounters).get(id);
-                
+
                 encData.onsuccess = () => {
                     if (encData.result) {
                         result(encData.result);

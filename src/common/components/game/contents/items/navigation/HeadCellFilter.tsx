@@ -1,5 +1,5 @@
 import styles from "@/common/styles/custom.module.scss";
-import { capitalize } from "@/common/utils/capitalize";
+import { capitalize } from "@/common/utils/string";
 import { useState } from "react";
 import { CATEGORIES, POCKETS } from "../constants";
 import HeadSearch from "./HeadSearch";

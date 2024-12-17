@@ -1,14 +1,13 @@
 import styles from "@/common/styles/custom.module.scss"
-import { capitalize } from "@/common/utils/capitalize"
+import { capitalize } from "@/common/utils/string"
 import { generateBackground, isDark } from "@/common/utils/colors"
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import { getItemData } from "../../database/itemsDB"
-import Typewriter from "../../../_utils/Typewriter"
 import { PokeDollars } from "../_utils/PokeDollars"
 import { ItemData } from "../items/constants"
 import { BerryData } from "./constants"
-import { TYPE_COLORS } from "../../../../../constants/types"
+import { TAB_COLORS, TYPE_COLORS } from "@/common/constants/colors"
+import { Tab } from "@/common/constants/enums"
 
 const FLAVORS: { [key: string]: string } = {
     "spicy":
@@ -40,7 +39,7 @@ type DisplayProps = {
 const Display: React.FC<DisplayProps> = ({ berries }) => {
     return (
         <div className={`w-full h-full justify-center flex items-center bg-black`}>
-            <div className={`w-full h-full pt-24 pl-[10%] pr-[calc(10%+8px)] pb-2 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-16 bg-sp-atk-dark/50 overflow-y-scroll ${styles.overflowWhite}`}>
+            <div className={`w-full h-full pt-24 pl-[10%] pr-[calc(10%+8px)] pb-2 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-16 overflow-y-scroll ${styles.overflowWhite}`} style={{ background: TAB_COLORS[Tab.Berries] + "80" }}>
                 {
                     berries.map((berry, i) => (
                         <Berry key={i} data={berry} />
@@ -56,18 +55,18 @@ const Berry: React.FC<{ data: BerryData }> = ({ data }) => {
     const [palette, setPalette] = useState<string[]>(["#000000"]);
 
     useEffect(() => {
-        if (!item)
-            getItemData(data.item).then(res => {
-                let dat = res;
-                if (dat?.sprites) {
-                    generateBackground(dat.sprites, 4, 15).then(res => {
-                        setItem(dat);
-                        setPalette(res);
-                    });
-                } else {
-                    setItem(dat);
-                }
-            })
+        // if (!item)
+        // getItemData(data.item).then(res => {
+        //     let dat = res;
+        //     if (dat?.sprites) {
+        //         generateBackground(dat.sprites, 4, 15).then(res => {
+        //             setItem(dat);
+        //             setPalette(res);
+        //         });
+        //     } else {
+        //         setItem(dat);
+        //     }
+        // })
     }, [])
 
     return (

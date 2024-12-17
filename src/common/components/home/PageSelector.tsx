@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
 import styles from "./animation.module.scss";
-import { PageState } from "../../../constants/main";
+import { PageState } from "../../constants/main";
 
 type PageSelectorProps = {
     shouldAnimate?: boolean;
@@ -21,9 +21,8 @@ const PageSelector: React.FC<PageSelectorProps> = ({ shouldAnimate, section, set
     const toTCG = () => {
         setSection(PageState.TCG);
     }
-
     return (
-        <div className={`absolute flex flex-col z-[0] left-0 top-0 text-base-white`}>
+        <div className={`absolute flex flex-col z-[0] left-0 top-0 text-base-white font-vcr-mono`}>
             <div className={`${!!shouldAnimate ? `${styles.animateDown} transition-transform` : null} ${section !== PageState.Main ? "translate-y-[-100%]" : "translate-y-[0%]"} ${c}`} onClick={toDatabase}>
                 <Image fetchPriority="high" className={i} src={"/img/mmgs.jpg"} width={640} height={360} alt="" />
                 <div className={t}>DATABASE</div>

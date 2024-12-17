@@ -1,7 +1,4 @@
 import { SyntheticEvent, useState } from "react";
-import { getGameColors } from "../pokemon/details/_utils/getGameColors";
-import { getGameName } from "../pokemon/details/_utils/getGameName";
-import { VERSIONS } from "./constants";
 
 type GenFilterProps = {
     filter: (gen: string | null) => void

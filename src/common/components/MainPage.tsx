@@ -4,7 +4,7 @@ import AskCache from "./home/cache/AskCache";
 import VisitPage from "./home/VisitPage";
 import PageSelector from "./home/PageSelector";
 import TCGDatabase from "./tcg/TCGDatabase";
-import { DESTINATION, DESTINATION_STATES, PageState, TAB_SELECTION } from "../../constants/main";
+import { DESTINATION, DESTINATION_STATES, PageState, TAB_SELECTION } from "../constants/main";
 import { useSearchParams } from "next/navigation";
 import DatabaseDisplay from "./game/contents/DatabaseDisplay";
 

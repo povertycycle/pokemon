@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { ItemData } from "./constants";
-import { getAllItems } from "../../database/itemsDB";
 import Empty from "../databases/poke-card/Empty";
 import Display from "./Display";
 import styles from "@/common/styles/transitions.module.scss";
@@ -10,9 +9,9 @@ const ItemsDatabase: React.FC = () => {
     const [items, setItems] = useState<ItemData[] | null | undefined>();
 
     useEffect(() => {
-        getAllItems().then(res => {
-            setItems(res);
-        });
+        // getAllItems().then(res => {
+        //     setItems(res);
+        // });
     }, [])
 
     return (

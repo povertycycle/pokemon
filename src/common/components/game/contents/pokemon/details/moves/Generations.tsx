@@ -1,8 +1,5 @@
 import { useContext } from "react";
-import { DetailsContext } from "../contexts";
 import { GenerationContext } from "./contexts";
-import { getGameColors } from "../_utils/getGameColors";
-import { getGameName } from "../_utils/getGameName";
 
 type GenerationsProps = {
     versions: string[]
@@ -10,7 +7,6 @@ type GenerationsProps = {
 
 const Generations: React.FC<GenerationsProps> = ({ versions }) => {
     const HEIGHT = 28;
-    const { palette } = useContext(DetailsContext);
     const { gen, setGen } = useContext(GenerationContext);
     const list = versions.filter(v => v !== gen);
 

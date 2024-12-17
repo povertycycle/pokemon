@@ -1,7 +1,7 @@
 export const CONTAINER_ID = "Pvpkew5r1AM6tiDutcTI86CWYQGXFZFN";
 export const SCROLL_ID = "VolrUP91lqi5IfesMHjHM2NfxlSBfUJc";
 
-export const GAME_NAME: {[key: string]: string} = {
+export const GAME_NAME: { [key: string]: string } = {
     "ultra-moon": "Ultra Moon",
     "ultra-sun": "Ultra Sun",
     "omega-ruby": "Omega Ruby",
