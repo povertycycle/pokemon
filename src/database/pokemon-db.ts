@@ -112,14 +112,13 @@ export async function getPokemonData(id: string): Promise<PokemonData | null> {
                                 if (!res) {
                                     reject("Unable to fetch data from API. Please contact developer");
                                 } else {
-                                    const insertTx = db.transaction(Stores.PokeDetails, 'readwrite').objectStore(Stores.PokeDetails);
-                                    if (cacheIsAllowed()) {
-                                        insertTx.put(res, mainData.id.toString());
-                                    }
-                                    result({
-                                        ...mainData,
-                                        ...res
-                                    });
+                                    const insertTx = db.transaction(Stores.PokeDetails, 'readwrite').objectStore(Stores.PokeDetails).put(res, mainData.id.toString());
+                                    insertTx.onsuccess = () => {
+                                        result({
+                                            ...mainData,
+                                            ...res
+                                        });
+                                    };
                                 }
                             })
                         }

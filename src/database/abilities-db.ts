@@ -15,48 +15,47 @@ export async function getAbilityData(ability: string, pokeId: number): Promise<A
             let db: IDBDatabase = request.result;
             const abilityTx = db.transaction(Stores.Ability, 'readonly');
 
-            if (cacheIsAllowed()) {
-                const abilityData = abilityTx.objectStore(Stores.Ability).get(ability);
-                abilityData.onsuccess = () => {
-                    const _data: AbilityData = abilityData.result;
-                    const isHidden = _data.pokemon.find(a => a.id === String(pokeId))?.isHidden ?? false;
-                    if (!!_data?.data) {
-                        resolve({ ...abilityData.result.data, isHidden });
-                    } else {
-                        fetchAbility(ability, pokeId).then(res => {
-                            if (res.data) {
-                                _data.data = res.data;
-                                const abilityTx = db.transaction(Stores.Ability, 'readwrite').objectStore(Stores.Ability).put(
-                                    _data,
-                                    ability,
-                                )
+            // if (cacheIsAllowed()) {
+            const abilityData = abilityTx.objectStore(Stores.Ability).get(ability);
+            abilityData.onsuccess = () => {
+                const _data: AbilityData = abilityData.result;
+                const isHidden = _data.pokemon.find(a => a.id === String(pokeId))?.isHidden ?? false;
+                if (!!_data?.data) {
+                    resolve({ ...abilityData.result.data, isHidden });
+                } else {
+                    fetchAbility(ability, pokeId).then(res => {
+                        if (res.data) {
+                            _data.data = res.data;
+                            const abilityTx = db.transaction(Stores.Ability, 'readwrite').objectStore(Stores.Ability).put(
+                                _data,
+                                ability,
+                            )
 
-                                abilityTx.onsuccess = () => {
-                                    resolve({ ...res.data, isHidden })
-                                }
-                            } else {
-                                resolve(null);
+                            abilityTx.onsuccess = () => {
+                                resolve({ ...res.data, isHidden })
                             }
-                        }).catch(err => {
+                        } else {
                             resolve(null);
-                        })
-                    }
+                        }
+                    }).catch(err => {
+                        resolve(null);
+                    })
                 }
-
-                abilityData.onerror = () => {
-                    resolve(null);
-                }
-            } else {
-                fetchAbility(ability, pokeId).then(res => {
-                    if (!!res) {
-                        resolve({ ...res.data, isHidden: res.isHidden })
-                    }
-                }).catch(err => {
-                    resolve(null);
-                })
             }
+
+            abilityData.onerror = () => {
+                resolve(null);
+            }
+            // } else {
+            //     fetchAbility(ability, pokeId).then(res => {
+            //         if (!!res) {
+            //             resolve({ ...res.data, isHidden: res.isHidden })
+            //         }
+            //     }).catch(err => {
+            //         resolve(null);
+            //     })
+            // }
         }
-        // PokeAPIAbilityData
     })
 }
 
