@@ -20,9 +20,9 @@ const Shortcuts: React.FC<ShortcutsProps> = ({ source, title }) => {
             <div onClick={() => { setShow(true) }} className="border border-black sm:hidden h-full aspect-square bg-white rounded-[4px] flex items-center justify-center">
                 <i className="ri-menu-line text-[1.25rem]" />
             </div>
-            <div onClick={() => { setShow(false) }} className={`${show ? "max-sm:visible" : "max-sm:hidden"} max-sm:fixed max-sm:bottom-0 max-sm:left-0 h-dvh sm:h-full max-sm:z-50 w-full max-sm:flex max-sm:flex-col max-sm:justify-end`}>
-                <div className="sm:hidden absolute w-full h-full bg-black/65 top-0 left-0 z-[0]" />
-                <div className="relative z-[1] w-full flex flex-col max-sm:bg-white sm:h-full max-sm:rounded-t-[8px] max-sm:overflow-hidden">
+            <div onClick={() => { setShow(false) }} className={`${show ? "max-sm:max-h-dvh" : "max-sm:max-h-0 max-sm:delay-500"} max-sm:fixed max-sm:bottom-0 max-sm:left-0 h-dvh sm:h-full max-sm:z-50 w-full max-sm:flex max-sm:flex-col max-sm:justify-end max-sm:overflow-hidden`}>
+                <div className={`${show ? "opacity-100" : "opacity-0"} transition-opacity duration-200 ease-in sm:hidden absolute w-full h-full bg-black/65 top-0 left-0 z-[0]`} />
+                <div className={`relative z-[1] w-full flex flex-col max-sm:bg-white sm:h-full max-sm:rounded-t-[16px] max-sm:overflow-hidden ease-in transition-max-height duration-400 ${show ? "max-sm:max-h-dvh" : "max-sm:max-h-0"}`}>
                     <div className="sm:hidden w-full flex items-center pl-6 py-[14px] text-[1.25rem] leading-6" style={{ background: title?.headerColor, color: title?.textColor }}>
                         <span>Navigation</span>
                         <div className="absolute right-4">

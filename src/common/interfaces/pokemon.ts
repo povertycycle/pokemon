@@ -1,3 +1,4 @@
+import { MoveDataVersion } from "./move";
 
 export type PokemonCard = {
     id: number;
@@ -67,9 +68,7 @@ export interface PokemonDetails {
     metaData: PokeMetaData;
     heldItemIDs: string[];
     moves: {
-        [name: string]: {
-            [method: string]: string[];
-        }
+        [move: string]: MoveDataVersion;
     };
     sprites: Sprites[];
     stats: Stats;

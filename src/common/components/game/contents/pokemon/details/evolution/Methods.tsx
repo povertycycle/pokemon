@@ -1,11 +1,10 @@
-import { getMoveName } from "@/common/components/game/database/movesDB";
-import { capitalize } from "@/common/utils/string";
-import React, { Fragment, useContext, useEffect, useState } from "react";
-import { EvolutionMethod } from "../../interfaces/evolution";
-import ImageSprites from "../../../_utils/ImageSprites";
+import { TYPE_COLORS } from "@/common/constants/colors";
 import styles from "@/common/styles/custom.module.scss";
 import { isDark } from "@/common/utils/colors";
-import { TYPE_COLORS } from "@/common/constants/colors";
+import { capitalize } from "@/common/utils/string";
+import React, { Fragment, useEffect, useState } from "react";
+import ImageSprites from "../../../_utils/ImageSprites";
+import { EvolutionMethod } from "../../interfaces/evolution";
 
 type MethodsProps = {
     data: EvolutionMethod[]
@@ -159,9 +158,6 @@ const KnownMove: React.FC<{ id: string }> = ({ id }) => {
     const [name, setName] = useState<string | null>(null);
 
     useEffect(() => {
-        getMoveName(id).then(res => {
-            setName(res);
-        })
     }, [id]);
 
     return (

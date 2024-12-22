@@ -1,19 +1,19 @@
+import { TYPE_COLORS } from "@/common/constants/colors";
 import { usePalette } from "@/common/hooks/usePalette";
 import { PokemonData } from "@/common/interfaces/pokemon";
 import { isDark } from "@/common/utils/colors";
-import Image from "next/image";
+import Spinner from "../../_utils/Spinner";
 import { PaletteContext } from "./_utils";
-import Header from "./header/Header";
-import SpriteViewer from "./sprites/SpriteViewer";
-import { TYPE_COLORS } from "@/common/constants/colors";
-import BugReporting from "./feedback/BugReporting";
+import Abilities from "./abilities/Abilities";
 import Details from "./details/Details";
+import BugReporting from "./feedback/BugReporting";
+import Header from "./header/Header";
+import Moves from "./moves/Moves";
 import Genera from "./species/Genera";
+import HeldItems from "./species/HeldItems";
+import SpriteViewer from "./sprites/SpriteViewer";
 import Effectiveness from "./stats/Effectiveness";
 import Stats from "./stats/Stats";
-import HeldItems from "./species/HeldItems";
-import Abilities from "./abilities/Abilities";
-import Spinner from "../../_utils/Spinner";
 
 type PokemonProps = {
     data: PokemonData;
@@ -34,12 +34,13 @@ const Pokemon: React.FC<PokemonProps> = ({ data }) => {
 export default Pokemon;
 
 const Display: React.FC<{ data: PokemonData; palette: string[] }> = ({ data, palette }) => {
+    const value = { palette, text: palette.map(color => isDark(color) ? "#ffffff" : "#000000") }
     return (
-        <PaletteContext.Provider value={{ palette, text: palette.map(color => isDark(color) ? "#ffffff" : "#000000") }}>
+        <PaletteContext.Provider value={value}>
             <div className="w-full flex flex-col items-center" style={{ background: `${palette[0]}f2` }}>
                 <Header index={data.index} name={data.name} species={data.species} />
                 <div className="z-[0] flex flex-col w-full max-sm:items-center max-w-[1280px] relative grow">
-                    <div className="absolute left-0 sm:left-4 top-0 text-white z-[2] flex sm:max-w-[400px] p-2 gap-2">
+                    <div className="absolute left-0 sm:left-3 top-0 text-white z-[2] flex sm:max-w-[400px] py-2 max-sm:px-2 gap-2">
                         {
                             data.types.map((type, i) => (
                                 <div key={i} className={`px-8 rounded-full flex items-center justify-center shadow-md`} style={{ background: TYPE_COLORS[type] }}>
@@ -52,11 +53,16 @@ const Display: React.FC<{ data: PokemonData; palette: string[] }> = ({ data, pal
                         <div className="shrink-0 sm:max-w-[400px] w-full relative z-[1] overflow-hidden p-6 shadow-lg sm:border-x border-b bg-white/75" style={{ borderColor: palette[1] }}>
                             <SpriteViewer defaultSprite={data.mainSprites.default} sprites={data.sprites} cries={data.metaData.cries} />
                         </div>
-                        <div className="max-sm:pb-4 sm:h-[400px] flex flex-col sm:flex-col-reverse bg-white/75 w-full overflow-y-auto shadow-lg max-sm:border-t border-b sm:border-x" style={{ borderColor: palette[1] }}>
+                        <div className="sm:h-[400px] flex flex-col sm:flex-col-reverse bg-white/75 w-full overflow-y-auto shadow-lg max-sm:border-t border-b sm:border-x" style={{ borderColor: palette[1] }}>
                             <Genera genera={data.speciesData.genera} category={{ isBaby: data.speciesData.isBaby, isLegendary: data.speciesData.isLegendary, isMythical: data.speciesData.isMythical }} />
                             <div className="w-full flex flex-col grow">
-                                <span className="font-vcr-mono my-10 sm:my-auto w-full italic tracking-wider sm:text-[1.125rem] leading-6 px-8 text-center">{"\u201C"}{data.speciesData.flavorText}{"\u201D"}</span>
-                                <Effectiveness types={data.types} />
+                                <div className="font-vcr-mono max-sm:py-8 max-sm:mb-2 grow w-full flex items-center italic tracking-wider text-[0.875rem] sm:text-[1.125rem] leading-5 sm:leading-6 px-8 text-center" style={{ background: `${palette[1]}1a` }}>{"\u201C"}{data.speciesData.flavorText}{"\u201D"}</div>
+                                <div className="w-full flex max-sm:flex-col gap-2 sm:items-end">
+                                    <Effectiveness types={data.types} />
+                                    {
+                                        data.heldItemIDs.length > 0 && <HeldItems itemIDs={data.heldItemIDs} />
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -71,10 +77,9 @@ const Display: React.FC<{ data: PokemonData; palette: string[] }> = ({ data, pal
                     <div className="w-full flex max-sm:flex-col bg-white/75 mt-4 border-y sm:border-x shadow-lg" style={{ borderColor: palette[1] }}>
                         <Abilities abilities={data.abilities} pokeId={data.id} />
                     </div>
-
-                    {
-                        // data.heldItemIDs.length > 0 && <HeldItems itemIDs={data.heldItemIDs} />
-                    }
+                    <div className="w-full flex flex-col bg-white/75 mt-4 border-y sm:border-x shadow-lg" style={{ borderColor: palette[1] }}>
+                        <Moves moves={data.moves} />
+                    </div>
                 </div>
                 <BugReporting name={data.name} species={data.species} />
             </div>
@@ -83,7 +88,6 @@ const Display: React.FC<{ data: PokemonData; palette: string[] }> = ({ data, pal
 }
 
 // type PokemonCard = {
-//     abilities: string[];
 //     mainSprites: {
 //         icon: string;
 //     };
@@ -99,13 +103,4 @@ const Display: React.FC<{ data: PokemonData; palette: string[] }> = ({ data, pal
 //     encounters: {
 //         palPark: PalParkEncounter[];
 //     }
-//     heldItemIDs: string[];
-//     moves: {
-//         [name: string]: {
-//             [method: string]: string[];
-//         }
-//     };
 // }
-
-
-

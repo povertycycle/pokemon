@@ -52,7 +52,7 @@ const TypeFilter: React.FC<{ filterByType: (type: string) => void }> = ({ filter
     return (
         <Dropdown
             Toggle={
-                <button className={`${!!!type ? "sm:hover:brightness-90" : ""} transition-[filter] text-[1rem] sm:text-[1.125rem] text-white h-full pl-2 sm:pl-4 pr-2 flex gap-2 sm:gap-6 items-center rounded-[4px]`} style={{ background: color, color: isDark(color) ? "white" : "black" }}>
+                <button className={`${!!!type ? "sm:hover:brightness-90" : ""} h-[32px] transition-[filter] text-[1rem] sm:text-[1.125rem] sm:leading-5 text-white pl-2 sm:pl-4 pr-2 flex gap-2 sm:gap-6 items-center rounded-[4px]`} style={{ background: color, color: isDark(color) ? "white" : "black" }}>
                     {
                         !!type ?
                             <span>{type?.toUpperCase()}</span> :

@@ -1,38 +1,8 @@
-import { BASE_API_URL_ITEM, GITHUB_ITEM_PATH } from "@/common/constants/urls";
-import { updateValidator } from "./main-db";
 import { Stores } from "@/common/constants/enums";
 import { POKEMON_DB } from "@/common/constants/main";
-import { doBatchProcess } from "./_utils";
+import { ItemData, ItemDataMini } from "@/common/interfaces/item";
 import { trimUrl } from "@/common/utils/string";
-
-export async function validateItemDatabase(): Promise<string | null> {
-    return fetch(BASE_API_URL_ITEM).then(res => {
-        if (!res.ok) throw new Error("Error fetching data from API");
-        return res.json();
-    }).then(res => {
-        if (res) {
-            return fetch(`${BASE_API_URL_ITEM}?offset=0&limit=${res.count}`);
-        } else {
-            throw new Error("Failed to update local database");
-        }
-    }).then(res => {
-        if (!res.ok) throw new Error("Error fetching data from API");
-        return res.json();
-    }).then(res => {
-        return updateItemDatabase(res);
-    }).then(res => {
-        if (res <= 0) throw new Error("API data format error");
-        return updateValidator(res, Stores.Items);
-    })
-}
-
-
-type PokeAPIResponse = {
-    count: number,
-    next: string,
-    previous: string,
-    results: { name: string, url: string }[]
-}
+import { PokeAPIResponse } from "./_utils";
 
 export async function updateItemDatabase(items: PokeAPIResponse): Promise<number> {
     return new Promise(result => {
@@ -42,7 +12,7 @@ export async function updateItemDatabase(items: PokeAPIResponse): Promise<number
             const insertTx = request.result.transaction(Stores.Items, 'readwrite');
             const insert = insertTx.objectStore(Stores.Items);
             items.results.forEach(item => {
-                insert.put({ name: item.name, sprite: `${GITHUB_ITEM_PATH}/${item.name}` }, trimUrl(item.url))
+                insert.put({ name: item.name }, trimUrl(item.url))
             })
 
             insertTx.oncomplete = () => {
@@ -52,6 +22,22 @@ export async function updateItemDatabase(items: PokeAPIResponse): Promise<number
     })
 }
 
+export async function getItemSprite(id: string): Promise<ItemDataMini | null> {
+    return new Promise(resolve => {
+        const request = indexedDB.open(POKEMON_DB);
+
+        request.onsuccess = () => {
+            const itemTx = request.result.transaction(Stores.Items, 'readonly').objectStore(Stores.Items).get(id);
+            itemTx.onsuccess = () => {
+                const data = itemTx.result as ItemData;
+                resolve({ name: data.name });
+            }
+            itemTx.onerror = () => {
+                resolve(null);
+            }
+        }
+    })
+}
 
 // function generateItemData(data: any) {
 //     let n = data.names.map((n: any) => ({ name: n.name, language: n.language.name }));

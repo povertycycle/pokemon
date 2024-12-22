@@ -4,6 +4,13 @@ import { MAX_REQUEST_AT_ONCE } from "../common/constants/main";
 import { PokeAPIDataMini } from "@/common/interfaces/_external";
 import { lodashChunk } from "@/common/utils/arrays";
 
+export type PokeAPIResponse = {
+    count: number,
+    next: string,
+    previous: string,
+    results: { name: string, url: string }[]
+}
+
 function addProgress(add: boolean) {
     let elem = document.getElementById(POKEMON_FETCH_BAR_ID)?.children;
     if (add) {

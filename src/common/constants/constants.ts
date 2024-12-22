@@ -4,6 +4,7 @@ export const GITHUB = "https://github.com/povertycycle";
 export const GAMES: Record<string, string[] | undefined> = {
     "red-blue": ["red", "blue"],
     "yellow": ["yellow"],
+    "gold-silver": ["gold", "silver"],
     "gold": ["gold"],
     "silver": ["silver"],
     "crystal": ["crystal"],
@@ -18,6 +19,7 @@ export const GAMES: Record<string, string[] | undefined> = {
     "xd": ["xd"],
     "black-2-white-2": ["black-2", "white-2"],
     "x-y": ["x", "y"],
+    "omega-ruby-alpha-sapphire": ["omegaruby", "alphasapphire"],
     "omegaruby-alphasapphire": ["omegaruby", "alphasapphire"],
     "sun-moon": ["sun", "moon"],
     "ultra-sun-ultra-moon": ["ultra-sun", "ultra-moon"],

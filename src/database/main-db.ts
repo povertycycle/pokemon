@@ -1,11 +1,13 @@
 import { STORE_KEYS, Stores } from "@/common/constants/enums";
 import { POKEMON_DB } from "@/common/constants/main";
-import { validatePokemonDatabase } from "./pokemon-db";
-import { validateItemDatabase } from "./items-db";
-
+import { BASE_API_URL_ITEM, BASE_API_URL_MOVES, BASE_API_URL_POKEMON } from "@/common/constants/urls";
+import { PokeAPIResponse } from "./_utils";
+import { updateItemDatabase } from "./items-db";
+import { updateMoveDatabase } from "./move-db";
+import { updatePokemonDatabase } from "./pokemon-db";
 
 export const initDB = (): Promise<boolean> => {
-    const version = 7;
+    const version = 8;
 
     return new Promise(res => {
         const request = indexedDB.open(POKEMON_DB, version);
@@ -34,11 +36,28 @@ export const initDB = (): Promise<boolean> => {
     })
 };
 
-function validateStore(store: Stores): Promise<string | null> {
-    const STORE_VALIDATORS: Record<string, () => Promise<string | null>> = {
-        [Stores.Pokemon]: validatePokemonDatabase,
-        [Stores.Items]: validateItemDatabase,
-    }
+async function validateDatabase(url: string, updater: (res: PokeAPIResponse) => Promise<number>, store: Stores): Promise<string | null> {
+    return fetch(url).then(res => {
+        if (!res.ok) throw new Error("Error fetching data from API");
+        return res.json();
+    }).then(res => {
+        if (res) {
+            return fetch(`${url}?offset=0&limit=${res.count}`);
+        } else {
+            throw new Error("Failed to update local database");
+        }
+    }).then(res => {
+        if (!res.ok) throw new Error("Error fetching data from API");
+        return res.json();
+    }).then(res => {
+        return updater(res);
+    }).then(res => {
+        if (res <= 0) throw new Error("API data format error");
+        return updateValidator(res, store);
+    })
+}
+
+function validateStore(store: Stores, url: string, updater: (res: PokeAPIResponse) => Promise<number>): Promise<string | null> {
     return new Promise((res, rej) => {
         const request = indexedDB.open(POKEMON_DB);
 
@@ -50,7 +69,7 @@ function validateStore(store: Stores): Promise<string | null> {
                 const data = db.transaction(store, 'readonly').objectStore(store).getAllKeys();
                 data.onsuccess = () => {
                     if (data.result.length !== valdiation.result?.count) {
-                        res(STORE_VALIDATORS[store] ? STORE_VALIDATORS[store]() : "Invalid Store");
+                        res(validateDatabase(url, updater, store));
                     } else {
                         res(null);
                     }
@@ -72,9 +91,10 @@ function validateStore(store: Stores): Promise<string | null> {
 export async function validateGameDatabase(): Promise<string | null> {
     return Promise.all(
         [
-            Stores.Pokemon,
-            Stores.Items,
-        ].map(store => validateStore(store))
+            { store: Stores.Pokemon, url: BASE_API_URL_POKEMON, updater: updatePokemonDatabase },
+            { store: Stores.Items, url: BASE_API_URL_ITEM, updater: updateItemDatabase },
+            { store: Stores.Moves, url: BASE_API_URL_MOVES, updater: updateMoveDatabase }
+        ].map(data => validateStore(data.store, data.url, data.updater))
     ).then(res => {
         return res.find(r => !!r) ?? null;
     })

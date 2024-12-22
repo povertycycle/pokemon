@@ -50,8 +50,8 @@ const Effectiveness: React.FC<EffectivenessProps> = ({ types }) => {
 
     return (
         <div className={`flex flex-col w-full`}>
-            <div className="pl-4 py-1 pr-8 text-[1rem] sm:text-[1.125rem] w-fit sm:w-1/2 whitespace-nowrap font-semibold flex border-b tracking-[1px]" style={{ borderColor: palette[1] }}>Type Effectiveness</div>
-            <div className="max-sm:mt-3 w-full flex flex-col p-2 sm:p-3 gap-2">
+            <div className="section__header--default" style={{ borderColor: palette[1] }}>Type Effectiveness</div>
+            <div className="max-sm:mt-1 w-full flex flex-col p-2 sm:p-3 gap-2">
                 {
                     ORDER.filter(o => Object.keys(effectiveness).includes(o)).map((order, i) => {
                         const _dat = EFFECTIVENESS_DATA[order];
@@ -78,13 +78,13 @@ const Types: React.FC<{ types: string[]; allowHide: boolean }> = ({ types, allow
             {
                 expand &&
                 types.map((type, i) => (
-                    <div key={i} className={`px-4 rounded-full flex items-center justify-center`} style={{ background: TYPE_COLORS[type] }}>
-                        <span className="drop-shadow-[0_0_2px_black]">{type.toUpperCase()}</span>
+                    <div key={i} className={`px-4 rounded-full flex items-center justify-center`} style={{ background: `${TYPE_COLORS[type]}` }}>
+                        <span className="drop-shadow-[0_0_1px_black]">{type.toUpperCase()}</span>
                     </div>
                 ))
             }
             {
-                allowHide && <div className="sm:hover:bg-base-white-dark/50 w-full text-center px-4 text-black bg-base-white-soft rounded-full cursor-pointer" onClick={() => { setExpand(prev => !prev); }}>{!expand ? "EXPAND" : "COLLAPSE"}</div>
+                allowHide && <div className="sm:hover:bg-base-white-dark/50 text-center px-8 text-black bg-base-white-dark/50 rounded-full cursor-pointer" onClick={() => { setExpand(prev => !prev); }}>{!expand ? "EXPAND" : "COLLAPSE"}</div>
             }
         </div>
     )

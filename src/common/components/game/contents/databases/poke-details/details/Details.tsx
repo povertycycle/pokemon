@@ -12,7 +12,7 @@ const Details: React.FC<DetailsProps> = ({ metaData }) => {
 
     return (
         <div className="flex flex-col h-full">
-            <div className="pl-4 py-1 pr-8 whitespace-nowrap text-[1rem] sm:text-[1.125rem] w-fit font-semibold flex border-b tracking-[1px]" style={{ borderColor: palette[1] }}>Species Information</div>
+            <div className="section__header--default" style={{ borderColor: palette[1] }}>Species Information</div>
             <div className="w-full flex flex-col h-full">
                 {
                     [
@@ -61,10 +61,10 @@ const Details: React.FC<DetailsProps> = ({ metaData }) => {
                                 const female = `${(metaData.details?.genderRate ?? 0) / 8 * 100}%`;
                                 return (
                                     <div className="w-full h-full flex sm:py-1">
-                                        <div title={male} tabIndex={0} className="group/gender bg-[#6fa8dc] gap-2 flex items-center justify-center relative" style={{ width: male }}>
+                                        <div title={male} tabIndex={0} className="group/gender bg-[#6fa8dc] gap-2 flex items-center justify-center relative rounded-l-[4px]" style={{ width: male }}>
                                             <i className="ri-men-line" /> <span className="max-sm:group-focus/gender:flex hidden">{male}</span>
                                         </div>
-                                        <div title={female} tabIndex={1} className="group/gender bg-[#d5a6bd] gap-2 flex items-center justify-center relative" style={{ width: female }}>
+                                        <div title={female} tabIndex={1} className="group/gender bg-[#d5a6bd] gap-2 flex items-center justify-center relative rounded-r-[4px]" style={{ width: female }}>
                                             <i className="ri-women-line" /> <span className="max-sm:group-focus/gender:flex hidden">{female}</span>
                                         </div>
                                     </div>

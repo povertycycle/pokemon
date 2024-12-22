@@ -29,6 +29,7 @@ const config: Config = {
             transitionProperty: {
                 'height': 'height',
                 'width': 'width',
+                'max-height': 'max-height',
             },
             transitionDuration: {
                 '400': '400ms',

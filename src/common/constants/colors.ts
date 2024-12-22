@@ -31,3 +31,9 @@ export const TYPE_COLORS: Record<string, string> = {
     psychic: "#EF4179",
     water: "#2980EF",
 }
+
+export const CATEGORY_COLORS: Record<string, string> = {
+    "physical": "#EB5628",
+    "special": "#375AB2",
+    "status": "#828282"
+}

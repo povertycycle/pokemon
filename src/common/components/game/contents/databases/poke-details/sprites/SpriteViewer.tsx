@@ -1,9 +1,8 @@
 import { Sprites } from "@/common/interfaces/pokemon";
 import Image from "next/image";
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import ExtraSprites from "./ExtraSprites";
 import Sound from "./Sound";
-import { PaletteContext } from "../_utils";
 
 type SpriteViewerProps = {
     defaultSprite: string;

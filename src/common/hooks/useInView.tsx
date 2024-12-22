@@ -17,7 +17,7 @@ const useInView = ({ onIntoView, once }: { onIntoView: Function, once?: boolean 
         }
 
         return () => { observer.disconnect(); };
-    }, [ref]);
+    }, []);
 
     return { ref };
 }

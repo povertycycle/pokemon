@@ -5,6 +5,8 @@ import Image from "next/image";
 import React, { useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { PaletteContext } from "../_utils";
+import { formatVersionName } from "@/common/utils/string";
+import { getVersionColors } from "@/common/utils/colors";
 
 type ExtraSpritesProps = {
     sprites: Sprites[];
@@ -20,7 +22,7 @@ const ExtraSprites: React.FC<ExtraSpritesProps> = ({ sprites }) => {
 
     return (
         <>
-            <div onClick={() => { setShow(true) }} className="h-[32px] w-[32px] rounded-full flex items-center justify-center sm:hover:-translate-y-1 transition-transform cursor-pointer" style={{ background: palette[1], color: text[1] }}>
+            <div onClick={() => { setShow(true) }} className="h-[32px] w-[32px] rounded-full flex items-center justify-center sm:hover:scale-105 cursor-pointer" style={{ background: palette[1], color: text[1] }}>
                 <i className="ri-gallery-line text-[1.125rem]" />
             </div>
             {
@@ -53,7 +55,7 @@ const Display: React.FC<{ sprites: Sprites[]; close: () => void }> = ({ sprites,
                     <div className="grid grid-cols-3 sm:grid-cols-6 auto-rows-max w-full h-0 grow gap-3 sm:gap-6 form__scrollbar--custom overflow-y-auto max-sm:px-4 sm:pr-4">
                         {
                             sprites.map(({ game, url }, i) => (
-                                <Sprite key={i} game={game} url={url} />
+                                <Sprite key={i} version={game} url={url} />
                             ))
                         }
                     </div>
@@ -63,22 +65,23 @@ const Display: React.FC<{ sprites: Sprites[]; close: () => void }> = ({ sprites,
     )
 }
 
-const Sprite: React.FC<{ game: string; url: string | null }> = ({ game, url }) => {
+const Sprite: React.FC<{ version: string; url: string | null }> = ({ version, url }) => {
     const { palette } = useContext(PaletteContext);
-    const title = (GAMES[game] ?? [game]).map(t => VERSION_DATA[t]?.title ?? `Gen ${t.split("-")[1].toUpperCase()} Icon`).join(" ");
-    const background = `linear-gradient(45deg,${(GAMES[game] ?? VERSION_GROUP_GAMES[game]).reduce((acc, g) => { return [...acc, ...VERSION_DATA[g].colors] }, [] as string[]).join(",")})`
+    const title = formatVersionName(version).join(" ");
+    const versionColors = getVersionColors(version);
+    const background = versionColors.length > 1 ? `linear-gradient(45deg,${versionColors.join("40,")}40)` : `${versionColors[0]}40`
 
     return (
         <div title={title} className="w-full flex flex-col rounded-[8px] overflow-hidden text-center shrink-0 border" style={{ background: `${palette[1]}1a`, borderColor: palette[1] }}>
             <div className="w-full flex items-center justify-center relative aspect-square group/image p-3">
                 {
                     !!url ?
-                        <Image width={64} height={64} src={url} alt="" className="w-full aspect-square object-contain" /> :
+                        <Image width={64} height={64} src={url} alt="" className="w-full aspect-square object-contain rounded-[6px] overflow-hidden" /> :
                         <span className="text-base-red-dark text-[1.25rem]">Missing Image</span>
                 }
             </div>
             <div className="w-full text-[0.75rem] sm:text-[1rem] flex items-center justify-center sm:leading-5 border-t" style={{ background, borderColor: palette[1] }}>
-                <div className="truncate px-2 py-1 w-full bg-white/55">
+                <div className="truncate px-2 py-1 w-full">
                     {title}
                 </div>
             </div>

@@ -3,7 +3,7 @@ import { AbilityCard } from "@/common/interfaces/ability";
 import { capitalize } from "@/common/utils/string";
 import { getAbilityData } from "@/database/abilities-db";
 import Image from "next/image";
-import { useContext, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import { PaletteContext } from "../_utils";
 import { SENTENCES_REGEX } from "@/common/constants/regex";
 import Typewriter from "@/common/components/_utils/Typewriter";
@@ -21,10 +21,10 @@ const Abilities: React.FC<AbilitiesProps> = ({ abilities, pokeId }) => {
         <>
             {
                 abilities.map((ability, i) => (
-                    <>
+                    <Fragment key={ability}>
                         {i !== 0 && <div className="w-0 border-r h-full" style={{ borderColor: palette[1] }} />}
-                        <Data ability={ability} key={ability} pokeId={pokeId} />
-                    </>
+                        <Data ability={ability} pokeId={pokeId} />
+                    </Fragment>
                 ))
             }
         </>
@@ -45,10 +45,12 @@ const Data: React.FC<{ ability: string; pokeId: number; }> = ({ ability, pokeId 
     })
 
     return (
-        <div ref={ref} className="w-full h-full flex flex-col justify-between">
+        <div ref={ref} className="w-full h-full flex flex-col items-center justify-between">
             {
                 data === undefined ?
-                    <Spinner /> :
+                    <div className="my-4">
+                        <Spinner />
+                    </div> :
                     (
                         !!data ?
                             <Ability data={data} name={capitalize(ability)} /> :
@@ -72,7 +74,7 @@ const Ability: React.FC<{ data: AbilityCard; name: string }> = ({ data, name }) 
                     {name}
                 </div>
                 <div className="px-4 grow font-vcr-mono py-4 sm:py-6 w-full italic tracking-wider text-[0.875rem] sm:text-[1rem] leading-5 text-center" style={{ background: `${palette[1]}1a` }}>{"\u201C"}{data.flavorText}{"\u201D"}</div>
-                <ul className="list-disc px-6 sm:px-8 my-3 flex flex-col">
+                <ul className="list-disc px-6 sm:px-8 my-3 flex flex-col text-[0.875rem] sm:text-[1rem]">
                     {
                         data.effectEntry?.match(SENTENCES_REGEX)?.map(((t: string, i: number) => (
                             <li key={i}>

@@ -11,7 +11,7 @@ const Stats: React.FC<StatsProps> = ({ stats }) => {
     const { palette } = useContext(PaletteContext);
     return (
         <>
-            <div className="pl-4 py-1 pr-8 text-[1rem] sm:text-[1.125rem] w-1/2 font-semibold flex border-b tracking-[1px]" style={{ borderColor: palette[1] }}>Stats</div>
+            <div className="section__header--default" style={{ borderColor: palette[1] }}>Stats</div>
             <div className="w-full flex flex-col gap-1">
                 <div className={`grid grid-cols-[72px_auto_36px_36px] py-[2px] font-medium sm:py-1 px-2 sm:px-3 sm:grid-cols-[128px_auto_64px_48px] w-full text-[0.875rem] sm:text-[1rem]`} style={{ background: `${palette[1]}1a` }}>
                     <span>Name</span>
@@ -67,11 +67,11 @@ const Stat: React.FC<{ tag: string; properties: Properties; data: { baseStat: nu
     const MIN_STAT = calculateStats(data.baseStat, 0, 0, tag === "hp" ? undefined : 0.9);
     const MAX_STAT = calculateStats(data.baseStat, 31, 252, tag === "hp" ? undefined : 1.1);
     return (
-        <div className="grid grid-cols-[72px_36px_auto_36px_36px] sm:grid-cols-[128px_48px_auto_64px_48px] sm:py-[2px] px-2 sm:px-3 w-full text-[0.875rem] sm:text-[1rem] grow">
+        <div className="grid grid-cols-[72px_36px_auto_36px_36px] sm:grid-cols-[128px_48px_auto_64px_48px] sm:py-[2px] px-2 sm:px-3 w-full text-[0.875rem] sm:text-[1rem] grow items-center">
             <span className="font-medium">{properties.tag}</span>
             <span>{data.baseStat}</span>
-            <div className="h-full w-full bg-black/10">
-                <div className="h-full" style={{ width: `${Math.round((data.baseStat / 255) * 1000) / 10}%`, background: properties.color }} />
+            <div className="h-[12px] w-full bg-black/10 rounded-full overflow-hidden">
+                <div className="h-full rounded-r-full" style={{ width: `${Math.round((data.baseStat / 255) * 1000) / 10}%`, background: properties.color }} />
             </div>
             <span className="text-center">{MIN_STAT}</span>
             <span className="text-center">{MAX_STAT}</span>
