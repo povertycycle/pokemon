@@ -3,7 +3,7 @@ import { ItemData } from "./constants";
 import Empty from "../databases/poke-card/Empty";
 import Display from "./Display";
 import styles from "@/common/styles/transitions.module.scss";
-import Loading from "@/common/components/_utils/Loading";
+import Loading from "@/common/components/_utils/loading/Loading";
 
 const ItemsDatabase: React.FC = () => {
     const [items, setItems] = useState<ItemData[] | null | undefined>();
@@ -15,7 +15,7 @@ const ItemsDatabase: React.FC = () => {
     }, [])
 
     return (
-        <div className={`absolute z-[0] w-full h-full overflow-hidden flex items-center justify-center top-0 ${styles.fadeIn}`}>
+        <div className={`absolute z-0 w-full h-full overflow-hidden flex items-center justify-center top-0 ${styles.fadeIn}`}>
             {
                 items === undefined ?
                     <Loading /> :

@@ -1,12 +1,12 @@
-import { cacheIsAllowed } from "@/common/components/home/cache/utils";
 import { Stores } from "@/common/constants/enums";
 import { POKEMON_DB } from "@/common/constants/main";
 import { BASE_API_URL_POKEMON, BASE_API_URL_SPECIES } from "@/common/constants/urls";
-import { PokeAPIData, PokeAPIDataMini, PokeAPISpecies } from "@/common/interfaces/_external";
 import { PokemonCard, PokemonData, PokemonDetails, Sprites, Stats } from "@/common/interfaces/pokemon";
 import { errorCheck } from "@/common/utils/errorCheck";
 import { trimUrl } from "@/common/utils/string";
 import { doBatchProcess, PokeAPIResponse } from "./_utils";
+import { PokeAPIData, PokeAPIDataMini } from "@/common/interfaces/_externals/pokemon";
+import { PokeAPISpecies } from "@/common/interfaces/_externals/species";
 
 export async function updatePokemonDatabase(pokemon: PokeAPIResponse): Promise<number> {
     return new Promise(result => {
@@ -83,6 +83,29 @@ export async function getAllPokemons(): Promise<PokemonCard[] | null> {
 
             pokemonList.onerror = () => {
                 res(null);
+            }
+        }
+    })
+}
+
+export async function getPokemonCard(id: string): Promise<PokemonCard> {
+    return new Promise((result, reject) => {
+        const request = indexedDB.open(POKEMON_DB);
+
+        request.onsuccess = () => {
+            let db: IDBDatabase = request.result;
+            const mainRequest = db.transaction(Stores.Pokemon, 'readonly').objectStore(Stores.Pokemon).get(id);
+            mainRequest.onsuccess = () => {
+                const mainData = mainRequest.result as PokemonCard;
+                if (!!!mainData) {
+                    reject("Missing initial pokemon data. Please contact developer.");
+                } else {
+                    result(mainData);
+                }
+            }
+
+            mainRequest.onerror = (e: any) => {
+                reject(e);
             }
         }
     })

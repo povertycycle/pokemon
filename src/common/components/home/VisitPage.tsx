@@ -4,7 +4,7 @@ const VisitPage: React.FC = () => {
     const PROFILE = "https://povertycycle.github.io/povertycycle/";
 
     return (
-        <Link href={PROFILE} target="_blank" className={`bottom-0 rounded-tr-[6px] left-0 z-[5] sm:max-w-[36px] sm:hover:max-w-[296px] transtiion-[max-width] bg-base-red-dark text-base-white absolute overflow-hidden flex duration-400`}>
+        <Link href={PROFILE} target="_blank" className={`bottom-0 rounded-tr-[6px] left-0 z-10 sm:max-w-[36px] sm:hover:max-w-[296px] transtiion-[max-width] bg-base-red-dark text-base-white absolute overflow-hidden flex duration-400`}>
             <div className="h-full aspect-square flex items-center justify-center text-[1.25rem] sm:text-[2rem] leading-6">
                 <i className="ri-corner-up-left-fill" />
             </div>

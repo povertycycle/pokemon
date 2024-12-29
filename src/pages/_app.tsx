@@ -1,4 +1,4 @@
-import Loading from "@/common/components/_utils/Loading";
+import Loading from "@/common/components/_utils/loading/Loading";
 import Unavailable from "@/common/components/Unavailable";
 import { useBuildIDB } from "@/common/hooks/useBuildIDB";
 import "@/common/styles/global.scss";

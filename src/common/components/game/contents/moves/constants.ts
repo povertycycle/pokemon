@@ -1,6 +1,4 @@
-export const TABLE_ID = "pRytwigknzsmke5byTN7wNFDVt3e7WAz";
-type BaseData =  {[key:string]:string}
-export const TARGET_DATA: BaseData = {
+export const TARGET_DATA: Record<string, string> = {
     "specific-move": "One specific move.  How this move is chosen depends upon on the move being used.",
     "selected-pokemon-me-first": "One other Pokémon on the field, selected by the trainer.  Stolen moves reuse the same target.",
     "ally": "The user's ally (if any).",

@@ -139,7 +139,15 @@ export const VERSION_DATA: Record<string, { title: string; colors: string[] }> =
         title: "Omega Ruby",
         colors: ["#ffcf53", "#ac3e1a"],
     },
+    "omega-ruby": {
+        title: "Omega Ruby",
+        colors: ["#ffcf53", "#ac3e1a"],
+    },
     "alphasapphire": {
+        title: "Alpha Sapphire",
+        colors: ["#0646a8", "#0becf9"],
+    },
+    "alpha-sapphire": {
         title: "Alpha Sapphire",
         colors: ["#0646a8", "#0becf9"],
     },

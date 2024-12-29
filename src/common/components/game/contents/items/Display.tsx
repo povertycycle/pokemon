@@ -6,7 +6,6 @@ import table from "@/common/styles/table.module.scss";
 import Details from "./details/Details";
 import HeadFilter from "./navigation/HeadFilter";
 import Image from "next/image";
-import GenFilter from "../_utils/GenFilter";
 import { standardize } from "@/common/utils/normalize";
 
 type DisplayProps = {
@@ -74,14 +73,14 @@ const Navigation = memo(({ items, setItem }: NavigationProps) => {
 
     return (
         <div className="w-[80%] h-full pl-12 pr-4 pt-12 pb-4 flex flex-col bg-base-white">
-            <div className="w-full flex justify-between z-[2] pr-[28px]">
+            <div className="w-full flex justify-between z-2 pr-[28px]">
                 {/* <Searchbar search={search} /> */}
-                <GenFilter filter={filterGen} />
+                {/* <GenFilter filter={filterGen} /> */}
             </div>
             <div className={`mt-2 h-full w-full overflow-y-scroll flex justify-end pr-4 ${styles.overflowPurple}`}>
                 <table className="border-separate w-full h-fit">
                     <HeadFilter listId={ITEMLIST_ID} filterCategory={filterCategory} filterPocket={filterPocket} />
-                    <tbody id={ITEMLIST_ID} className={`z-[0] [&>tr]:bg-white/75 ${table.long_table_body}`}>
+                    <tbody id={ITEMLIST_ID} className={`z-0 [&>tr]:bg-white/75 ${table.long_table_body}`}>
                         {
                             items.sort((a, b) => (a.name > b.name ? 1 : -1)).map((data: ItemData, i: number) => (
                                 <tr key={i} data-gen={data?.games?.map(g => g.split("-").map(s => s.charAt(0)).join("")).join(";") ?? ""}

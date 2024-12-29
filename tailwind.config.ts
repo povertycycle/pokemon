@@ -30,10 +30,16 @@ const config: Config = {
                 'height': 'height',
                 'width': 'width',
                 'max-height': 'max-height',
+                'max-width': 'max-width'
             },
             transitionDuration: {
                 '400': '400ms',
                 '800': '800ms',
+            },
+            zIndex: {
+                '1': '1',
+                '2': '2',
+                'max': '1000',
             }
         },
     },

@@ -28,11 +28,11 @@ const HeadCellFilter: React.FC<{ listId: string, id: string, type: Filter, filte
 
     return (
         <th className="relative" style={{ background: active ? "#4b0478" : "", color: active ? "#f0f0f0" : "#4b0478" }}>
-            <span className={`relative z-[1] whitespace-nowrap flex gap-2 ${active ? "text-base-white" : "text-x-dark"}`}>
+            <span className={`relative z-1 whitespace-nowrap flex gap-2 ${active ? "text-base-white" : "text-x-dark"}`}>
                 {active ?? capitalize(type)}
                 {active && <i onClick={() => { doFilter(null) }} className="ri-close-line cursor-pointer hover:text-base-white-dark" />}
             </span>
-            {/* <div ref={ref} className="z-[0] left-0 absolute w-full flex justify-end top-[50%] translate-y-[-50%] pr-1">
+            {/* <div ref={ref} className="z-0 left-0 absolute w-full flex justify-end top-[50%] translate-y-[-50%] pr-1">
                 <i onClick={toggle} className="ri-arrow-down-s-fill hover:text-base-white-dark cursor-pointer text-[1.5rem]" />
                 {
                     <div className={`${menu ? "h-[256px]" : "h-0"} top-full min-w-[256px] absolute left-[50%] translate-x-[-50%] mt-4 transition-height overflow-hidden`}>

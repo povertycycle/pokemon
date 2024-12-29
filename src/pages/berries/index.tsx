@@ -1,3 +1,4 @@
+import Loading from '@/common/components/_utils/loading/SuspenseLoad';
 import { TAB_COLORS } from '@/common/constants/colors';
 import { Tab } from '@/common/constants/enums';
 import { Suspense } from 'react';
@@ -11,13 +12,5 @@ export default function Page() {
                 <span className="text-[1.25rem] sm:text-[1.5rem] md:text-[2rem]" style={{ color: TAB_COLORS[Tab.Berries] }}>Please come back later</span>
             </div>
         </Suspense>
-    )
-}
-
-const Loading: React.FC = () => {
-    return (
-        <div className="absolute bg-black z-[100] w-screen h-screen">
-            Please wait . . .
-        </div>
     )
 }

@@ -1,13 +1,13 @@
+import Typewriter from "@/common/components/_utils/Typewriter";
+import { SENTENCES_REGEX } from "@/common/constants/regex";
 import { useInView } from "@/common/hooks/useInView";
 import { AbilityCard } from "@/common/interfaces/ability";
 import { capitalize } from "@/common/utils/string";
 import { getAbilityData } from "@/database/abilities-db";
-import Image from "next/image";
 import { Fragment, useContext, useState } from "react";
 import { PaletteContext } from "../_utils";
-import { SENTENCES_REGEX } from "@/common/constants/regex";
-import Typewriter from "@/common/components/_utils/Typewriter";
-import Spinner from "../../../_utils/Spinner";
+import Spinner from "@/common/components/_utils/loading/Spinner";
+import { Bookmark, BOOKMARK_DATA } from "../../bookmarks/_utils";
 
 type AbilitiesProps = {
     abilities: string[];
@@ -16,17 +16,20 @@ type AbilitiesProps = {
 
 const Abilities: React.FC<AbilitiesProps> = ({ abilities, pokeId }) => {
     const { palette } = useContext(PaletteContext);
+    const { id, icon } = BOOKMARK_DATA[Bookmark.Abilities];
 
     return (
         <>
-            {
-                abilities.map((ability, i) => (
-                    <Fragment key={ability}>
-                        {i !== 0 && <div className="w-0 border-r h-full" style={{ borderColor: palette[1] }} />}
-                        <Data ability={ability} pokeId={pokeId} />
-                    </Fragment>
-                ))
-            }
+            <div id={id} className="border-0 section__header--default items-center gap-3"><i className={`${icon} text-[1.25rem] leading-4`} style={{ color: palette[1] }} /> Abilities</div>
+            <div className="w-full flex max-sm:flex-col">
+                {
+                    abilities.map((ability, i) => (
+                        <Fragment key={ability}>
+                            <Data ability={ability} pokeId={pokeId} />
+                        </Fragment>
+                    ))
+                }
+            </div>
         </>
     )
 }
@@ -34,6 +37,7 @@ const Abilities: React.FC<AbilitiesProps> = ({ abilities, pokeId }) => {
 export default Abilities;
 
 const Data: React.FC<{ ability: string; pokeId: number; }> = ({ ability, pokeId }) => {
+    const { palette } = useContext(PaletteContext);
     const [data, setData] = useState<AbilityCard | null>();
     const { ref } = useInView({
         onIntoView: () => {
@@ -41,11 +45,10 @@ const Data: React.FC<{ ability: string; pokeId: number; }> = ({ ability, pokeId 
                 setData(res);
             })
         },
-        once: true
     })
 
     return (
-        <div ref={ref} className="w-full h-full flex flex-col items-center justify-between">
+        <div ref={ref} className="w-full h-full flex flex-col items-center justify-between sm:[&:not(:first-child)]:border-l" style={{ borderColor: `${palette[1]}80` }}>
             {
                 data === undefined ?
                     <div className="my-4">
@@ -69,12 +72,12 @@ const Ability: React.FC<{ data: AbilityCard; name: string }> = ({ data, name }) 
 
     return (
         <>
-            <div className="w-full grid grid-flow-row auto-rows-auto">
+            <div className="w-full grid grid-flow-row auto-rows-auto text-[0.875rem] sm:text-[1rem]">
                 <div className="py-2 text-center w-full text-[1.125rem] sm:text-[1.25rem] font-medium" style={{ background: palette[1], color: text[1] }}>
                     {name}
                 </div>
-                <div className="px-4 grow font-vcr-mono py-4 sm:py-6 w-full italic tracking-wider text-[0.875rem] sm:text-[1rem] leading-5 text-center" style={{ background: `${palette[1]}1a` }}>{"\u201C"}{data.flavorText}{"\u201D"}</div>
-                <ul className="list-disc px-6 sm:px-8 my-3 flex flex-col text-[0.875rem] sm:text-[1rem]">
+                <div className="px-4 grow font-vcr-mono py-4 sm:py-6 w-full italic tracking-wider leading-5 text-center" style={{ background: `${palette[1]}1a` }}>{"\u201C"}{data.flavorText}{"\u201D"}</div>
+                <ul className="list-disc px-6 sm:px-8 my-3 flex flex-col">
                     {
                         data.effectEntry?.match(SENTENCES_REGEX)?.map(((t: string, i: number) => (
                             <li key={i}>

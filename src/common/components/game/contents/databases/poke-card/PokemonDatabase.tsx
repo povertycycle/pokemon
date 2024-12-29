@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Empty from "./Empty";
 import Display from "./Display";
 import styles from "@/common/styles/transitions.module.scss";
-import Loading from "@/common/components/_utils/Loading";
+import Loading from "@/common/components/_utils/loading/Loading";
 import { PokemonCard } from "@/common/interfaces/pokemon";
 import { getAllPokemons } from "@/database/pokemon-db";
 import { DatabaseDisplayProps } from "../_utils";

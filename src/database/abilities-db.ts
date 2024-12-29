@@ -1,8 +1,7 @@
-import { cacheIsAllowed } from "@/common/components/home/cache/utils";
 import { Stores } from "@/common/constants/enums";
 import { POKEMON_DB } from "@/common/constants/main";
 import { BASE_API_URL_ABILITY } from "@/common/constants/urls";
-import { PokeAPIAbilityData } from "@/common/interfaces/_external";
+import { PokeAPIAbilityData } from "@/common/interfaces/_externals/ability";
 import { AbilityCard, AbilityData, AbilityDataMini } from "@/common/interfaces/ability";
 import { errorCheck } from "@/common/utils/errorCheck";
 import { trimUrl } from "@/common/utils/string";

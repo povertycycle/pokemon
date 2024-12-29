@@ -1,18 +1,12 @@
 import { capitalize } from "@/common/utils/string"
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import { fetchEvolutionChain } from "../../../database/evolutionDB"
-import { getVariants } from "../../../database/speciesDB"
-import Typewriter from "../../../../_utils/Typewriter"
-import ImageSprites from "../../_utils/ImageSprites"
-import { CATEGORIES, ItemData } from "../constants"
 import { ATTRIBUTES, FLING_EFFECT, LANGUAGES } from "./constants"
 import { PokeDollars } from "../../_utils/PokeDollars"
-import { getGameName } from "../../pokemon/details/_utils/getGameName";
 import styles from "@/common/styles/custom.module.scss";
 
 type DetailsProps = {
-    item: ItemData | null
+    item: any;
 }
 
 const Details: React.FC<DetailsProps> = ({ item }) => {
@@ -25,7 +19,7 @@ const Details: React.FC<DetailsProps> = ({ item }) => {
                     </div> :
                     <div className="flex flex-col w-full gap-1 h-full">
                         <div className="w-full py-[6px] flex items-center justify-center text-center bg-base-white text-[1.25rem]">
-                            <Typewriter text={item.names?.find(n => n.language === "en")?.name ?? capitalize(item.name)} duration={500} />
+                            {/* <Typewriter text={item.names?.find(n => n.language === "en")?.name ?? capitalize(item.name)} duration={500} /> */}
                         </div>
                         <div className="flex gap-1">
                             <div className="w-[96px] h-[96px] p-4 flex items-center justify-center bg-base-white shrink-0">
@@ -36,8 +30,8 @@ const Details: React.FC<DetailsProps> = ({ item }) => {
                             <div className="p-2 grow flex flex-col bg-base-white justify-center leading-5">
                                 {item.cost ? <span className="flex items-center gap-1 text-[1.5rem] leading-8"><PokeDollars />{item.cost.toLocaleString()}</span> : "-"}
                                 <ul className="list-disc pl-[20px]">
-                                    <li>{CATEGORIES[item.category].pocket}</li>
-                                    <li>{CATEGORIES[item.category].name}</li>
+                                    {/* <li>{CATEGORIES[item.category].pocket}</li>
+                                    <li>{CATEGORIES[item.category].name}</li> */}
                                 </ul>
                             </div>
                         </div>
@@ -49,9 +43,9 @@ const Details: React.FC<DetailsProps> = ({ item }) => {
                                     <hr className="border-t border-x-dark" />
                                     <ul className="list-disc px-[20px]">
                                         {
-                                            item.attributes.map((attr, i) => (
-                                                <li key={i} className="">{ATTRIBUTES[attr]}</li>
-                                            ))
+                                            // item.attributes.map((attr, i) => (
+                                            //     <li key={i} className="">{ATTRIBUTES[attr]}</li>
+                                            // ))
                                         }
                                     </ul>
                                 </>
@@ -92,12 +86,12 @@ const Details: React.FC<DetailsProps> = ({ item }) => {
                                     <hr className="border-t border-x-dark" />
                                     <div className="w-full flex flex-col">
                                         {
-                                            item.names.map((n, i) => (
-                                                <div key={i} className="flex justify-between w-full">
-                                                    <span>{n.name}</span>
-                                                    <span>{LANGUAGES[n.language]}</span>
-                                                </div>
-                                            ))
+                                            // item.names.map((n, i) => (
+                                            //     <div key={i} className="flex justify-between w-full">
+                                            //         <span>{n.name}</span>
+                                            //         <span>{LANGUAGES[n.language]}</span>
+                                            //     </div>
+                                            // ))
                                         }
                                     </div>
                                 </>
@@ -108,11 +102,11 @@ const Details: React.FC<DetailsProps> = ({ item }) => {
                                     <hr className="border-t border-x-dark" />
                                     <div className={`w-[calc(100%+2px)] flex flex-col grow overflow-y-scroll h-0 ${styles.overflowPurple}`}>
                                         {
-                                            item.games.map((g, i) => (
-                                                <div className="w-full text-center text-base-white">
-                                                    <span className="drop-shadow-[0_0_1px_black]">{getGameName(g)}</span>
-                                                </div>
-                                            ))
+                                            // item.games.map((g, i) => (
+                                            //     <div className="w-full text-center text-base-white">
+                                            //         <span className="drop-shadow-[0_0_1px_black]">{getGameName(g)}</span>
+                                            //     </div>
+                                            // ))
                                         }
                                     </div>
                                 </>
@@ -130,25 +124,25 @@ const BabyTriggerItem: React.FC<{ id: string }> = ({ id }) => {
 
     useEffect(() => {
         if (id) {
-            fetchEvolutionChain(id).then(res => {
-                Promise.all([res[0][0].species, res[1][0].species].map(s => (getVariants(s)))).then(res => {
-                    let a = res?.[0]?.[0];
-                    let b = res?.[1]?.[0];
-                    if (a && b) {
-                        setBaby(a);
-                        setEvolution(b);
-                    }
-                })
-            })
+            // fetchEvolutionChain(id).then(res => {
+            //     Promise.all([res[0][0].species, res[1][0].species].map(s => (getVariants(s)))).then(res => {
+            //         let a = res?.[0]?.[0];
+            //         let b = res?.[1]?.[0];
+            //         if (a && b) {
+            //             setBaby(a);
+            //             setEvolution(b);
+            //         }
+            //     })
+            // })
         }
     }, [id]);
 
     return (
         <div className="flex justify-center items-center gap-1">
             <span>For</span>
-            <ImageSprites id={baby} type="species" />
+            {/* <ImageSprites id={baby} type="species" />
             <span>to evolve to</span>
-            <ImageSprites id={evolution} type="species" />
+            <ImageSprites id={evolution} type="species" /> */}
         </div>
     )
 }

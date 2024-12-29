@@ -16,7 +16,7 @@ type FilterProps = {
 
 const Filter: React.FC<FilterProps> = ({ filterByName, filterByType, back, defaultQuery }) => {
     return (
-        <div className="z-[5] w-full h-[48px] sm:h-[64px] flex justify-between items-center max-sm:p-2 sm:p-4 gap-2 sm:gap-4 shadow-md" style={{ background: TAB_COLORS[Tab.Pokemon] }}>
+        <div className="z-10 w-full h-[48px] sm:h-[64px] flex justify-between items-center max-sm:p-2 sm:p-4 gap-2 sm:gap-4 shadow-md" style={{ background: TAB_COLORS[Tab.Pokemon] }}>
             <div className="h-full flex gap-2 sm:gap-4">
                 <InputFilter filterByName={filterByName} defaultValue={defaultQuery?.name} />
                 <TypeFilter filterByType={filterByType} />
@@ -74,8 +74,8 @@ const TypeFilter: React.FC<{ filterByType: (type: string) => void }> = ({ filter
                 {
                     pool.map(([type, color], i) => (
                         <div className="max-sm:shrink-0 px-3 sm:px-2 py-1 rounded-[24px] sm:rounded-[4px] max-sm:text-center whitespace-nowrap cursor-pointer group/text overflow-hidden relative" key={i} onClick={() => { setType(type); filterByType(type); }} style={{ background: color }}>
-                            <div className="max-sm:opacity-75 w-full h-full sm:group-hover/text:opacity-65 bg-white sm:opacity-100 absolute left-0 top-0 z-[0]" />
-                            <span className="relative z-[1]">{capitalize(type)}</span>
+                            <div className="max-sm:opacity-75 w-full h-full sm:group-hover/text:opacity-65 bg-white sm:opacity-100 absolute left-0 top-0 z-0" />
+                            <span className="relative z-1">{capitalize(type)}</span>
                         </div>
                     ))
                 }

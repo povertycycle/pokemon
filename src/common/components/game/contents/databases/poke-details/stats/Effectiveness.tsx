@@ -2,6 +2,7 @@ import { TYPE_COLORS } from "@/common/constants/colors";
 import { TYPE_EFFECTIVENESS } from "@/common/constants/types";
 import { useContext, useState } from "react";
 import { PaletteContext } from "../_utils";
+import { Bookmark, BOOKMARK_DATA } from "../../bookmarks/_utils";
 
 type EffectivenessProps = {
     types: string[],
@@ -46,11 +47,12 @@ const EFFECTIVENESS_DATA: Record<string, { icon: string; color: string; title: s
 
 const Effectiveness: React.FC<EffectivenessProps> = ({ types }) => {
     const { palette } = useContext(PaletteContext);
+    const { icon, id } = BOOKMARK_DATA[Bookmark.Effectiveness];
     const effectiveness = generateEffectiveness(types);
 
     return (
-        <div className={`flex flex-col w-full`}>
-            <div className="section__header--default" style={{ borderColor: palette[1] }}>Type Effectiveness</div>
+        <div id={id} className={`flex flex-col w-full`}>
+            <div className="pb-2 section__header--default items-center gap-3" style={{ borderColor: palette[1] }}><i className={`${icon} text-[1.25rem] leading-4`} style={{ color: palette[1] }} /> Type Effectiveness</div>
             <div className="max-sm:mt-1 w-full flex flex-col p-2 sm:p-3 gap-2">
                 {
                     ORDER.filter(o => Object.keys(effectiveness).includes(o)).map((order, i) => {

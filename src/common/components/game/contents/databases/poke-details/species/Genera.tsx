@@ -16,7 +16,7 @@ const Genera: React.FC<GeneraProps> = ({ genera, category }) => {
 
     return (
         <div className="w-full text-[1rem] sm:text-[1.125rem] leading-7 flex items-center justify-center" style={{ background: palette[1], color: text[1] }}>
-            <span className="drop-shadow-[0_0_2px_black]"><Typewriter text={`The ${Object.entries(category).filter(c => c[1]).map(c => c[0].replace("is", "")).join(" ")} ${genera}`} duration={500} /></span>
+            <span className={`${text[1] === "#ffffff" ? "drop-shadow-[0_0_1px_#000000] sm:drop-shadow-[0_0_2px_#000000]" : ""}`}><Typewriter text={`The ${Object.entries(category).filter(c => c[1]).map(c => c[0].replace("is", "")).join(" ")} ${genera}`} duration={500} /></span>
         </div>
     )
 }

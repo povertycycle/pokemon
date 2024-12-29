@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { generateBackground } from "../utils/colors";
 
-const usePalette = (image?: string | null) => {
-    const [palette, setPalette] = useState<string[]>();
+const usePalette = (image?: string | null, defaultPalette?: string[]) => {
+    const [palette, setPalette] = useState<string[] | undefined>(defaultPalette);
 
     useEffect(() => {
-        if (!!image) {
+        if (!!image && palette === undefined) {
             generateBackground(image).then(res => {
                 setPalette(res);
             }).catch(err => {
-                setPalette(["#000000", "#000000"]);
+                setPalette(["#ffffff", "#000000"]);
             });
         }
     }, []);

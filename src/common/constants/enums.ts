@@ -14,13 +14,10 @@ export enum Stores {
     Validator = "validator",
     PokeDetails = "details",
 
-    Species = "species",
-    Evolution = "evolution",
-    Ability = "ability",
-    Moves = "moves",
     Items = "items",
-    Encounters = "encounters",
-    Locations = "locations",
+    Moves = "moves",
+    Ability = "ability",
+    Evolution = "evolution",
     Berries = "berries",
 }
 
@@ -28,12 +25,9 @@ export const STORE_KEYS: Record<Stores, string> = {
     [Stores.Pokemon]: "PkOq3NuqNXXxgpZZofHHlOc6JcDNKLne",
     [Stores.Validator]: "",
     [Stores.PokeDetails]: "",
-    [Stores.Species]: "",
     [Stores.Evolution]: "",
-    [Stores.Ability]: "",
-    [Stores.Moves]: "",
+    [Stores.Ability]: "UZkSNmLIyTm7wN2kSb1TswAr6xaPUhNY",
+    [Stores.Moves]: "ckFdN0Zi8q6ju12pL84bQZ9NWTceoRQE",
     [Stores.Items]: "Xk7dcBfI2GObBbxjApy5US3feJkwWN6V",
-    [Stores.Encounters]: "",
-    [Stores.Locations]: "",
     [Stores.Berries]: ""
 }

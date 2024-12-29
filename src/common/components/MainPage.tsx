@@ -6,7 +6,7 @@ import PageSelector from "./home/PageSelector";
 import TCGDatabase from "./tcg/TCGDatabase";
 import { DESTINATION, DESTINATION_STATES, PageState, TAB_SELECTION } from "../constants/main";
 import { useSearchParams } from "next/navigation";
-import DatabaseDisplay from "./game/contents/DatabaseDisplay";
+import DatabaseDisplay from "./game/DatabaseDisplay";
 
 const MainPage: React.FC = () => {
     const searchParams = useSearchParams();
@@ -20,7 +20,7 @@ const MainPage: React.FC = () => {
 
     return (
         <div className="w-screen h-dvh sm:h-screen flex flex-col overflow-hidden font-default">
-            <div className={`w-full h-full relative ${section === PageState.Main ? "z-[0]" : "z-[1]"}`}>
+            <div className={`w-full h-full relative ${section === PageState.Main ? "z-0" : "z-1"}`}>
                 {
                     (() => {
                         switch (section) {

@@ -1,8 +1,8 @@
 import { POKEMON_FETCH_BAR_ID } from "@/common/constants/constants";
 import { errorCheck } from "@/common/utils/errorCheck";
 import { MAX_REQUEST_AT_ONCE } from "../common/constants/main";
-import { PokeAPIDataMini } from "@/common/interfaces/_external";
 import { lodashChunk } from "@/common/utils/arrays";
+import { PokeAPIDataMini } from "@/common/interfaces/_externals/pokemon";
 
 export type PokeAPIResponse = {
     count: number,

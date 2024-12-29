@@ -70,8 +70,16 @@
             font-weight: normal;
         }
     }
+    .backface-hidden {
+        backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        -ms-backface-visibility: hidden;
+    }
+
+
     .section__header {
-        @apply px-4 py-1 text-[1rem] sm:text-[1.125rem] whitespace-nowrap font-semibold flex border-b tracking-[1px]
+        @apply px-4 pt-2 pb-3 text-[1rem] sm:text-[1.125rem] whitespace-nowrap font-semibold flex border-b tracking-[1px]
     }
     .section__header--default {
         @apply min-w-[196px] w-fit section__header

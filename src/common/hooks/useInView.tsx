@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 
-const useInView = ({ onIntoView, once }: { onIntoView: Function, once?: boolean }) => {
+const useInView = ({ onIntoView, keep }: { onIntoView: Function, keep?: boolean }) => {
     const ref = useRef(null);
 
     useEffect(() => {
         const observer = new IntersectionObserver(([entry]) => {
             if (entry.isIntersecting) {
                 onIntoView();
-                if (once) {
+                if (!keep) {
                     observer.disconnect();
                 }
             }

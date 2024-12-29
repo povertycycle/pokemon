@@ -2,6 +2,7 @@ import { PokeMetaData } from "@/common/interfaces/pokemon";
 import React, { useContext } from "react";
 import { PaletteContext } from "../_utils";
 import { capitalize } from "@/common/utils/string";
+import { Bookmark, BOOKMARK_DATA } from "../../bookmarks/_utils";
 
 type DetailsProps = {
     metaData: PokeMetaData & { habitat?: string | null; shape?: string | null }
@@ -9,10 +10,11 @@ type DetailsProps = {
 
 const Details: React.FC<DetailsProps> = ({ metaData }) => {
     const { palette } = useContext(PaletteContext);
+    const { id, icon } = BOOKMARK_DATA[Bookmark.Species];
 
     return (
         <div className="flex flex-col h-full">
-            <div className="section__header--default" style={{ borderColor: palette[1] }}>Species Information</div>
+            <div id={id} className="pb-2 section__header--default items-center gap-3" style={{ borderColor: palette[1] }}><i className={`${icon} text-[1.25rem] leading-4`} style={{ color: palette[1] }} /> Species Information</div>
             <div className="w-full flex flex-col h-full">
                 {
                     [
@@ -44,7 +46,7 @@ const Details: React.FC<DetailsProps> = ({ metaData }) => {
                                     metaData.details?.eggGroups.map((egg, i) => {
                                         const { color, title } = EGG_GROUPS[egg];
                                         return (
-                                            <span key={i} style={{ color: color }}>{title}</span>
+                                            <span className="" key={i} style={{ color: color }}>{title}</span>
                                         )
                                     })
                                 }
@@ -57,16 +59,31 @@ const Details: React.FC<DetailsProps> = ({ metaData }) => {
                         {
                             title: "Gender ratio",
                             value: (() => {
-                                const male = `${(8 - (metaData.details?.genderRate ?? 0)) / 8 * 100}%`;
-                                const female = `${(metaData.details?.genderRate ?? 0) / 8 * 100}%`;
                                 return (
-                                    <div className="w-full h-full flex sm:py-1">
-                                        <div title={male} tabIndex={0} className="group/gender bg-[#6fa8dc] gap-2 flex items-center justify-center relative rounded-l-[4px]" style={{ width: male }}>
-                                            <i className="ri-men-line" /> <span className="max-sm:group-focus/gender:flex hidden">{male}</span>
-                                        </div>
-                                        <div title={female} tabIndex={1} className="group/gender bg-[#d5a6bd] gap-2 flex items-center justify-center relative rounded-r-[4px]" style={{ width: female }}>
-                                            <i className="ri-women-line" /> <span className="max-sm:group-focus/gender:flex hidden">{female}</span>
-                                        </div>
+                                    <div className="w-full h-full flex leading-3 py-[3px] sm:py-[6px] max-sm:text-[0.75rem]">
+                                        {
+                                            !!metaData.details?.genderRate && metaData.details.genderRate >= 0 ?
+                                                (() => {
+                                                    const male = `${(8 - (metaData.details?.genderRate ?? 0)) / 8 * 100}%`;
+                                                    const female = `${(metaData.details?.genderRate ?? 0) / 8 * 100}%`;
+                                                    return (
+                                                        <div className="w-full flex rounded-full overflow-hidden">
+                                                            {
+                                                                parseInt(male) > 0 && <div title={male} tabIndex={0} className="min-w-[48px] group/gender bg-[#6fa8dc] gap-2 flex items-center justify-center relative" style={{ width: male }}>
+                                                                    <i className="max-sm:group-focus/gender:hidden ri-men-line text-[1rem]" /> <span className="max-sm:group-focus/gender:flex hidden">{male}</span>
+                                                                </div>
+                                                            }
+                                                            {
+                                                                parseInt(female) && <div title={female} tabIndex={1} className="min-w-[48px] group/gender bg-[#d5a6bd] gap-2 flex items-center justify-center relative" style={{ width: female }}>
+                                                                    <i className="max-sm:group-focus/gender:hidden ri-women-line text-[1rem]" /> <span className="max-sm:group-focus/gender:flex hidden">{female}</span>
+                                                                </div>
+                                                            }
+
+                                                        </div>
+                                                    )
+                                                })() :
+                                                <div className="w-full text-center flex items-center justify-center bg-black text-white rounded-full">Genderless</div>
+                                        }
                                     </div>
                                 )
                             })()
@@ -88,7 +105,7 @@ const Details: React.FC<DetailsProps> = ({ metaData }) => {
                             value: <div className="h-[48px] aspect-square p-1">{SHAPE_ICONS[metaData.shape ?? ""]}</div>
                         }
                     ].map(({ title, value }, i) => (
-                        <div key={i} className="grid grid-cols-2 w-full h-full max-sm:py-1 px-3 items-center" style={{ background: i % 2 === 0 ? `${palette[1]}1a` : "" }}>
+                        <div key={i} className="grid grid-cols-[0.625fr_1fr] w-full h-full max-sm:py-1 px-3 items-center" style={{ background: i % 2 === 0 ? `${palette[1]}1a` : "" }}>
                             <span className="font-medium">{title}</span>
                             {value}
                         </div>

@@ -26,7 +26,7 @@ const AskCache: React.FC = () => {
     return (
         shouldAsk &&
         createPortal(
-            <div className="fixed max-sm:w-screen font-default z-[1000] bottom-0 left-0 bg-base-white-soft sm:rounded-tr-[16px] text-[0.875rem] p-4">
+            <div className="fixed max-sm:w-screen font-default z-max bottom-0 left-0 bg-base-white-soft sm:rounded-tr-[16px] text-[0.875rem] p-4">
                 <div className="max-w-[548px] sm:w-full flex flex-col leading-4 text-base gap-1">
                     <span>This website uses local caching to store the Pokemon data for a better user experience.</span>
                     <span>Allow all or only necessary data to be cached?</span>

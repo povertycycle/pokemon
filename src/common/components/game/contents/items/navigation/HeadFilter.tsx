@@ -37,7 +37,7 @@ const HeadFilter: React.FC<HeadFilterProps> = ({ listId, filterCategory, filterP
 
     return (
         <thead>
-            <tr className={`z-[1] text-[1.25rem] sticky top-[2px] text-x-dark ${table.long_table_header}`}>
+            <tr className={`z-1 text-[1.25rem] sticky top-[2px] text-x-dark ${table.long_table_header}`}>
                 <th className="relative">Item <i onClick={doSortName} className={`hover:text-base-white-dark absolute top-[50%] translate-y-[-50%] right-[8px] ${nameOrder === OrderType.ASC ? "ri-sort-alphabet-asc" : "ri-sort-alphabet-desc"} cursor-pointer text-[1.5rem] leading-4`} /></th>
                 <HeadCellFilter filter={filterCategory} listId={listId} id={"0wkoObmmUOV072uUwgkOwztHoeSxTsab"} type="category" />
                 <HeadCellFilter filter={filterPocket} listId={listId} id={"2KOzingyH1lbYVZUEN3dDZgZBe8jn9EM"} type="pocket" />

@@ -4,7 +4,7 @@ const nextConfig = {
     assetPrefix: '/pokemon/',
     output: 'export',
     images: {
-        minimumCacheTTL: 300,
+        minimumCacheTTL: 3000,
         remotePatterns: [
             {
                 protocol: 'https',

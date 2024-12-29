@@ -1,3 +1,4 @@
+import { EncounterData, PalParkEncounter } from "./encounter";
 import { MoveDataVersion } from "./move";
 
 export type PokemonCard = {
@@ -25,12 +26,6 @@ export type Stats = {
     }
 }
 
-type PalParkEncounter = {
-    area: string;
-    base_score: number;
-    rate: number;
-}
-
 export interface PokeMetaData {
     cries: string;
     baseExperience: number;
@@ -46,6 +41,13 @@ export interface PokeMetaData {
     } | null;
 }
 
+export type PokeVariants = {
+    chain: string;
+    variants: string[];
+    formDescription?: string | null;
+    formSwitchable: boolean | null;
+}
+
 export interface PokemonDetails {
     speciesData: {
         genera?: string | null;
@@ -56,14 +58,10 @@ export interface PokemonDetails {
         isMythical: boolean;
         flavorText?: string | null;
     }
-    evolutions: {
-        chain: string;
-        variants: string[];
-        formDescription?: string | null;
-        formSwitchable: boolean;
-    }
+    evolutions: PokeVariants;
     encounters: {
         palPark: PalParkEncounter[];
+        data?: EncounterData | null;
     }
     metaData: PokeMetaData;
     heldItemIDs: string[];

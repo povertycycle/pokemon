@@ -25,8 +25,8 @@ const Display: React.FC<DisplayProps> = ({ pokemons, back }) => {
     }>({ name: query ?? "", type: "" });
 
     const doFilter = () => {
-        let nameFilter = filterRef.current.name.toLowerCase();
-        let typeFilter = filterRef.current.type.toLowerCase();
+        const nameFilter = filterRef.current.name.toLowerCase();
+        const typeFilter = filterRef.current.type.toLowerCase();
         if (!!!nameFilter && !!!typeFilter) {
             setActiveList(pokemons);
         } else {
@@ -91,7 +91,7 @@ const PokemonList: React.FC<{ list: PokemonCard[]; ref: RefObject<HTMLDivElement
         <FetchScroller ref={ref} hasNext={display.length < list.length} fetchNext={fetchNext}>
             <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4 sm:p-4">
                 {
-                    display.map((pokemon, i) => (
+                    display.map(pokemon => (
                         <Pokemon pokemon={pokemon} key={pokemon.name} />
                     ))
                 }

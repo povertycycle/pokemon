@@ -1,6 +1,6 @@
 import { Stores } from "@/common/constants/enums";
 import { POKEMON_DB } from "@/common/constants/main";
-import { ItemData, ItemDataMini } from "@/common/interfaces/item";
+import { ItemData } from "@/common/interfaces/item";
 import { trimUrl } from "@/common/utils/string";
 import { PokeAPIResponse } from "./_utils";
 
@@ -22,7 +22,7 @@ export async function updateItemDatabase(items: PokeAPIResponse): Promise<number
     })
 }
 
-export async function getItemSprite(id: string): Promise<ItemDataMini | null> {
+export async function getItemName(id: string): Promise<string | null> {
     return new Promise(resolve => {
         const request = indexedDB.open(POKEMON_DB);
 
@@ -30,7 +30,7 @@ export async function getItemSprite(id: string): Promise<ItemDataMini | null> {
             const itemTx = request.result.transaction(Stores.Items, 'readonly').objectStore(Stores.Items).get(id);
             itemTx.onsuccess = () => {
                 const data = itemTx.result as ItemData;
-                resolve({ name: data.name });
+                resolve(data.name);
             }
             itemTx.onerror = () => {
                 resolve(null);
