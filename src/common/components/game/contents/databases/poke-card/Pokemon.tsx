@@ -38,7 +38,7 @@ const Card: React.FC<{ pokemon: PokemonCard, palette: string[] }> = ({ pokemon, 
             <div className="w-full h-full absolute top-0 left-0 z-1 flex items-center justify-end bg-gradient-to-r from-black/35">
                 <Image className="aspect-square w-[128px] sm:w-[296px] object-cover" src={pokemon.mainSprites.default} alt="" width={128} height={128} />
             </div>
-            <div className={`text-white h-full py-1 px-2 sm:py-2 sm:px-4 flex flex-col justify-end z-1 relative w-full sm:hover:bg-black/0 bg-black/25 cursor-pointer`}>
+            <div className={`text-white h-full py-1 px-2 sm:py-2 sm:px-4 flex flex-col justify-end z-1 relative w-full sm:hover:bg-black/0 bg-black/15 cursor-pointer`}>
                 <div className="absolute flex top-0 left-0 text-[0.75rem] sm:text-[1rem] rounded-br-[4px] md:rounded-br-[6px] overflow-hidden max-w-full">
                     {
                         pokemon.types.map((t: string, i: number) => (
