@@ -3,9 +3,7 @@ import { Sprites } from "@/common/interfaces/pokemon";
 import { getVersionData } from "@/common/utils/version";
 import Image from "next/image";
 import React, { useContext, useState } from "react";
-import { createPortal } from "react-dom";
 import { PaletteContext } from "../_utils";
-import { useInView } from "@/common/hooks/useInView";
 
 type ExtraSpritesProps = {
     sprites: Sprites[];
@@ -68,12 +66,9 @@ const Sprite: React.FC<{ version: string; url: string | null }> = ({ version, ur
         <div title={name} className="w-full flex flex-col rounded-[8px] overflow-hidden text-center shrink-0 border" style={{ background: `${palette[1]}1a`, borderColor: palette[1] }}>
             <div className="w-full flex items-center justify-center relative aspect-square group/image p-3">
                 {
-                    // image !== undefined &&
-                    // (
                     !!url ?
                         <Image width={64} height={64} src={url} alt="" className="w-full aspect-square object-contain rounded-[6px] overflow-hidden" /> :
                         <span className="text-base-red-dark text-[1.25rem]">Missing Image</span>
-                    // )
                 }
             </div>
             <div className="w-full text-[0.75rem] sm:text-[1rem] flex items-center justify-center sm:leading-5 border-t" style={{ background, borderColor: palette[1] }}>

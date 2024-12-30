@@ -11,7 +11,8 @@ const PalPark: React.FC<PalParkProps> = ({ data }) => {
     const { palette } = useContext(PaletteContext);
 
     return (
-        <div className="flex flex-col mb-2">
+        data.length > 0 &&
+        <div className="flex flex-col mb-2 sm:break-inside-avoid-column">
             <div className="text-center font-medium text-[1.rem] sm:text-[1.125rem]" style={{ background: `${palette[1]}40` }}>
                 Pal Park
             </div>

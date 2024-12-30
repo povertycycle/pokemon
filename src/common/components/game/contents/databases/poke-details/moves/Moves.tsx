@@ -20,12 +20,13 @@ const Moves: React.FC<MovesProps> = ({ moves }) => {
         let pool = Object.keys(GAMES);
         return pool.indexOf(a) - pool.indexOf(b)
     });
-    const [version, setVersion] = useState<string>(sorted[0] ?? "");
+    const [version, setVersion] = useState<string | null>(sorted[0] ?? null);
     const { name, background } = getVersionData(version);
+
 
     return (
         <div id={id} className="flex flex-col w-full relative">
-            <div className="w-full text-center py-2 relative flex items-center justify-center border-b" style={{ borderColor: palette[1], background: background }}>
+            <div className="w-full text-center py-2 relative flex items-center justify-center border-b" style={{ borderColor: palette[1], background: background || `${palette[1]}33` }}>
                 <div className="leading-4 absolute left-2 rounded-full h-[calc(100%-12px)] aspect-square flex items-center justify-center" style={{ background: palette[1], color: text[1] }}>
                     <i className={`${icon} text-[1.25rem]`} />
                 </div>
@@ -60,13 +61,17 @@ const Moves: React.FC<MovesProps> = ({ moves }) => {
                     </Dropdown>
                 </div>
             </div>
-            <div className="w-full max-sm:flex max-sm:flex-col sm:columns-2 overflow-hidden pt-2 max-sm:gap-8 sm:gap-2">
-                {
-                    Object.entries(groupRef.current[version]).map(([method, moves], i) => (
-                        <Moveset key={`${version}-${i}`} method={method} version={version} moveData={moves} />
-                    ))
-                }
-            </div>
+            {
+                !!version && groupRef.current[version] &&
+                <div className="w-full max-sm:flex max-sm:flex-col sm:columns-2 overflow-hidden pt-2 max-sm:gap-8 sm:gap-2">
+                    {
+                        Object.entries(groupRef.current[version]).map(([method, moves], i) => (
+                            <Moveset key={`${version}-${i}`} method={method} version={version} moveData={moves} />
+                        ))
+                    }
+                </div>
+            }
+
         </div>
     )
 }

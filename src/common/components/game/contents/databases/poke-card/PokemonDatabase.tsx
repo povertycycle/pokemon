@@ -12,7 +12,12 @@ const PokemonDatabase: React.FC<DatabaseDisplayProps> = ({ back }) => {
 
     useEffect(() => {
         getAllPokemons().then(res => {
-            setPokemons(res?.sort((a, b) => (a.index - b.index)));
+            setPokemons(res?.sort((a, b) => {
+                const d = a.index - b.index;
+                return d === 0 ?
+                    (a.name.localeCompare(b.name)) :
+                    d
+            }));
         });
     }, []);
 

@@ -68,7 +68,17 @@ const Stages: React.FC<StagesProps> = ({ evolutions, currentId, hasBaby }) => {
                 evolutions.map((evolution, i) => (
                     <div className="flex flex-col w-full" key={i}>
                         <div className="max-sm:w-full text-[1rem] px-4 shrink-0 sm:text-[1.125rem] py-[2px] sm:py-1 font-semibold flex items-center justify-center border-t" style={{ borderColor: palette[1], background: `${palette[1]}1a` }}>
-                            {start === 0 && i === 0 ? "Baby" : `Stage ${start + i}`}
+                            {
+                                evolutions.length === 1 ?
+                                    "No Evolution" :
+                                    (
+                                        start === 0 && i === 0 ?
+                                            "Baby" :
+                                            (
+                                                `Stage ${start + i}`
+                                            )
+                                    )
+                            }
                         </div>
                         <div className="flex max-sm:flex-col sm:flex-wrap w-full">
                             {

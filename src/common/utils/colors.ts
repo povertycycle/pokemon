@@ -13,7 +13,7 @@ export function generateBackground(p: string | HTMLImageElement, amount?: number
                 const filter = (c as string[]).filter(
                     color => {
                         let l = Math.round(getLuma(color));
-                        return (l > 75 && l < 230) ? color : undefined;
+                        return (l > 60 && l < 235) ? color : undefined;
                     }
                 )
                 const sort = sortByHue(filter).reduce(
@@ -38,7 +38,7 @@ export function generateBackground(p: string | HTMLImageElement, amount?: number
 };
 export function getVersionColors(version: string): string[] {
     return (GAMES[version] ?? VERSION_GROUP_GAMES[version] ?? [version]).reduce((acc, g) => {
-        return [...acc, ...VERSION_DATA[g].colors]
+        return [...acc, ...VERSION_DATA[g]?.colors]
     }, [] as string[]);
 }
 
