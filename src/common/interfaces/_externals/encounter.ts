@@ -18,4 +18,4 @@ export interface PokeAPIEncounters {
             name: string;
         }
     }[]
-}[];
+};

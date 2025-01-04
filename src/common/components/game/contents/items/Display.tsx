@@ -82,22 +82,22 @@ const Navigation = memo(({ items, setItem }: NavigationProps) => {
                     <HeadFilter listId={ITEMLIST_ID} filterCategory={filterCategory} filterPocket={filterPocket} />
                     <tbody id={ITEMLIST_ID} className={`z-0 [&>tr]:bg-white/75 ${table.long_table_body}`}>
                         {
-                            items.sort((a, b) => (a.name > b.name ? 1 : -1)).map((data: any, i: number) => (
-                                <tr key={i} data-gen={data?.games?.map(g => g.split("-").map(s => s.charAt(0)).join("")).join(";") ?? ""}
-                                    data-category={data.category} data-pocket={CATEGORIES[data.category].pocket.toLowerCase().replaceAll(" ", "-")}
-                                    className="hover:bg-base-white-dark/25 transition-transform cursor-pointer hover:translate-x-[8px]"
-                                    onClick={() => { setItem(prev => prev?.name === data?.name ? prev : data) }}>
-                                    <td className="cursor-pointer flex gap-4 items-center" style={{ paddingLeft: "8px", paddingRight: "16px" }}>
-                                        <div className="w-[48px] h-[48px] flex items-center justify-center">
-                                            {data?.sprites ? <Image width={48} height={48} loading="lazy" alt="" className="w-full h-full" src={data.sprites} /> : <i className="ri-question-mark text-[1.5rem]" />}
-                                        </div>
-                                        <span className="whitespace-nowrap">{data?.names?.find(i => i.language === "en")?.name ?? capitalize(data.name)}</span>
-                                    </td>
-                                    <td className="whitespace-nowrap">{CATEGORIES[data.category].name}</td>
-                                    <td style={{ whiteSpace: "nowrap" }}>{CATEGORIES[data.category].pocket}</td>
-                                    <td style={{ lineHeight: "18px" }}>{data.flavor_text ?? "- - -"}</td>
-                                </tr>
-                            ))
+                            // items.sort((a, b) => (a.name > b.name ? 1 : -1)).map((data: any, i: number) => (
+                            //     <tr key={i} data-gen={data?.games?.map(g => g.split("-").map(s => s.charAt(0)).join("")).join(";") ?? ""}
+                            //         data-category={data.category} data-pocket={CATEGORIES[data.category].pocket.toLowerCase().replaceAll(" ", "-")}
+                            //         className="hover:bg-base-white-dark/25 transition-transform cursor-pointer hover:translate-x-[8px]"
+                            //         onClick={() => { setItem(prev => prev?.name === data?.name ? prev : data) }}>
+                            //         <td className="cursor-pointer flex gap-4 items-center" style={{ paddingLeft: "8px", paddingRight: "16px" }}>
+                            //             <div className="w-[48px] h-[48px] flex items-center justify-center">
+                            //                 {data?.sprites ? <Image width={48} height={48} loading="lazy" alt="" className="w-full h-full" src={data.sprites} /> : <i className="ri-question-mark text-[1.5rem]" />}
+                            //             </div>
+                            //             <span className="whitespace-nowrap">{data?.names?.find(i => i.language === "en")?.name ?? capitalize(data.name)}</span>
+                            //         </td>
+                            //         <td className="whitespace-nowrap">{CATEGORIES[data.category].name}</td>
+                            //         <td style={{ whiteSpace: "nowrap" }}>{CATEGORIES[data.category].pocket}</td>
+                            //         <td style={{ lineHeight: "18px" }}>{data.flavor_text ?? "- - -"}</td>
+                            //     </tr>
+                            // ))
                         }
                     </tbody>
                 </table>

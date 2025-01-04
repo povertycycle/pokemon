@@ -41,7 +41,7 @@ export function getEncounterData(id: string): Promise<EncounterData | null> {
 async function fetchEncounterData(id: string): Promise<EncounterData> {
     return fetch(`${BASE_API_URL_POKEMON}/${id}/encounters`).then(res => {
         return errorCheck(res);
-    }).then((res: PokeAPIEncounters) => {
+    }).then((res: PokeAPIEncounters[]) => {
         return res.reduce((acc, encounter) => {
             const area = encounter.location_area.name;
             encounter.version_details.forEach(encounterData => {

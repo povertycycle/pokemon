@@ -49,7 +49,7 @@ const Card: React.FC<{ data: BerryFullData; imageUrl: string; }> = ({ data, imag
                 </div>
                 <div className={`flex shrink-0 sm:mt-2 sm:pb-1 sm:px-3 max-sm:fixed max-sm:top-0 max-sm:left-0 max-sm:items-end max-sm:w-screen max-sm:z-50 overflow-hidden grow max-sm:h-full ${show ? "max-sm:max-h-dvh" : "max-sm:max-h-0 max-sm:delay-500"}`}>
                     <div onClick={() => { setShow(false) }} className={`${show ? "opacity-100" : "opacity-0"} max-sm:w-full max-sm:h-full sm:hidden bg-black/65 absolute z-0 left-0 top-0 transition-opacity`} />
-                    <div className={`${show ? "max-sm:max-h-[75dvh]" : "max-sm:max-h-0"} mobile__template--card relative max-sm:bg-black`}>
+                    <div className={`${show ? "max-sm:max-h-[75dvh]" : "max-sm:max-h-0"} mobile__template--card overflow-y-auto max-sm:bg-black`}>
                         <div className="sm:hidden w-full h-full absolute top-0 left-0 z-0" style={{
                             background: `linear-gradient(135deg,${data.palette[1]}80,${data.palette[0]}80)`
                         }} />

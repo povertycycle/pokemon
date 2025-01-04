@@ -1,7 +1,6 @@
 import { capitalize } from "@/common/utils/string"
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import { ATTRIBUTES, FLING_EFFECT, LANGUAGES } from "./constants"
 import { PokeDollars } from "../../../../_utils/PokeDollars"
 import styles from "@/common/styles/custom.module.scss";
 
@@ -56,7 +55,7 @@ const Details: React.FC<DetailsProps> = ({ item }) => {
                                     <hr className="border-t border-x-dark" />
                                     <div className="flex flex-col gap-4 leading-5 my-2 px-2">
                                         {!!item.fling_power && <span className="text-center text-[1.25rem]">{item.fling_power} <span className="text-[0.875rem]">Fling Damage</span></span>}
-                                        {!!item.fling_effect && <span>{FLING_EFFECT[item.fling_effect]}</span>}
+                                        {/* {!!item.fling_effect && <span>{FLING_EFFECT[item.fling_effect]}</span>} */}
                                     </div>
                                 </>
                             }

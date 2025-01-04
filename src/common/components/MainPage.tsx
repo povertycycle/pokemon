@@ -7,14 +7,17 @@ import TCGDatabase from "./tcg/TCGDatabase";
 import { DESTINATION, DESTINATION_STATES, PageState, TAB_SELECTION } from "../constants/main";
 import { useSearchParams } from "next/navigation";
 import DatabaseDisplay from "./game/DatabaseDisplay";
+import { useRouter } from "next/router";
 
 const MainPage: React.FC = () => {
     const searchParams = useSearchParams();
+    const router = useRouter();
     const pageState = searchParams?.get(DESTINATION) ?? "";
     const tabState = searchParams?.get(TAB_SELECTION);
     const [section, setSection] = useState<PageState>(DESTINATION_STATES[pageState] ?? PageState.Main);
 
     const returnToMain = () => {
+        router.replace('/', undefined, { shallow: true });
         setSection(PageState.Main);
     }
 

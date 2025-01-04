@@ -1,9 +1,9 @@
 import { Tab } from "@/common/constants/enums";
 import { TAB_STATES } from "@/common/constants/main";
+import styles from "@/common/styles/transitions.module.scss";
 import { useState } from "react";
 import DisplayContainer from "./contents/DisplayContainer";
 import Navigator from "./navigator/Navigator";
-import styles from "@/common/styles/transitions.module.scss";
 
 type DatabaseDisplayProps = {
     returnToMain: () => void;
