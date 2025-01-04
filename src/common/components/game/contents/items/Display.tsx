@@ -1,5 +1,5 @@
 import { Dispatch, memo, SetStateAction, useRef, useState } from "react";
-import { CATEGORIES, ItemData, OrderType } from "./constants";
+import { CATEGORIES, OrderType } from "./constants";
 import { capitalize } from "@/common/utils/string";
 import styles from "@/common/styles/custom.module.scss";
 import table from "@/common/styles/table.module.scss";
@@ -9,11 +9,11 @@ import Image from "next/image";
 import { standardize } from "@/common/utils/normalize";
 
 type DisplayProps = {
-    items: ItemData[]
+    items: any[]
 }
 
 const Display: React.FC<DisplayProps> = ({ items }) => {
-    const [item, setItem] = useState<ItemData | null>(null);
+    const [item, setItem] = useState<any | null>(null);
 
     return (
         <div className={`w-full h-full justify-between flex items-center bg-black`}>
@@ -24,8 +24,8 @@ const Display: React.FC<DisplayProps> = ({ items }) => {
 }
 
 type NavigationProps = {
-    items: ItemData[],
-    setItem: Dispatch<SetStateAction<ItemData | null>>
+    items: any[],
+    setItem: Dispatch<SetStateAction<any | null>>
 }
 
 const Navigation = memo(({ items, setItem }: NavigationProps) => {
@@ -82,7 +82,7 @@ const Navigation = memo(({ items, setItem }: NavigationProps) => {
                     <HeadFilter listId={ITEMLIST_ID} filterCategory={filterCategory} filterPocket={filterPocket} />
                     <tbody id={ITEMLIST_ID} className={`z-0 [&>tr]:bg-white/75 ${table.long_table_body}`}>
                         {
-                            items.sort((a, b) => (a.name > b.name ? 1 : -1)).map((data: ItemData, i: number) => (
+                            items.sort((a, b) => (a.name > b.name ? 1 : -1)).map((data: any, i: number) => (
                                 <tr key={i} data-gen={data?.games?.map(g => g.split("-").map(s => s.charAt(0)).join("")).join(";") ?? ""}
                                     data-category={data.category} data-pocket={CATEGORIES[data.category].pocket.toLowerCase().replaceAll(" ", "-")}
                                     className="hover:bg-base-white-dark/25 transition-transform cursor-pointer hover:translate-x-[8px]"

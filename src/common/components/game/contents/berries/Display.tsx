@@ -1,133 +1,80 @@
-import { TAB_COLORS, TYPE_COLORS } from "@/common/constants/colors"
-import { Tab } from "@/common/constants/enums"
-import styles from "@/common/styles/custom.module.scss"
-import { isDark } from "@/common/utils/colors"
-import { capitalize } from "@/common/utils/string"
-import Image from "next/image"
-import { useEffect, useState } from "react"
-import { PokeDollars } from "../_utils/PokeDollars"
-import { ItemData } from "../items/constants"
-import { BerryData } from "./constants"
-
-const FLAVORS: { [key: string]: string } = {
-    "spicy":
-        // "#FF0000"
-        "#A60000"
-    ,
-    "dry":
-        // "#6890F0"
-        "#445E9C"
-    ,
-    "sweet":
-        // "#F85888"
-        "#A13959"
-    ,
-    "bitter":
-        // "#78C850"
-        "#4E8234"
-    ,
-    "sour":
-        // "#F8D030"
-        "#A1871F"
-}
-
+import FetchScroller from "@/common/components/_utils/data-load/FetchScroller"
+import { BerryData } from "@/common/interfaces/berry"
+import { RefObject, useEffect, useRef, useState } from "react"
+import { DatabaseDisplayProps } from "../databases/_utils"
+import Berry from "./Berry"
+import Filter from "./Filter"
+import { resetScroll } from "@/common/utils/dom"
 
 type DisplayProps = {
     berries: BerryData[]
-}
+} & DatabaseDisplayProps;
 
-const Display: React.FC<DisplayProps> = ({ berries }) => {
+const Display: React.FC<DisplayProps> = ({ berries, back }) => {
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const [activeList, setActiveList] = useState<BerryData[]>(berries);
+    const filterRef = useRef<{
+        name: string;
+    }>({ name: "" });
+
+    const doFilter = () => {
+        const nameFilter = filterRef.current.name.toLowerCase();
+        if (!!!nameFilter) {
+            setActiveList(berries);
+        } else {
+            setActiveList(berries.filter(p => (
+                p.name.toLowerCase().includes(nameFilter))
+            ))
+        }
+    }
+
+    function filterByName(value: string) {
+        filterRef.current.name = value;
+        doFilter();
+        resetScroll(scrollRef.current);
+    }
+
+
     return (
-        <div className={`w-full h-full justify-center flex items-center bg-black`}>
-            <div className={`w-full h-full pt-24 pl-[10%] pr-[calc(10%+8px)] pb-2 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-16 overflow-y-scroll ${styles.overflowWhite}`} style={{ background: TAB_COLORS[Tab.Berries] + "80" }}>
-                {
-                    berries.map((berry, i) => (
-                        <Berry key={i} data={berry} />
-                    ))
-                }
-            </div>
+        <div className="w-full h-full flex flex-col">
+            <Filter back={back} filterByName={filterByName} />
+            <BerryList ref={scrollRef} list={activeList} />
         </div>
     )
 }
 
-const Berry: React.FC<{ data: BerryData }> = ({ data }) => {
-    const [item, setItem] = useState<ItemData | null>(null);
+const BerryList: React.FC<{ list: BerryData[]; ref: RefObject<HTMLDivElement> }> = ({ list, ref }) => {
+    const MAX_DISPLAY = useRef<number>(0);
+    const [display, setDisplay] = useState<BerryData[]>([]);
 
     useEffect(() => {
-        // if (!item)
-        // getItemData(data.item).then(res => {
-        //     if (dat?.sprites) {
-        //         generateBackground(dat.sprites, 4, 15).then(res => {
-        //             setItem(dat);
-        //             setPalette(res);
-        //         });
-        //     } else {
-        //         setItem(dat);
-        //     }
-        // })
-    }, [])
+        if (window.innerWidth < 640) {
+            MAX_DISPLAY.current = 12;
+        } else if (window.innerWidth >= 640 && window.innerWidth < 1024) {
+            MAX_DISPLAY.current = 16;
+        } else {
+            MAX_DISPLAY.current = 20;
+        }
+    }, []);
+
+    useEffect(() => {
+        setDisplay(list.slice(0, MAX_DISPLAY.current));
+    }, [list])
+
+    function fetchNext() {
+        setDisplay(prev => prev.concat(list.slice(prev.length, prev.length + MAX_DISPLAY.current)));
+    }
 
     return (
-        item &&
-        <div className="w-full shrink-0 flex flex-col relative border-2">
-            <div className="w-full flex items-center justify-start px-4 text-[1.25rem] py-1 text-base-white border-b-2 tracking-[0.5px] drop-shadow-[0_0_2px_black]">{(item?.names?.find(n => n.language === "en")?.name ?? item?.name).toUpperCase()}</div>
-            <div className="absolute right-0 top-0 h-[56px] border-l-2 border-b-2">
-                {item.cost ? <span className="text-base-white w-full h-full justify-center flex px-4 items-center text-[1.5rem] leading-8 gap-2 bg-black/50"><PokeDollars color="white" size={20} />{item.cost.toLocaleString()}</span> : "-"}
+        <FetchScroller ref={ref} hasNext={display.length < list.length} fetchNext={fetchNext} type="berries">
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4 sm:p-4">
+                {
+                    display.map(berry => (
+                        <Berry berry={berry} key={berry.name} />
+                    ))
+                }
             </div>
-            <div className="flex h-[96px]">
-                <div className="h-full aspect-square p-4 flex items-center justify-center shrink-0 border-r-2">
-                    {
-                        item.sprites ? <Image alt="" src={item.sprites} width={96} height={96} className="w-full h-full" /> : <i className="ri-question-mark text-[2.5rem]" />
-                    }
-                </div>
-                <div className="h-full text-base-white text-base flex grow items-end pb-2 gap-2 px-2">
-                    {
-                        data.flavors.map((f, i) => (
-                            <span className="flex flex-col w-full items-center gap-1" key={i}>
-                                <span className="text-end" style={{ fontSize: `${20 + (f.potency / 5 * 2)}px` }}>{f.potency}</span>
-                                <div className="shadow-[-2px_2px_4px_2px_#0000003a] w-full border rounded-[10px] text-[0.875rem] flex items-center justify-center leading-5" style={{ background: `linear-gradient(135deg,${FLAVORS[f.flavor]},#0000003e)` }}>
-                                    <span className="z-1 text-base-white tracking-[0.5px]">{capitalize(f.flavor)}</span>
-                                </div>
-                            </span>
-                        ))
-                    }
-                </div>
-            </div>
-            <div className={`w-full flex flex-col text-base-white grow`}>
-                <p className="italic text-center leading-4 font-gb text-[0.625rem] border-t-2 py-4 px-2 drop-shadow-[0_0_2px_black]">{item.flavor_text}</p>
-                <div className="flex text-[0.875rem] w-full px-4 gap-1 py-2 items-center justify-between border-t">
-                    <span className="text-[1.125rem]">{data.size}<span className="text-base">mm</span></span>
-                    <span className="flex gap-1 items-center">Firmness<span className="text-[1.125rem]">{`[${data.firmness.split("-").map(t => capitalize(t)).join(" ")}]`}</span></span>
-                    <span className="flex gap-1 items-center">Smoothness<span className="text-[1.125rem]">{`[${data.smoothness}]`}</span></span>
-                </div>
-                <div className="flex w-full text-center border-t text-[1.5rem]">
-                    {
-                        [
-                            { head: <i className="ri-time-line" title="Growth time" />, value: data.growth_time },
-                            { head: (item.sprites ? <Image title="Maximum harvest" alt="" src={item.sprites} width={32} height={32} className="h-full" /> : <i className="ri-question-mark text-[1.5rem]" />), value: data.max_harvest },
-                            { head: <i className="ri-water-percent-line" title="Soil moisture" />, value: data.soil_dryness },
-                            { head: <div title="Natural gift" className="text-[1.25rem] w-full flex items-center justify-center" style={{ background: TYPE_COLORS[data.natural_gift.type], color: isDark(TYPE_COLORS[data.natural_gift.type]) ? "white" : "black" }}>{data.natural_gift.type.toUpperCase()}</div>, value: data.natural_gift.power }
-                        ].map(({ head, value }, i) => (
-                            <div key={i} className="flex flex-col w-full h-[64px]">
-                                <div className="h-[32px] flex items-center justify-center">{head}</div>
-                                <span className="text-[1.25rem]">{value}</span>
-                            </div>
-                        ))
-                    }
-                </div>
-                <ul className="list-disc leading-4 px-8 py-8 flex flex-col gap-4 tracking-[0.5px] border-t grow" >
-                    {
-                        // item?.effect ?
-                        //     item.effect.match(SENTENCES_REGEX)?.map(((t: string, i: number) => (
-                        //         <li key={i}>
-                        //             <Typewriter text={t} duration={1.5} />
-                        //         </li>
-                        //     ))) :
-                        //     <li>- - -</li>
-                    }
-                </ul>
-            </div>
-        </div>
+        </FetchScroller>
     )
 }
 

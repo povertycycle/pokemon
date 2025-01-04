@@ -2,7 +2,7 @@ import { capitalize } from "@/common/utils/string"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { ATTRIBUTES, FLING_EFFECT, LANGUAGES } from "./constants"
-import { PokeDollars } from "../../_utils/PokeDollars"
+import { PokeDollars } from "../../../../_utils/PokeDollars"
 import styles from "@/common/styles/custom.module.scss";
 
 type DetailsProps = {

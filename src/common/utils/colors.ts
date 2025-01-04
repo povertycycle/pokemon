@@ -10,12 +10,16 @@ export function generateBackground(p: string | HTMLImageElement, amount?: number
     return new Promise((rp) => {
         prominent(p, { amount: (amount ?? 7), group: (group ?? 33), format: "hex" })
             .then(c => {
-                const filter = (c as string[]).filter(
+                let filter = (c as string[]).filter(
                     color => {
+
                         let l = Math.round(getLuma(color));
                         return (l > 60 && l < 235) ? color : undefined;
                     }
                 )
+                if (filter.length < 2) {
+                    filter = c as string[];
+                }
                 const sort = sortByHue(filter).reduce(
                     (a: { tp: string[], m: number }, c: string, _, nP: string[]) => {
                         nP.forEach((d: string) => {

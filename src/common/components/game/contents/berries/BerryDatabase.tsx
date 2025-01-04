@@ -1,26 +1,32 @@
-import Loading from "@/common/components/_utils/loading/Loading";
-import styles from "@/common/styles/transitions.module.scss";
 import { useEffect, useState } from "react";
-import Empty from "../databases/poke-card/Empty";
-import { BerryData } from "./constants";
+import { DatabaseDisplayProps } from "../databases/_utils";
+import styles from "@/common/styles/transitions.module.scss";
+import { BerryData } from "@/common/interfaces/berry";
+import Loading from "@/common/components/_utils/loading/Loading";
+import Empty from "@/common/components/_utils/Empty";
 import Display from "./Display";
+import { getAllBerries } from "@/database/berries-db";
 
-const BerryDatabase: React.FC = () => {
-    const [berries, setBerries] = useState<BerryData[] | null | undefined>();
+const BerryDatabase: React.FC<DatabaseDisplayProps> = ({ back }) => {
+    const [berries, setBerries] = useState<BerryData[] | null>();
 
     useEffect(() => {
-        // getAllBerries().th
-    }, [])
+        getAllBerries().then(res => {
+            setBerries(res);
+        }).catch(err => {
+            setBerries(null);
+        });
+    }, []);
 
     return (
-        <div className={`absolute z-0 w-full h-full overflow-hidden flex items-center justify-center top-0 ${styles.fadeIn}`}>
+        <div className={`relative w-full h-full overflow-hidden flex items-center justify-center top-0 ${styles.fadeIn}`}>
             {
                 berries === undefined ?
                     <Loading /> :
                     (
-                        berries === null || Object().length === 0 ?
+                        berries === null || berries.length === 0 ?
                             <Empty /> :
-                            <Display berries={berries} />
+                            <Display berries={berries} back={back} />
                     )
             }
         </div>

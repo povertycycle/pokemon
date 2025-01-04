@@ -76,14 +76,14 @@ const Sorter: React.FC<SorterProps> = ({ method, setMoves }) => {
             </button>
             <div onClick={() => { setShow(false) }} className={`${show ? "max-sm:max-h-dvh" : "max-sm:max-h-0 max-sm:delay-500"} max-sm:fixed max-sm:bottom-0 max-sm:left-0 h-dvh sm:h-full max-sm:z-50 w-full max-sm:flex max-sm:flex-col max-sm:justify-end max-sm:overflow-hidden`}>
                 <div className={`${show ? "opacity-100" : "opacity-0"} transition-opacity duration-200 ease-in sm:hidden absolute w-full h-full bg-black/65 top-0 left-0 z-0`} />
-                <div className={`relative z-1 w-full flex flex-col max-sm:bg-white sm:h-full max-sm:rounded-t-[16px] max-sm:overflow-hidden ease-in transition-max-height duration-400 ${show ? "max-sm:max-h-dvh" : "max-sm:max-h-0"}`}>
+                <div className={`mobile__template--card ${show ? "max-sm:max-h-dvh" : "max-sm:max-h-0"}`}>
                     <div className="sm:hidden w-full flex items-center pl-6 py-[14px] text-[1.25rem] leading-6" style={{ background: palette[1], color: text[1] }}>
                         <span>Sort By</span>
                         <div className="absolute right-4">
                             <i className="text-[1.5rem] ri-close-line" />
                         </div>
                     </div>
-                    <div className="sm:h-full w-full flex sm:justify-end max-sm:flex-col gap-2 max-sm:px-4 max-sm:py-6 sm:items-end">
+                    <div className="max-sm:bg-white sm:h-full w-full flex sm:justify-end max-sm:flex-col gap-2 max-sm:px-4 max-sm:py-6 sm:items-end">
                         {
                             [
                                 ...(method === "level-up" ? [{ title: "Lv", icon: "ri-sort-number-asc", handler: sortLevel }] : []),

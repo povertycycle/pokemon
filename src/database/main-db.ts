@@ -1,10 +1,11 @@
 import { STORE_KEYS, Stores } from "@/common/constants/enums";
 import { POKEMON_DB } from "@/common/constants/main";
-import { BASE_API_URL_ITEM, BASE_API_URL_MOVES, BASE_API_URL_POKEMON } from "@/common/constants/urls";
+import { BASE_API_URL_BERRIES, BASE_API_URL_ITEM, BASE_API_URL_MOVES, BASE_API_URL_POKEMON } from "@/common/constants/urls";
 import { PokeAPIResponse } from "./_utils";
 import { updateItemDatabase } from "./items-db";
 import { updateMoveDatabase } from "./move-db";
 import { updatePokemonDatabase } from "./pokemon-db";
+import { updateBerryDatabase } from "./berries-db";
 
 export const initDB = (): Promise<boolean> => {
     const version = 8;
@@ -93,7 +94,8 @@ export async function validateGameDatabase(): Promise<string | null> {
         [
             { store: Stores.Pokemon, url: BASE_API_URL_POKEMON, updater: updatePokemonDatabase },
             { store: Stores.Items, url: BASE_API_URL_ITEM, updater: updateItemDatabase },
-            { store: Stores.Moves, url: BASE_API_URL_MOVES, updater: updateMoveDatabase }
+            { store: Stores.Moves, url: BASE_API_URL_MOVES, updater: updateMoveDatabase },
+            { store: Stores.Berries, url: BASE_API_URL_BERRIES, updater: updateBerryDatabase }
         ].map(data => validateStore(data.store, data.url, data.updater))
     ).then(res => {
         return res.find(r => !!r) ?? null;

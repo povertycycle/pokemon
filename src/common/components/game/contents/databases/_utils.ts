@@ -1,3 +1,5 @@
+import { Tab } from "@/common/constants/enums";
+
 export type DatabaseDisplayProps = {
-    back: () => void;
+    back: (source: Tab) => void;
 }

@@ -1,4 +1,4 @@
-export type PokeAPIEncounters = {
+export interface PokeAPIEncounters {
     location_area: {
         name: string;
     }

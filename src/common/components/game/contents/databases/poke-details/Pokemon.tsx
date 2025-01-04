@@ -1,3 +1,4 @@
+import Spinner from "@/common/components/_utils/loading/Spinner";
 import { TYPE_COLORS } from "@/common/constants/colors";
 import { usePalette } from "@/common/hooks/usePalette";
 import { PokemonData } from "@/common/interfaces/pokemon";
@@ -5,6 +6,9 @@ import { isDark } from "@/common/utils/colors";
 import { PaletteContext } from "./_utils";
 import Abilities from "./abilities/Abilities";
 import Details from "./details/Details";
+import FlavorText from "./details/FlavorText";
+import Locations from "./encounters/Locations";
+import Evolutions from "./evolutions/Variations";
 import BugReporting from "./feedback/BugReporting";
 import Header from "./header/Header";
 import Moves from "./moves/Moves";
@@ -13,11 +17,6 @@ import HeldItems from "./species/HeldItems";
 import SpriteViewer from "./sprites/SpriteViewer";
 import Effectiveness from "./stats/Effectiveness";
 import Stats from "./stats/Stats";
-import Evolutions from "./evolutions/Variations";
-import Locations from "./encounters/Locations";
-import Spinner from "@/common/components/_utils/loading/Spinner";
-import Bookmarks from "../bookmarks/Bookmarks";
-import FlavorText from "./details/FlavorText";
 
 type PokemonProps = {
     data: PokemonData;

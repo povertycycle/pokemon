@@ -16,7 +16,7 @@ export type PokeAPIEvolution = {
 
 type Data = { name: string; url: string; }
 
-export type PokeAPIEvolutionDetails = {
+export interface PokeAPIEvolutionDetails {
     gender: number | null;
     held_item: Data | null;
     item: Data | null

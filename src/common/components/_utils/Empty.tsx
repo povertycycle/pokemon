@@ -1,4 +1,3 @@
-
 const Empty: React.FC = () => {
     return (
         <div className="w-full h-full text-[1.5rem] sm:text-[2rem] leading-[2rem] flex flex-col items-center justify-center text-center">

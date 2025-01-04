@@ -1,15 +1,16 @@
-import FetchScroller from "@/common/components/_utils/FetchScroller";
+import FetchScroller from "@/common/components/_utils/data-load/FetchScroller";
 import { PokemonCard } from "@/common/interfaces/pokemon";
 import React, { RefObject, useEffect, useRef, useState } from "react";
 import Filter from "./Filter";
 import Pokemon from "./Pokemon";
 import { useSearchParams } from "next/navigation";
 import { NAME_QUERY } from "@/common/constants/main";
+import { DatabaseDisplayProps } from "../_utils";
+import { resetScroll } from "@/common/utils/dom";
 
 type DisplayProps = {
     pokemons: PokemonCard[];
-    back: () => void;
-}
+} & DatabaseDisplayProps;
 
 const Display: React.FC<DisplayProps> = ({ pokemons, back }) => {
     const query = useSearchParams()?.get(NAME_QUERY);
@@ -30,29 +31,25 @@ const Display: React.FC<DisplayProps> = ({ pokemons, back }) => {
         if (!!!nameFilter && !!!typeFilter) {
             setActiveList(pokemons);
         } else {
-            setActiveList(pokemons.filter(p => (
-                p.name.toLowerCase().includes(nameFilter)) &&
+            setActiveList(pokemons.filter(p =>
+            (
+                p.name.toLowerCase().includes(nameFilter) &&
                 p.types.some(t => t.toLowerCase().includes(typeFilter))
+            )
             ))
-        }
-    }
-
-    function resetScroll() {
-        if (scrollRef.current) {
-            scrollRef.current.scrollTo({ top: 0, behavior: "instant" })
         }
     }
 
     function filterByName(value: string) {
         filterRef.current.name = value;
         doFilter();
-        resetScroll();
+        resetScroll(scrollRef.current);
     }
 
     function filterByType(type: string) {
         filterRef.current.type = type;
         doFilter();
-        resetScroll();
+        resetScroll(scrollRef.current);
     }
 
     return (
@@ -66,34 +63,51 @@ const Display: React.FC<DisplayProps> = ({ pokemons, back }) => {
 export default Display;
 
 const PokemonList: React.FC<{ list: PokemonCard[]; ref: RefObject<HTMLDivElement> }> = ({ list, ref }) => {
+    const BASE_DISPLAY = useRef<number>(0);
     const MAX_DISPLAY = useRef<number>(0);
     const [display, setDisplay] = useState<PokemonCard[]>([]);
 
     useEffect(() => {
         if (window.innerWidth < 640) {
+            BASE_DISPLAY.current = 12;
             MAX_DISPLAY.current = 12;
         } else if (window.innerWidth >= 640 && window.innerWidth < 1024) {
-            MAX_DISPLAY.current = 16;
+            BASE_DISPLAY.current = 16;
+            MAX_DISPLAY.current = 6;
         } else {
-            MAX_DISPLAY.current = 20;
+            BASE_DISPLAY.current = 20;
+            MAX_DISPLAY.current = 8;
         }
     }, []);
 
     useEffect(() => {
-        setDisplay(list.slice(0, MAX_DISPLAY.current));
+        setDisplay(list.slice(0, BASE_DISPLAY.current));
     }, [list])
 
     function fetchNext() {
-        setDisplay(prev => prev.concat(list.slice(prev.length, prev.length + MAX_DISPLAY.current)));
+        setDisplay(prev => {
+            return prev.concat(list.slice(prev.length, prev.length + MAX_DISPLAY.current))
+        });
     }
 
     return (
-        <FetchScroller ref={ref} hasNext={display.length < list.length} fetchNext={fetchNext}>
+        <FetchScroller ref={ref} hasNext={display.length < list.length} fetchNext={fetchNext} type="pokemons">
             <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4 sm:p-4">
                 {
-                    display.map(pokemon => (
-                        <Pokemon pokemon={pokemon} key={pokemon.name} />
-                    ))
+                    display.map(pokemon => {
+                        if (!!!pokemon.mainSprites.default || !!!pokemon.mainSprites.icon) {
+                            const species = list.find(poke => poke.species === pokemon.species);
+                            if (!!!pokemon.mainSprites.default) {
+                                pokemon.mainSprites.default = species?.mainSprites.default ?? "";
+                            }
+                            if (!!!pokemon.mainSprites.icon) {
+                                pokemon.mainSprites.icon = species?.mainSprites.icon ?? "";
+                            }
+                        }
+                        return (
+                            <Pokemon pokemon={pokemon} key={pokemon.name} />
+                        )
+                    })
                 }
             </div>
         </FetchScroller>

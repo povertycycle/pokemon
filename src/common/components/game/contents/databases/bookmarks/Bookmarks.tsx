@@ -29,14 +29,14 @@ const Bookmarks: React.FC = () => {
             </div>
             <div onClick={() => { setShow(false) }} className={`${show ? "max-sm:max-h-dvh" : "max-sm:max-h-0 max-sm:delay-500"} max-sm:w-full max-sm:fixed max-sm:bottom-0 max-sm:left-0 h-dvh sm:h-full max-sm:z-50 max-sm:flex max-sm:flex-col max-sm:justify-end max-sm:overflow-hidden`}>
                 <div className={`${show ? "opacity-100" : "opacity-0"} transition-opacity duration-200 ease-in sm:hidden absolute w-full h-full bg-black/65 top-0 left-0 z-0`} />
-                <div className={`relative z-1 w-full flex flex-col max-sm:bg-white sm:h-full sm:items-end max-sm:rounded-t-[16px] max-sm:overflow-hidden ease-in transition-max-height duration-400 ${show ? "max-sm:max-h-dvh" : "max-sm:max-h-0"}`}>
+                <div className={`mobile__template--card sm:items-end ${show ? "max-sm:max-h-dvh" : "max-sm:max-h-0"}`}>
                     <div className="sm:hidden w-full flex items-center pl-6 py-[14px] text-[1.25rem] leading-6" style={{ background: palette[1], color: text[1] }}>
                         <span>Jump To</span>
                         <div className="absolute right-4">
                             <i className="text-[1.5rem] ri-close-line" />
                         </div>
                     </div>
-                    <div className="font-medium text-[1rem] sm:text-[1.125rem] sm:py-16 sm:h-full w-full flex sm:justify-between flex-col sm:items-start gap-4 max-sm:px-4 max-sm:py-6 whitespace-nowrap " style={{ color: palette[1] }}>
+                    <div className="max-sm:bg-white font-medium text-[1rem] sm:text-[1.125rem] sm:py-16 sm:h-full w-full flex sm:justify-between flex-col sm:items-start gap-4 max-sm:px-4 max-sm:py-6 whitespace-nowrap " style={{ color: palette[1] }}>
                         {
                             Object.values(Bookmark).map(bookmark => {
                                 const { icon, id } = BOOKMARK_DATA[bookmark]

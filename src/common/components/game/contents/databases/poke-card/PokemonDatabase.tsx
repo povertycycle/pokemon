@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Empty from "./Empty";
+import Empty from "../../../../_utils/Empty";
 import Display from "./Display";
 import styles from "@/common/styles/transitions.module.scss";
 import Loading from "@/common/components/_utils/loading/Loading";

@@ -76,6 +76,9 @@
         -webkit-backface-visibility: hidden;
         -ms-backface-visibility: hidden;
     }
+    .mobile__template--card {
+        @apply overflow-y-auto relative z-1 w-full flex flex-col sm:h-full max-sm:rounded-t-[16px] max-sm:overflow-hidden ease-in transition-max-height duration-400
+    }
 
 
     .section__header {

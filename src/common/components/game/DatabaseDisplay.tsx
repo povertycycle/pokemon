@@ -13,7 +13,7 @@ type DatabaseDisplayProps = {
 const DatabaseDisplay: React.FC<DatabaseDisplayProps> = ({ returnToMain, tabState }) => {
     const [tab, setTab] = useState<Tab | null>(tabState ? TAB_STATES[tabState] : null);
 
-    const returnToSelection = () => {
+    const returnToSelection = (source: Tab) => {
         setTab(null);
     }
 

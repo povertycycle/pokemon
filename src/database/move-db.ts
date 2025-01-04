@@ -48,14 +48,14 @@ export async function getMoveData(id: string): Promise<MoveData | null> {
                         if (!res) {
                             reject("Unable to fetch data from API. Please contact developer");
                         } else {
-                            // if (cacheIsAllowed()) {
-                            const insertTx = db.transaction(Stores.Moves, 'readwrite').objectStore(Stores.Moves).put(res, id);
-                            insertTx.onsuccess = () => {
+                            if (cacheIsAllowed()) {
+                                const insertTx = db.transaction(Stores.Moves, 'readwrite').objectStore(Stores.Moves).put(res, id);
+                                insertTx.onsuccess = () => {
+                                    resolve(res);
+                                };
+                            } else {
                                 resolve(res);
-                            };
-                            // } else {
-                            //     resolve(res);
-                            // }
+                            }
                         }
                     }).catch(err => {
                         reject(String(err));

@@ -3,27 +3,12 @@ export type Item = {
     name: string,
 }
 
-export type ItemData = {
-    name: string,
-    category: string,
-    attributes?: string[]
-    baby_trigger_for?: string,
-    cost?: number,
-    effect?: string,
-    flavor_text: string,
-    fling_effect?: string,
-    fling_power?: number,
-    names?: {name: string, language: string}[],
-    sprites?: string,
-    games?: string[],
-}
-
 export enum OrderType {
     ASC = 1,
     DESC = 2,
 }
 
-export const CATEGORIES: {[tag:string]: {name:string,pocket:string}} = {
+export const CATEGORIES: { [tag: string]: { name: string, pocket: string } } = {
     "stat-boosts": {
         "name": "Stat boosts",
         "pocket": "Battle Items"
@@ -102,7 +87,7 @@ export const CATEGORIES: {[tag:string]: {name:string,pocket:string}} = {
     },
     "event-items": {
         "name": "Event items",
-        "pocket": "Key Items" 
+        "pocket": "Key Items"
     },
     "gameplay": {
         "name": "Gameplay",
