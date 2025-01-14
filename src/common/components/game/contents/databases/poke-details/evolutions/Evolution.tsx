@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { Fragment, useEffect, useState } from "react";
 import { ItemSprite, PokeEvolution } from "./_utils";
+import Spinner from "@/common/components/_utils/loading/Spinner";
 
 type EvolutionProps = {
     data: PokeEvolution;
@@ -18,7 +19,7 @@ type EvolutionProps = {
 
 const Evolution: React.FC<EvolutionProps> = ({ data, isActive, parent, child, single }) => {
     const { pokemon, evolution } = data;
-    const { palette } = usePalette(pokemon.mainSprites.default);
+    const { palette, localUrl } = usePalette(pokemon.mainSprites.default);
     const identifiers = pokemon.name?.replace(pokemon.species, "").replaceAll("-", " ");
 
     return (
@@ -27,10 +28,13 @@ const Evolution: React.FC<EvolutionProps> = ({ data, isActive, parent, child, si
             <div className="w-full h-full flex flex-col justify-center bg-gradient-to-r from-black/35 relative">
                 <div className={`absolute ${!!single ? "sm:left-[50%] sm:-translate-x-[50%]" : "sm:right-0"} max-sm:right-0 max-w-[128px] max-h-[128px] w-full aspect-square`}>
                     {
-                        !isActive && <Link target="_blank" href={`/pokemon?id=${pokemon.id}`} className="peer w-full h-full absolute z-10 top-0 left-0">
-                        </Link>
+                        !isActive && <Link target="_blank" href={`/pokemon?id=${pokemon.id}`} className="peer w-full h-full absolute z-10 top-0 left-0" />
                     }
-                    <Image className={`h-full w-full object-cover z-0 sm:peer-hover:scale-125`} src={pokemon.mainSprites.default} alt="" width={128} height={128} />
+                    {
+                        palette ?
+                            <Image className={`h-full w-full object-cover z-0 sm:peer-hover:scale-125`} src={localUrl} alt="" width={128} height={128} /> :
+                            <Spinner />
+                    }
                 </div>
                 <div className={`max-w-[480px] w-full h-[72px] flex relative`}>
                     <div className="h-full aspect-square flex items-center justify-center">

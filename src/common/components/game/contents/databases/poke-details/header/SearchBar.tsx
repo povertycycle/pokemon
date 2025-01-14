@@ -84,7 +84,7 @@ const SearchBar: React.FC = () => {
 export default SearchBar;
 
 export const PokeMiniCard: React.FC<{ data: PokemonCard }> = ({ data }) => {
-    const { palette } = usePalette(data.mainSprites.default);
+    const { palette, localUrl } = usePalette(data.mainSprites.default);
     const identifiers = data.name?.replace(data.species, "").replaceAll("-", " ");
 
     return (
@@ -97,7 +97,11 @@ export const PokeMiniCard: React.FC<{ data: PokemonCard }> = ({ data }) => {
                     <Link target="_blank" href={`/pokemon?id=${data.id}`} className={`border-b border-black overflow-hidden h-full w-full bg-black relative`}>
                         <div className="w-full h-full absolute top-0 left-0 z-0" style={{ background: `linear-gradient(90deg,${palette.at(1)}80,${palette.at(0)}80)` }} />
                         <div className="w-full h-full absolute top-0 left-0 z-1 flex items-center justify-end bg-gradient-to-r from-black/35">
-                            <Image className="aspect-square w-[128px] object-cover" src={data.mainSprites.default} alt="" width={128} height={128} />
+                            {
+                                palette ?
+                                    <Image className="aspect-square w-[128px] object-cover" src={localUrl} alt="" width={128} height={128} /> :
+                                    <Spinner />
+                            }
                         </div>
                         <div className={`text-white h-full flex z-2 relative w-full sm:hover:bg-black/0 bg-black/25 cursor-pointer`}>
                             <div className="h-full aspect-square shrink-0">

@@ -14,13 +14,19 @@ type PokemonProps = {
 }
 
 const Pokemon: React.FC<PokemonProps> = ({ pokemon }) => {
-    const { palette } = usePalette(pokemon.mainSprites.default);
+    const { palette, localUrl } = usePalette(pokemon.mainSprites.default);
 
     return (
         <div className={`h-[80px] sm:h-[256px] flex flex-col items-center justify-center relative overflow-hidden`}>
             {
                 !!palette ?
-                    <Card pokemon={pokemon} palette={palette} /> :
+                    <Card pokemon={{
+                        ...pokemon,
+                        mainSprites: {
+                            ...pokemon.mainSprites,
+                            default: localUrl
+                        }
+                    }} palette={palette} /> :
                     <div className="w-full h-[96px] flex items-center justify-center">
                         <Spinner />
                     </div>

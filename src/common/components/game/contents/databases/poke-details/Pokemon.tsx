@@ -23,11 +23,17 @@ type PokemonProps = {
 }
 
 const Pokemon: React.FC<PokemonProps> = ({ data }) => {
-    const { palette } = usePalette(data.mainSprites.default);
+    const { palette, localUrl } = usePalette(data.mainSprites.default);
 
     return (
         !!palette ?
-            <Display data={data} palette={palette} /> :
+            <Display data={{
+                ...data,
+                mainSprites: {
+                    ...data.mainSprites,
+                    default: localUrl,
+                }
+            }} palette={palette} /> :
             <div className="w-full h-[96px] flex items-center justify-center m-auto">
                 <Spinner />
             </div>
