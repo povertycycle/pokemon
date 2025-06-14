@@ -89,7 +89,7 @@ const Data: React.FC<ItemData> = (item) => {
                 </p>
             </div>
             <div className="flex flex-wrap gap-3 px-2 sm:px-3 text-xs sm:text-sm my-2">
-                {item.cost && (
+                {!!item.cost && (
                     <span className="flex items-center gap-1">
                         <PokeDollars />
                         <b>{item.cost}</b>
