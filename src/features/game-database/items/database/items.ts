@@ -1,9 +1,36 @@
 import { POKEMON_DB } from "@/constants/game/main";
-import { ItemBase, ItemData } from "../interfaces/items";
+import { ItemBase, ItemData, ItemRequest } from "../interfaces/items";
 import { Stores } from "@/constants/game/enums";
 import { BASE_API_URL_ITEM } from "@/constants/game/urls";
 import { getService } from "@/requests/fetch";
 import { PokeAPIItemData } from "@/interfaces/poke-api";
+
+/**
+ * Get all items data from database
+ *
+ * @returns List of items data or null
+ */
+export async function getAllItems(): Promise<ItemRequest[]> {
+    return new Promise((res, reject) => {
+        const request = indexedDB.open(POKEMON_DB);
+
+        request.onsuccess = () => {
+            const db: IDBDatabase = request.result;
+            const itemList = db
+                .transaction(Stores.Items, "readonly")
+                .objectStore(Stores.Items)
+                .getAll();
+
+            itemList.onsuccess = () => {
+                res(itemList.result);
+            };
+
+            itemList.onerror = (e: any) => {
+                reject(e?.message);
+            };
+        };
+    });
+}
 
 /**
  * Get item data

@@ -22,7 +22,6 @@ export const Moves: React.FC<MovesProps> = ({ moves }) => {
     );
     const [version, setVersion] = useState<string>(availableVersion[0]);
     const { name, background } = getVersionData(version);
-    console.log(moves[version]);
 
     return (
         <div id={id} className="flex flex-col w-full relative">

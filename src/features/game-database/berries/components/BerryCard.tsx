@@ -1,14 +1,14 @@
-import { BerryData, BerryDetails, BerryRequest } from "../interfaces/berries";
-import { useInView } from "@/utils/hooks";
-import { getBerryDetails } from "../database/berries";
-import { Spinner } from "@/components/loaders/Spinner";
-import { useState } from "react";
-import { TYPE_COLORS } from "@/constants/game/colors";
-import { getItemDetails } from "../../items/database/items";
-import { SENTENCES_REGEX } from "@/constants/regex";
-import { usePalette } from "../../pokemon/hooks/usePalette";
 import { PokeDollars } from "@/components/icons/Game";
-import { FLING_EFFECT } from "../../items/constants/constants";
+import { Spinner } from "@/components/loaders/Spinner";
+import { TYPE_COLORS } from "@/constants/game/colors";
+import { FLING_EFFECT } from "@/constants/game/main";
+import { SENTENCES_REGEX } from "@/constants/regex";
+import { useInView } from "@/utils/hooks";
+import { useState } from "react";
+import { getItemDetails } from "../../items/database/items";
+import { usePalette } from "../../pokemon/hooks/usePalette";
+import { getBerryDetails } from "../database/berries";
+import { BerryDetails, BerryRequest } from "../interfaces/berries";
 
 /**
  * Berry card display
@@ -56,10 +56,10 @@ export const BerryCard: React.FC<BerryRequest> = (props) => {
     return (
         <div
             ref={ref}
-            className="w-full flex items-center justify-center sm:rounded-lg overflow-hidden bg-black"
+            className="w-full flex items-center justify-center sm:rounded-lg overflow-hidden bg-black sm:min-h-96"
         >
             {data === undefined ? (
-                <Spinner />
+                <Spinner color="light" />
             ) : data === null || !data.berry || !data.item ? (
                 <div className="text-base-red-dark">Berry Data Missing</div>
             ) : (
@@ -82,7 +82,7 @@ const Card: React.FC<{
     const lighter = getColorBetween(palette?.[0] ?? "", "#ffffff");
 
     return !palette ? (
-        <Spinner />
+        <Spinner color="light" />
     ) : (
         <div
             className="w-full flex flex-col h-full max-sm:border-b max-sm:border-black text-white/85"

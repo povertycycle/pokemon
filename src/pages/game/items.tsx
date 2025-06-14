@@ -1,10 +1,8 @@
-import { InProgress } from "@/components/internal/InProgress";
+import { Database } from "@/features/game-database/items/Database";
 
 /**
- * Root game database page
+ * Root pokemon database page
  */
-const Page: React.FC = () => {
-    return <InProgress />;
-};
-
-export default Page;
+export default function Page() {
+    return <Database />;
+}

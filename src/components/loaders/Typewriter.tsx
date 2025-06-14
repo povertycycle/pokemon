@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 interface TypewriterProps {
-    text: string;
+    text?: string;
     duration?: number;
 }
 
@@ -10,7 +10,10 @@ interface TypewriterProps {
  * @param text String text
  * @param duration Optional duration
  */
-export const Typewriter: React.FC<TypewriterProps> = ({ text, duration }) => {
+export const Typewriter: React.FC<TypewriterProps> = ({
+    text = "",
+    duration,
+}) => {
     const [typed, setTyped] = useState<string>("");
 
     useEffect(() => {

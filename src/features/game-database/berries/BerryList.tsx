@@ -47,25 +47,23 @@ export const BerryList: React.FC<BerryList> = ({ berries }) => {
  */
 const List: React.FC<{ list: BerryRequest[] }> = ({ list }) => {
     const FETCH_SIZE = 12;
-    const [display, setDisplay] = useState<BerryRequest[]>([]);
+    const [page, setPage] = useState<number>(1);
 
     useEffect(() => {
-        setDisplay(list.slice(0, FETCH_SIZE));
+        setPage(1);
     }, [list]);
 
-    function fetchNext() {
-        setDisplay((prev) =>
-            prev.concat(list.slice(prev.length, prev.length + FETCH_SIZE))
-        );
-    }
+    const fetchNext = () => {
+        setPage((prev) => prev + 1);
+    };
 
     return (
         <InfiniteScroll
-            hasNext={display.length < list.length}
+            hasNext={page * FETCH_SIZE < list.length}
             fetchNext={fetchNext}
         >
             <div className="w-full max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:gap-2 sm:py-2 sm:px-3">
-                {display.map((berry) => (
+                {list.slice(0, page * FETCH_SIZE).map((berry) => (
                     <BerryCard {...berry} key={berry.id} />
                 ))}
             </div>

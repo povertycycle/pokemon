@@ -280,19 +280,3 @@ export const VERSION_GROUP_GAMES: Record<string, string[]> = {
         "shining-pearl",
     ],
 };
-
-export const LANGUAGES: Record<string, string> = {
-    "ja-Hrkt": "日本語",
-    roomaji: "Official roomaji",
-    ko: "한국어",
-    "zh-Hant": "Chinese (Traditional)",
-    fr: "Français",
-    de: "Deutsch",
-    es: "Español",
-    it: "Italian",
-    en: "English",
-    cs: "Czech",
-    ja: "Japanese",
-    "pt-BR": "Brazilian Portuguese",
-    "zh-Hans": "Chinese (Simplified)",
-};

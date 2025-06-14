@@ -1,4 +1,10 @@
-import { SyntheticEvent, useEffect, useRef, useState } from "react";
+import {
+    DependencyList,
+    SyntheticEvent,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 
 /**
  * Hook to process objects getting into viewports
@@ -11,9 +17,11 @@ import { SyntheticEvent, useEffect, useRef, useState } from "react";
 export const useInView = ({
     onIntoView,
     keep,
+    deps,
 }: {
     onIntoView: Function;
     keep?: boolean;
+    deps?: DependencyList;
 }) => {
     const ref = useRef(null);
 
@@ -33,7 +41,7 @@ export const useInView = ({
         return () => {
             observer.disconnect();
         };
-    }, []);
+    }, [deps]);
 
     return ref;
 };

@@ -40,6 +40,7 @@ module.exports = {
                 "base-red-9": "#5f0707",
                 "base-red-10": "#390404",
                 "base-white": "#f0f0f0",
+                "base-purple-7": "#4b0478",
             },
             dropShadow: {
                 "text-mobile": "0 0 1px black",

@@ -1,11 +1,9 @@
 import { useInView } from "@/utils/hooks";
-import { MutableRefObject } from "react";
 
 type InfiniteScrollProps = {
     hasNext: boolean;
     fetchNext: () => void;
     children: React.ReactNode;
-    scrollRef?: MutableRefObject<HTMLDivElement | null>;
 };
 
 /**
