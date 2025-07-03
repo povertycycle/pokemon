@@ -11,7 +11,7 @@ import { usePalette } from "../../../hooks/usePalette";
 import { PokemonBase } from "../../../interfaces/pokemon";
 import { getSprite } from "../../../utils/sprites";
 import { getIdentifiers } from "../../../utils/strings";
-import { PokeType } from "../../ui/PokeType";
+import { PokeType } from "../../../../../../components/icons/PokeType";
 import { Conditions, EVOLUTION_HTML_ID } from "./Conditions";
 
 type EvolutionProps = {

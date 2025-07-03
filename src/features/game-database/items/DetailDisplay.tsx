@@ -70,7 +70,7 @@ const Data: React.FC<ItemData> = (item) => {
             <div className="mx-auto font-medium tracking-wide text-lg">
                 {item.names?.find((n) => n.language === "en")?.name}
             </div>
-            <div className="flex gap-1 items-center">
+            <div className="flex gap-1 items-center my-2">
                 <div className="w-20 h-20 p-4 flex items-center justify-center shrink-0">
                     {item?.sprite ? (
                         <img
@@ -88,7 +88,7 @@ const Data: React.FC<ItemData> = (item) => {
                     {item.descriptions.flavorText}
                 </p>
             </div>
-            <div className="flex flex-wrap gap-3 px-2 sm:px-3 text-xs sm:text-sm my-2">
+            <div className="flex flex-wrap gap-3 text-xs sm:text-sm mt-2 mb-4">
                 {!!item.cost && (
                     <span className="flex items-center gap-1">
                         <PokeDollars />

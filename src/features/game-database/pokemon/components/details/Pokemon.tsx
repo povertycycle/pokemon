@@ -5,7 +5,7 @@ import { isDark } from "@/utils/colors";
 import { usePalette } from "../../hooks/usePalette";
 import { PokemonData } from "../../interfaces/pokemon";
 import { getSprite } from "../../utils/sprites";
-import { PokeType } from "../ui/PokeType";
+import { PokeType } from "../../../../../components/icons/PokeType";
 import { Abilities } from "./abilities/Abilities";
 import { Bio } from "./bio/Bio";
 import { Details } from "./bio/Details";

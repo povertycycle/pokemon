@@ -237,6 +237,9 @@ export interface PokeAPIMoveData {
         language: {
             name: string;
         };
+        version_group: {
+            name: string;
+        };
     }[];
     learned_by_pokemon: {
         name: string;

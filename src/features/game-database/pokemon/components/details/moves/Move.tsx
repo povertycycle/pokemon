@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { IMove } from "../../../../moves/interfaces/moves";
-import { useInView } from "@/utils/hooks";
 import { Spinner } from "@/components/loaders/Spinner";
+import { CATEGORY_COLORS, TYPE_COLORS } from "@/constants/game/colors";
 import { getMoveData } from "@/requests/moves";
-import { TYPE_COLORS } from "@/constants/game/colors";
+import { useInView } from "@/utils/hooks";
+import { useState } from "react";
+import { MoveBase } from "../../../../moves/interfaces/moves";
 
 type MoveProps = {
     id: number;
@@ -15,7 +15,7 @@ type MoveProps = {
  * Move display
  */
 export const Move: React.FC<MoveProps> = ({ id, level, version }) => {
-    const [move, setMove] = useState<IMove | null>();
+    const [move, setMove] = useState<MoveBase | null>();
 
     const ref = useInView({
         onIntoView: () => {
@@ -37,7 +37,7 @@ export const Move: React.FC<MoveProps> = ({ id, level, version }) => {
             className=" w-full grid max-sm:grid-rows-2 sm:grid-cols-[1.25fr_1.125fr_1fr] grid-flow-col z-1 py-1 px-2 sm:px-3 whitespace-nowrap"
         >
             {move?.data === undefined ? (
-                <div className="max-sm:row-span-2 sm:col-span-3">
+                <div className="max-sm:row-span-2 sm:col-span-3 max-sm:min-h-12 sm:min-h-8">
                     <Spinner size={12} />
                 </div>
             ) : move?.data === null ? (
@@ -108,10 +108,4 @@ export const Move: React.FC<MoveProps> = ({ id, level, version }) => {
             )}
         </div>
     );
-};
-
-const CATEGORY_COLORS: Record<string, string> = {
-    physical: "#EB5628",
-    special: "#375AB2",
-    status: "#828282",
 };

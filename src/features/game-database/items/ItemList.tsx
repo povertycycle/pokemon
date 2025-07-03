@@ -1,11 +1,11 @@
 import { InfiniteScroll } from "@/components/loaders/InfiniteScroll";
 import { NAME_QUERY } from "@/constants/game/main";
+import { GITHUB_ITEM_PATH } from "@/constants/game/urls";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { ItemRequest } from "./interfaces/items";
 import { Filter } from "./components/Filter";
-import { GITHUB_ITEM_PATH } from "@/constants/game/urls";
 import { DetailDisplay } from "./DetailDisplay";
+import { ItemRequest } from "./interfaces/items";
 
 interface ItemListProps {
     items: ItemRequest[];
@@ -80,7 +80,7 @@ const List: React.FC<{
             hasNext={page * FETCH_SIZE < list.length}
             fetchNext={fetchNext}
         >
-            <div className="w-full flex flex-col text-sm gap-0.5">
+            <div className="w-full flex flex-col text-sm gap-0.5 tracking-wide">
                 {list.slice(0, page * FETCH_SIZE).map((item) => (
                     <div
                         key={item.id}
@@ -96,16 +96,25 @@ const List: React.FC<{
 };
 
 const ItemRow: React.FC<{ id: number; name: string }> = ({ id, name }) => {
+    const [imgNotFound, setImgNotFound] = useState<boolean>(false);
+
     return (
         <>
-            <div className="h-9 w-9 shrink-0">
-                {name && (
-                    <img
-                        alt=""
-                        className="h-full w-full"
-                        src={`${GITHUB_ITEM_PATH}/${name}.png`}
-                    />
-                )}
+            <div className="h-9 w-9 shrink-0 flex">
+                {name &&
+                    (imgNotFound ? (
+                        <i className="ri-question-mark m-auto" />
+                    ) : (
+                        <img
+                            alt=""
+                            className="h-full w-full"
+                            src={`${GITHUB_ITEM_PATH}/${name}.png`}
+                            onError={(e) => {
+                                (e.target as HTMLImageElement).onerror = null;
+                                setImgNotFound(true);
+                            }}
+                        />
+                    ))}
             </div>
             <span className="capitalize">{name.replaceAll("-", " ")}</span>
         </>

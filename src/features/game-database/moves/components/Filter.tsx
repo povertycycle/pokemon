@@ -14,12 +14,12 @@ type FilterProps = {
  */
 export const Filter: React.FC<FilterProps> = ({ filter, setFilter }) => {
     return (
-        <NavigationLayout route="items">
+        <NavigationLayout route="moves">
             <div className="h-full sm:max-w-screen-xs w-full">
                 <InputDebounced
                     defaultValue={filter}
                     clearButton
-                    placeholder="Find items..."
+                    placeholder="Find moves..."
                     onChange={setFilter}
                 />
             </div>

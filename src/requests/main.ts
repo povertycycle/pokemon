@@ -18,7 +18,7 @@ import { getService } from "./fetch";
  * @returns Success status boolean
  */
 export const initCacheRegistry = (): Promise<boolean> => {
-    const version = 9;
+    const version = 10;
 
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(POKEMON_DB, version);

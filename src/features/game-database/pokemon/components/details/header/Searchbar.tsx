@@ -15,7 +15,7 @@ import {
 } from "../../../interfaces/pokemon";
 import { getSprite } from "../../../utils/sprites";
 import { getIdentifiers } from "../../../utils/strings";
-import { PokeType } from "../../ui/PokeType";
+import { PokeType } from "../../../../../../components/icons/PokeType";
 
 /**
  * Search bar component

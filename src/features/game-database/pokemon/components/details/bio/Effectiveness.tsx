@@ -2,7 +2,7 @@ import { PaletteContext } from "@/stores/contexts";
 import { useContext, useState } from "react";
 import { BOOKMARK_DATA } from "../header/Bookmarks";
 import { TYPE_COLORS } from "@/constants/game/colors";
-import { PokeType } from "../../ui/PokeType";
+import { PokeType } from "../../../../../../components/icons/PokeType";
 
 type EffectivenessProps = {
     types: string[];

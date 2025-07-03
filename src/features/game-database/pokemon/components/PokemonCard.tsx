@@ -12,7 +12,7 @@ import { PokeData, PokemonBase, PokeRequest } from "../interfaces/pokemon";
 import { getSprite } from "../utils/sprites";
 import { getIdentifiers } from "../utils/strings";
 import styles from "./animate.module.scss";
-import { PokeType } from "./ui/PokeType";
+import { PokeType } from "../../../../components/icons/PokeType";
 
 /**
  * Card display on database list
