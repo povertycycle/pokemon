@@ -5,12 +5,10 @@ import { CATEGORY_COLORS } from "@/constants/game/colors";
 import { BASE_API_URL_MOVES } from "@/constants/game/urls";
 import { SENTENCES_REGEX } from "@/constants/regex";
 import { getMoveData } from "@/requests/moves";
-import { getPokemonNameById } from "@/requests/pokemon";
 import { useEffect, useState } from "react";
 import { getVersionData } from "../pokemon/utils/versions";
+import { PokeIconList } from "./components/PokeIconList";
 import { IMove, MoveRequest } from "./interfaces/moves";
-import Link from "next/link";
-import { GAME_DATABASE } from "@/constants/routes";
 
 interface DetailDisplayProps {
     details: MoveRequest | null;
@@ -75,7 +73,7 @@ const Data: React.FC<{ name: string } & IMove> = (move) => {
             <div className="capitalize mx-auto font-medium tracking-wide text-lg">
                 {move.name.replaceAll("-", " ")}
             </div>
-            <p className="italic text-center text-xs sm:text-sm mt-8 mb-2">
+            <p className="italic text-center text-xs sm:text-sm my-6">
                 {move.flavorText}
             </p>
             <div className="flex flex-wrap gap-3 text-xs sm:text-sm my-2">
@@ -153,13 +151,7 @@ const Data: React.FC<{ name: string } & IMove> = (move) => {
             {move.pokemons.length > 0 && (
                 <>
                     <hr className="border-t my-2" />
-                    <div
-                        className={`grid max-sm:grid-cols-6 sm:max-md:grid-cols-12 md:grid-cols-6 xl:grid-cols-8 text-xs sm:text-sm gap-2 my-2`}
-                    >
-                        {move.pokemons.map((id) => (
-                            <PokeIcon key={id} id={id} />
-                        ))}
-                    </div>
+                    <PokeIconList list={move.pokemons} />
                 </>
             )}
         </div>
@@ -175,42 +167,5 @@ const Version: React.FC<{ game: string }> = ({ game }) => {
         <div className="bg-base-white rounded-semi px-3" style={{ background }}>
             {name}
         </div>
-    );
-};
-
-/**
- * Pokemon Icon
- */
-const PokeIcon: React.FC<{ id: number }> = ({ id }) => {
-    const [name, setName] = useState<string>();
-
-    useEffect(() => {
-        getPokemonNameById(id)
-            .then((res) => {
-                setName(res);
-            })
-            .catch((err) => {
-                setName("missing-pokemon-name");
-            });
-    }, [id]);
-
-    return (
-        <Link
-            href={`${GAME_DATABASE}/pokemon/p?id=${id}`}
-            className="w-full flex aspect-square bg-base-white/50 sm:hover:bg-base-white rounded-md"
-        >
-            {name && (
-                <img
-                    className="m-auto"
-                    title={name
-                        .replaceAll("-", " ")
-                        .replace(/(^\w|\s\w)/g, (m) => m.toUpperCase())}
-                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`}
-                    alt=""
-                    width={48}
-                    height={48}
-                />
-            )}
-        </Link>
     );
 };

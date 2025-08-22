@@ -56,10 +56,12 @@ export const BerryCard: React.FC<BerryRequest> = (props) => {
     return (
         <div
             ref={ref}
-            className="w-full flex items-center justify-center sm:rounded-lg overflow-hidden bg-black sm:min-h-96"
+            className={`w-full flex items-center justify-center sm:rounded-lg overflow-hidden ${
+                data === undefined ? "bg-white" : "bg-black"
+            } sm:min-h-96`}
         >
             {data === undefined ? (
-                <Spinner color="light" />
+                <Spinner />
             ) : data === null || !data.berry || !data.item ? (
                 <div className="text-base-red-dark">Berry Data Missing</div>
             ) : (
