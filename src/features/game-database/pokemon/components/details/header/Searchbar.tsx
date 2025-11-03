@@ -99,9 +99,16 @@ export const Searchbar: React.FC = () => {
                                 target="_blank"
                                 href={`${GAME_DATABASE}/pokemon?${NAME_QUERY}=${valueRef.current}`}
                             >
-                                {data.length === 0
-                                    ? "No Pokemon Found"
-                                    : "See More"}
+                                {data.length === 0 ? (
+                                    <NoResultFound
+                                        suggestion={suggestion(
+                                            pools.current,
+                                            valueRef.current
+                                        )}
+                                    />
+                                ) : (
+                                    "See More"
+                                )}
                             </Link>
                         </div>
                     )}
@@ -223,3 +230,48 @@ const MiniDisplay: React.FC<PokemonBase> = (props) => {
         </Link>
     );
 };
+
+const NoResultFound: React.FC<{ suggestion: string }> = ({ suggestion }) => {
+    return !!suggestion ? (
+        <>
+            Did you mean <span className="capitalize">{suggestion}</span>
+        </>
+    ) : (
+        "No Pokemon Found"
+    );
+};
+
+function suggestion(pool: PokeRequest[], text: string): string {
+    let str = "";
+    let score = -Infinity;
+    for (let i = 0; i < pool.length; i++) {
+        const pokeName = pool[i].name.replaceAll("-", " ").toLowerCase();
+        const _score = calculateScore(text, pokeName);
+        if (_score > score) {
+            score = _score;
+            str = pokeName;
+        }
+    }
+
+    return str.replaceAll("-", " ");
+}
+
+function calculateScore(str1: string, str2: string): number {
+    let score = 0;
+    let chainLength = 0;
+    for (let i = 0; i < str1.length; i++) {
+        if (!str2[i]) {
+            break;
+        }
+        if (str2[i] != str1[i]) {
+            score -= 1;
+        }
+
+        if (str2[i] == str1[chainLength]) {
+            chainLength += 1;
+        } else {
+            chainLength = 0;
+        }
+    }
+    return score - chainLength;
+}
